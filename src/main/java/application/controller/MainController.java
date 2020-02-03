@@ -8,4 +8,9 @@ public class MainController {
     public String hello() {
         return "hello";
     }
+
+    @GetMapping(value ="/index")
+    public String index() {
+        return "index";
+    }
 }
