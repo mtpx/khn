@@ -9,12 +9,12 @@
          http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <mvc:default-servlet-handler/>
-<context:component-scan base-package="application" />
-<mvc:annotation-driven />
+    <context:component-scan base-package="application"/>
+    <mvc:annotation-driven/>
 
 
-<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-    <property name="prefix" value="/WEB-INF/pages/"/>
-    <property name="suffix" value=".html"/>
-</bean>
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/pages/"/>
+        <property name="suffix" value=".html"/>
+    </bean>
 </beans>
