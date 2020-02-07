@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class SellerController {
+public class SellerMainController {
 
     @GetMapping(value ="/seller/register")
     public String sellerRegister() {
