@@ -2,8 +2,9 @@ package application.controller;
 
 import application.dao.UserDAO;
 import application.model.User;
-import org.springframework.web.bind.annotation.*;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class CustomerAPIController {
@@ -20,7 +21,7 @@ public class CustomerAPIController {
 //        return userDAO.findAll();
 //    }
 
-    @PostMapping(value = "/customer", consumes = APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/customer")
     public void addUser(@RequestBody User user){
         userDAO.merge(user);
     }
