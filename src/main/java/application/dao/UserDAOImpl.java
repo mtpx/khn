@@ -16,15 +16,11 @@ public class UserDAOImpl implements UserDAO {
     @PersistenceContext(type = PersistenceContextType.EXTENDED)
     private EntityManager em;
 
-//    @Transactional(readOnly = false)
-//    public User merge(User object) {
-//       return em.merge(object);
-//    }
 
     @Transactional(readOnly = false)
     @Override
-    public User merge(User object) {
-        return em.merge(object);
+    public User merge(User user) {
+        return em.merge(user);
     }
 
     @Override

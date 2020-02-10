@@ -1,6 +1,7 @@
 package application.model;
 
 import lombok.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.persistence.*;
 import java.util.List;
@@ -25,6 +26,7 @@ public class User {
     public int id;
 
     @NotNull
+    @NotEmpty
     @Column(name="firstname")
     private String firstname;
 
@@ -40,9 +42,9 @@ public class User {
     @Column(name="password")
     private String password;
 
-//    @JoinTable
-//    @OneToMany
-//    private List<Role> roles;
+    @JoinTable
+    @OneToMany
+    private List<Role> roles;
 }
 
 //    INSERT INTO role (name) VALUES ('admin'), ('seller'), ('customer')
