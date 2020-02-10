@@ -20,7 +20,7 @@ public class User {
 
     @Id
     @NotNull
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id")
     public int id;
 
@@ -40,9 +40,9 @@ public class User {
     @Column(name="password")
     private String password;
 
-    @JoinTable
-    @OneToMany
-    private List<Role> roles;
+//    @JoinTable
+//    @OneToMany
+//    private List<Role> roles;
 }
 
 //    INSERT INTO role (name) VALUES ('admin'), ('seller'), ('customer')
