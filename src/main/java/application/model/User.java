@@ -5,17 +5,19 @@ import javax.validation.constraints.NotNull;
 import javax.persistence.*;
 import java.util.List;
 
-//@NamedQueries({
-//        @NamedQuery(name = User.GET_USER_BY_ID, query = User.QUERY_GET_USER_BY_ID),
-//        @NamedQuery(name = User.GET_USERS, query = User.QUERY_GET_USERS),
-//        @NamedQuery(name = User.CHECK_USER, query = User.QUERY_CHECK_USER),
-//})
+@NamedQueries({
+        @NamedQuery(name = User.GET_USERS, query = User.QUERY_GET_USERS),
+})
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
 public class User {
+    public static final String GET_USERS = "User.get_users";
+    public static final String QUERY_GET_USERS = "select u from User u";
+
+
     @Id
     @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)

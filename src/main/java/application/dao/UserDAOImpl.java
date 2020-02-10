@@ -14,8 +14,9 @@ public class UserDAOImpl implements UserDAO {
     private EntityManager em;
 
     public void merge(Object object) {
-        this.em.merge(object);
+        em.merge(object);
     }
+
 
 //    public UserDAOImpl(EntityManager em) {
 //        this.em = em;
