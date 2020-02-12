@@ -5,7 +5,7 @@ function prepareRegisterData() {
         email: $('#email').val(),
         password: $('#password').val(),
         roles: [
-            { id:3 }
+            { id:2 }
         ]
     };
     register(registerData);

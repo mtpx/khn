@@ -1,8 +1,7 @@
 package application.model;
 
 import lombok.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import javax.persistence.*;
 import java.util.List;
 
@@ -45,7 +44,7 @@ public class User {
     private String password;
 
     @JoinTable
-    @OneToMany
+    @ManyToMany
     private List<Role> roles;
 }
 
