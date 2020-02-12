@@ -1,4 +1,7 @@
 package application.service;
 
-public class UserService {
+import application.model.User;
+
+public interface UserService {
+    User addCustomer(User user);
 }

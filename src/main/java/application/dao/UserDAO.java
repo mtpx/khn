@@ -5,6 +5,6 @@ import application.model.User;
 import java.util.List;
 
 public interface UserDAO {
-    User merge(User user);
+    User addCustomer(User user);
     List<User> findAll();
 }

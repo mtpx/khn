@@ -17,6 +17,8 @@ import java.util.List;
 public class User {
     public static final String GET_USERS = "User.get_users";
     public static final String QUERY_GET_USERS = "select u from User u";
+//    public static final String ADD_ROLE = "User.add_role";
+//    public static final String QUERY_ADD_ROLE = "insert into users_role (user_id,role_id)";
 
 
     @Id
@@ -47,5 +49,7 @@ public class User {
     private List<Role> roles;
 }
 
+// dodawanie ról i admina
 //    INSERT INTO role (name) VALUES ('admin'), ('seller'), ('customer')
-//    INSERT INTO users (firstname, lastname, email, password) VALUES ('imie', 'nazwisko', 'admin@admin.com', 'password')
+//        INSERT INTO users (id,firstname, lastname, email, password) VALUES (1,'imie', 'nazwisko', 'admin@admin.com', 'password')
+//        insert into users_role (user_id, roles_id) values (1,1)

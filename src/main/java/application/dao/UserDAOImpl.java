@@ -3,7 +3,6 @@ package application.dao;
 import application.model.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
@@ -16,10 +15,9 @@ public class UserDAOImpl implements UserDAO {
     @PersistenceContext(type = PersistenceContextType.EXTENDED)
     private EntityManager em;
 
-
     @Transactional(readOnly = false)
     @Override
-    public User merge(User user) {
+    public User addCustomer(User user) {
         return em.merge(user);
     }
 
@@ -28,9 +26,5 @@ public class UserDAOImpl implements UserDAO {
         return em.createNamedQuery(User.GET_USERS, User.class)
                 .getResultList();
     }
-//    public UserDAOImpl(EntityManager em) {
-//        this.em = em;
-//    }
-
 
 }
