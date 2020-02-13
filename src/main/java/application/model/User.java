@@ -16,8 +16,9 @@ import java.util.List;
 public class User {
     public static final String GET_USERS = "User.get_users";
     public static final String QUERY_GET_USERS = "select u from User u";
-//    public static final String ADD_ROLE = "User.add_role";
-//    public static final String QUERY_ADD_ROLE = "insert into users_role (user_id,role_id)";
+
+    public static final String CHECK_CUSTOMER = "User.get_users";
+    public static final String QUERY_CHECK_CUSTOMER = "select u from User u";
 
 
     @Id
@@ -36,7 +37,7 @@ public class User {
     private String lastname;
 
     @NotNull
-    @Column(name="email")
+    @Column(name="email",unique = true)
     private String email;
 
     @NotNull

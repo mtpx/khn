@@ -29,7 +29,7 @@
             <map>
                 <entry key="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL9Dialect"/>
                 <entry key="hibernate.hbm2ddl" value="true"/>
-                <entry key="hibernate.hbm2ddl.auto" value="update"/>
+                <entry key="hibernate.hbm2ddl.auto" value="create-drop"/>
                 <entry key="hibernate.format_sql" value="true"/>
                 <entry key="hibernate.show_sql" value="true"/>
             </map>
