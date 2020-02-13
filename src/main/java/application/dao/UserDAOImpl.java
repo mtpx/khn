@@ -25,4 +25,27 @@ public class UserDAOImpl implements UserDAO {
                 .getResultList();
     }
 
+    @Override
+    public List<User> verifyCustomerCredentials(String email, String password) {
+        return em.createNamedQuery(User.VERIFY_CUSTOMER_CREDENTIALS, User.class)
+                .setParameter("email", email)
+                .setParameter("password", password)
+                .getResultList();
+    }
+
+    @Override
+    public List<User> verifySellerCredentials(String email, String password) {
+        return em.createNamedQuery(User.VERIFY_SELLER_CREDENTIALS, User.class)
+                .setParameter("email", email)
+                .setParameter("password", password)
+                .getResultList();
+    }
+
+    @Override
+    public User getUserRole(int user) {
+        return em.createNamedQuery(User.GET_USER_ROLE, User.class)
+                .setParameter("user", user)
+                .getSingleResult();
+    }
+
 }

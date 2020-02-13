@@ -1,11 +1,14 @@
 package application.controller;
 
 import application.dao.UserDAO;
-import application.model.User;
 import application.service.UserService;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 @RestController
 public class CustomerAPIController {
@@ -16,9 +19,12 @@ public class CustomerAPIController {
     @Autowired
     private UserService userService;
 
-    @GetMapping(value = "/customer")
-    public List<User> getUser(){
-        return userDAO.findAll();
+
+    @PostMapping(value = "/customer/login", consumes = APPLICATION_JSON_VALUE)
+    public int checkUser(@RequestBody ObjectNode objectNode){
+        String email = objectNode.get("email").asText();
+        String password = objectNode.get("password").asText();
+        return userService.customerLogin(email, password);
     }
 
 
