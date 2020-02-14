@@ -4,9 +4,9 @@ function prepareRegisterData() {
         lastname: $('#lastname').val(),
         email: $('#email').val(),
         password: $('#password').val(),
-        roles: [
+        roles:
             { id:2 }
-        ]
+
     };
     register(registerData);
 }

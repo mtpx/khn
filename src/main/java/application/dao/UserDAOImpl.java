@@ -15,7 +15,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Transactional(readOnly = false)
     @Override
-    public User addCustomer(User user) {
+    public User addUser(User user) {
         return em.merge(user);
     }
 
@@ -42,10 +42,31 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public User getUserRole(int user) {
-        return em.createNamedQuery(User.GET_USER_ROLE, User.class)
+    public int getUserRole(int user) {
+        User myUser= em.createNamedQuery(User.GET_USER_ROLE, User.class)
                 .setParameter("user", user)
                 .getSingleResult();
+        return myUser.getRoles().id;
+    }
+
+    @Override
+    public User getUserIdByEmail(String email) {
+        User myUser = em.createNamedQuery(User.GET_USER_ID_BY_EMAIL,User.class)
+                .setParameter("email",email)
+                .getSingleResult();
+        return myUser;
+    }
+
+    @Transactional(readOnly = false)
+    @Override
+    public boolean changePassword(User user, String oldPassword, String newPassword) {
+        if(user.getPassword().equals(oldPassword)) {
+            user.setPassword(newPassword);
+            em.merge(user);
+            return true;
+        }
+        else
+            return false;
     }
 
 }

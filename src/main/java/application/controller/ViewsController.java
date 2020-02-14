@@ -10,6 +10,19 @@ public class ViewsController {
         return "index";
     }
 
+    @GetMapping(value ="/changePassword")
+    public String changePassword() {
+        return "changePassword";
+    }
+
+
+
+
+    @GetMapping(value ="/admin/index")
+    public String adminIndex() {
+        return "admin/index";
+    }
+
 
 
 
@@ -23,9 +36,9 @@ public class ViewsController {
         return "seller/login";
     }
 
-    @GetMapping(value ="/seller/changePassword")
-    public String sellerChangePassword() {
-        return "seller/changePassword";
+    @GetMapping(value ="/seller/index")
+    public String sellerIndex() {
+        return "seller/index";
     }
 
 
@@ -41,8 +54,8 @@ public class ViewsController {
         return "customer/login";
     }
 
-    @GetMapping(value ="/customer/changePassword")
-    public String customerChangePassword() {
-        return "customer/changePassword";
+    @GetMapping(value ="/customer/index")
+    public String customerIndex() {
+        return "customer/index";
     }
 }

@@ -11,7 +11,7 @@
     <context:component-scan base-package="application"/>
     <context:annotation-config />
     <mvc:annotation-driven />
-
+    <tx:annotation-driven transaction-manager="transactionManager1"/>
 
     <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
 
@@ -24,12 +24,11 @@
                 <property name="showSql" value="true"/>
             </bean>
         </property>
-
         <property name="jpaPropertyMap">
             <map>
                 <entry key="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL9Dialect"/>
                 <entry key="hibernate.hbm2ddl" value="true"/>
-                <entry key="hibernate.hbm2ddl.auto" value="create-drop"/>
+                <entry key="hibernate.hbm2ddl.auto" value="update"/>
                 <entry key="hibernate.format_sql" value="true"/>
                 <entry key="hibernate.show_sql" value="true"/>
             </map>
@@ -39,8 +38,6 @@
     <bean id="transactionManager1" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
-
-    <tx:annotation-driven transaction-manager="transactionManager1"/>
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="org.postgresql.Driver"/>
