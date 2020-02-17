@@ -1,8 +1,11 @@
 package application.model;
 
-import lombok.*;
+import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 
 @NamedQueries({
         @NamedQuery(name = User.GET_USERS, query = User.QUERY_GET_USERS),
@@ -62,8 +65,9 @@ public class User {
     @Column(name="password",nullable = false)
     private String password;
 
-    @ManyToOne
-    @JoinTable(name="user_roles" )
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinTable(name="user_roles")
     private Role roles;
 }
 

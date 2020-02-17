@@ -4,8 +4,8 @@
     <link rel="stylesheet" href="../../../css/main.css">
     <script src="../../../js/jquery-3.4.1.min.js"></script>
     <script src="../../../js/bootstrap.min.js"></script>
-
-    <title>Customer Page</title>
+    <script src="../../../js/admin/users.js"></script>
+    <title>Admin: users page</title>
 </head>
 <body>
 <div id="wrapper">
@@ -19,7 +19,7 @@
                 </a>
             </li>
             <li>
-                <a href="/admin/users">Users</a>
+                <a href="/users">Users</a>
             </li>
             <li>
                 <a href="../index">Log out</a>
@@ -30,13 +30,19 @@
 
     <!-- Page Content -->
     <div id="page-content-wrapper">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1>Simple Sidebar</h1>
-                </div>
-            </div>
-        </div>
+        <button class="button" id="getUsers" onclick="getUsers()" type="button">Get users</button>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">First</th>
+                <th scope="col">Last</th>
+                <th scope="col">Mail</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
     </div>
     <!-- /#page-content-wrapper -->
 
