@@ -11,9 +11,12 @@ import javax.validation.constraints.*;
         @NamedQuery(name = User.VERIFY_CUSTOMER_CREDENTIALS, query = User.QUERY_VERIFY_CUSTOMER_CREDENTIALS),
         @NamedQuery(name = User.GET_USER_ID_BY_EMAIL, query = User.QUERY_GET_USER_ID_BY_EMAIL)
 })
-@Getter
-@Setter
-@NoArgsConstructor
+
+//@NamedNativeQueries({
+//        @NamedNativeQuery(name = User.ADD_CUSTOMER_ROLE, query = User.QUERY_ADD_CUSTOMER_ROLE),
+//
+//})
+@Data
 @Entity
 @Table(name = "users")
 public class User {
@@ -32,11 +35,16 @@ public class User {
     public static final String GET_USER_ID_BY_EMAIL = "User.get_userId_by_mail";
     public static final String QUERY_GET_USER_ID_BY_EMAIL = "select u from User u where u.email= :email";
 
+//    public static final String ADD_CUSTOMER_ROLE = "User.get_userId_by_mail";
+//    public static final String QUERY_ADD_CUSTOMER_ROLE = "insert into ";
+
     @Id
     @NotNull
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id")
     public int id;
+
+    //K: Ogólnie nazwy piszemy camelCase czyli powinno być: firstName
 
     @NotNull
     @Column(name="firstname",nullable = false)

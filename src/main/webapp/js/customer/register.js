@@ -3,17 +3,14 @@ function prepareRegisterData() {
         firstname: $('#firstname').val(),
         lastname: $('#lastname').val(),
         email: $('#email').val(),
-        password: $('#password').val(),
-        roles:
-            { id:3 }
-
+        password: $('#password').val()
     };
     register(registerData);
 }
 
 function register(data) {
     $.ajax({
-        url: "http://localhost:8080/register",
+        url: "http://localhost:8080/customer/register",
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify(data),

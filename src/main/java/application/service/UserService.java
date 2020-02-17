@@ -1,10 +1,17 @@
 package application.service;
 
+import application.controller.CommonAPIController;
 import application.model.User;
+
+import java.util.List;
 
 public interface UserService {
     User addCustomer(User user);
-    int customerLogin(String email, String password);
-    int sellerLogin(String email, String password);
-    boolean changePassword(String email, String oldPassword, String newPassword);
+    User addSeller(User user);
+    User deleteUser (int id);
+    List<User> findAll();
+    User findById(int id);
+    int customerLogin(User user);
+    int sellerLogin(User user);
+    boolean changePassword(CommonAPIController.ChangePasswordData changePasswordData);
 }
