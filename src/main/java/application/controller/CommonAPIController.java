@@ -2,9 +2,10 @@ package application.controller;
 
 import application.model.User;
 import application.service.UserService;
-import application.service.UserServiceImpl;
 import lombok.Getter;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -29,7 +30,7 @@ public class CommonAPIController {
     }
 
     @PostMapping(value = "/login")
-    public UserServiceImpl.UserData login(@RequestBody User user){
+    public int login(@RequestBody User user){
         return userService.login(user);
     }
 
@@ -43,6 +44,11 @@ public class CommonAPIController {
     @GetMapping(value = "/user/{id}")
     public User getUser(@PathVariable int id){
         return userService.findById(id);
+    }
+
+    @GetMapping(value = "/user/role/{id}")
+    public Collection getRoles(@PathVariable int id){
+        return userService.getRolesById(id);
     }
 
     @DeleteMapping(value = "/user/{id}")

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -57,24 +58,6 @@ public class UserDAOImpl implements UserDAO {
 
     @Transactional(readOnly = true)
     @Override
-    public List<User> verifyCustomerCredentials(String email, String password) {
-        return em.createNamedQuery(User.VERIFY_CUSTOMER_CREDENTIALS, User.class)
-                .setParameter("email", email)
-                .setParameter("password", password)
-                .getResultList();
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public List<User> verifySellerCredentials(String email, String password) {
-        return em.createNamedQuery(User.VERIFY_SELLER_CREDENTIALS, User.class)
-                .setParameter("email", email)
-                .setParameter("password", password)
-                .getResultList();
-    }
-
-    @Transactional(readOnly = true)
-    @Override
     public List<User> verifyCredentials(String email, String password) {
         return em.createNamedQuery(User.VERIFY_SELLER_CREDENTIALS, User.class)
                 .setParameter("email", email)
@@ -82,12 +65,11 @@ public class UserDAOImpl implements UserDAO {
                 .getResultList();
     }
 
-    //K: Użytkownik może mieć wiele ról więc trzeba to przerobić na listę :)
     @Transactional(readOnly = true)
     @Override
-    public List<User> getUserRoles(int user) {
-        return  em.createNamedQuery(User.GET_USER_ROLE, User.class)
-                .setParameter("user", user)
+    public Collection getUserRoles(int id) {
+        return  em.createNamedQuery(User.GET_USER_ROLE, Collection.class)
+                .setParameter("id", id)
                 .getResultList();
     }
 

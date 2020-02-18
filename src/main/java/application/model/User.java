@@ -33,7 +33,7 @@ public class User {
     public static final String QUERY_VERIFY_CUSTOMER_CREDENTIALS = "select u from User u where u.email = :email and u.password = :password";
 
     public static final String GET_USER_ROLE = "User.get_role";
-    public static final String QUERY_GET_USER_ROLE = "select u from User u where u.id= :id";
+    public static final String QUERY_GET_USER_ROLE = "select u.roles from User u where u.id= :id";
 
     public static final String GET_USER_ID_BY_EMAIL = "User.get_userId_by_mail";
     public static final String QUERY_GET_USER_ID_BY_EMAIL = "select u from User u where u.email= :email";

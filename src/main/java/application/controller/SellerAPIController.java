@@ -17,11 +17,4 @@ public class SellerAPIController {
     public User addCustomer(@RequestBody User user){
         return userService.addSeller(user);
     }
-
-    @PostMapping(value = "/seller/login")
-    public int customerLogin(@RequestBody User user){
-        return userService.sellerLogin(user);
-    }
-
-
 }

@@ -18,9 +18,4 @@ public class CustomerAPIController {
         return userService.addCustomer(user);
     }
 
-    @PostMapping(value = "/customer/login")
-    public int customerLogin(@RequestBody User user){
-        return userService.customerLogin(user);
-    }
-
 }

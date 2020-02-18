@@ -2,11 +2,10 @@ package application.service;
 
 import application.controller.CommonAPIController;
 import application.dao.UserDAO;
-import application.model.Role;
 import application.model.User;
-import lombok.Data;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -47,36 +46,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int customerLogin(User user) {
-        List<User> result = userDAO.verifyCustomerCredentials(user.getEmail(), user.getPassword());
-        if(result.size()!=0) {
-            return result.get(0).id; //user exists, returning user id
-        }else {
-            return 0; //user doesnt exist
-        }
-    }
-
-    @Override
-    public int sellerLogin(User user) {
-        List<User> result = userDAO.verifySellerCredentials(user.getEmail(), user.getPassword());
-        if(result.size()!=0) {
-            return result.get(0).id; //user exists, returning user id
-        }else {
-            return 0; //user doesnt exist
-        }
-    }
-
-    @Override
-    public UserData login(User user) {
-        UserData userData = new UserData();
+    public int login(User user) {
         List<User> result = userDAO.verifyCredentials(user.getEmail(), user.getPassword());
-        if(result.size()==0) {
-            userData.setUserId(0);
-            return userData;
-        }
-        userData.setUserId(result.get(0).getId());
-        userData.setRoleId(result.get(0).getRoles());
-        return userData;//user exists, returning user id
+        if(result.size()==0)
+            return 0; //user doesnt exists
+        return result.get(0).getId();//user exists, returning user id
     }
 
     @Override
@@ -89,9 +63,10 @@ public class UserServiceImpl implements UserService {
             return false;
     }
 
-    @Data
-    public static class UserData {
-        private int userId;
-        private List<Role> roleId;
+    @Override
+    public Collection getRolesById(int id) {
+        return userDAO.getUserRoles(id);
     }
+
+
 }
