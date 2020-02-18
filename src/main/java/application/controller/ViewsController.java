@@ -15,13 +15,14 @@ public class ViewsController {
         return "changePassword";
     }
 
-
-
-
-    @GetMapping(value ="/admin/index")
-    public String adminIndex() {
-        return "admin/index";
+    @GetMapping(value ="/main")
+    public String main() {
+        return "main";
     }
+
+
+
+
 
     @GetMapping(value ="/admin/users")
     public String adminUsers() {
@@ -41,10 +42,6 @@ public class ViewsController {
         return "seller/login";
     }
 
-    @GetMapping(value ="/seller/index")
-    public String sellerIndex() {
-        return "seller/index";
-    }
 
 
 
@@ -59,8 +56,5 @@ public class ViewsController {
         return "customer/login";
     }
 
-    @GetMapping(value ="/customer/index")
-    public String customerIndex() {
-        return "customer/index";
-    }
+
 }

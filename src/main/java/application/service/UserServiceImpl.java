@@ -2,7 +2,9 @@ package application.service;
 
 import application.controller.CommonAPIController;
 import application.dao.UserDAO;
+import application.model.Role;
 import application.model.User;
+import lombok.Data;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     final static Logger LOGGER = Logger.getLogger(UserServiceImpl.class.getName());
 
+
     private final UserDAO userDAO;
     public UserServiceImpl(UserDAO userDAO) {
         this.userDAO = userDAO;
@@ -18,6 +21,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User addCustomer(User user) {
+        LOGGER.info("user user");
         return userDAO.addCustomerRole(userDAO.addUser(user));
     }
 
@@ -63,6 +67,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserData login(User user) {
+        UserData userData = new UserData();
+        List<User> result = userDAO.verifyCredentials(user.getEmail(), user.getPassword());
+        if(result.size()==0) {
+            userData.setUserId(0);
+            return userData;
+        }
+        userData.setUserId(result.get(0).getId());
+        userData.setRoleId(result.get(0).getRoles());
+        return userData;//user exists, returning user id
+    }
+
+    @Override
     public boolean changePassword(CommonAPIController.ChangePasswordData changePasswordData){
         User myUser = userDAO.getUserByEmail(changePasswordData.getEmail());
         String oldPassword = myUser.getPassword();
@@ -70,5 +87,11 @@ public class UserServiceImpl implements UserService {
             return userDAO.changePassword(myUser, changePasswordData.getOldPassword(), changePasswordData.getNewPassword());
         else
             return false;
+    }
+
+    @Data
+    public static class UserData {
+        private int userId;
+        private List<Role> roleId;
     }
 }

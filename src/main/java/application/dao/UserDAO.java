@@ -1,8 +1,6 @@
 package application.dao;
 
 import application.model.User;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 public interface UserDAO {
@@ -14,7 +12,8 @@ public interface UserDAO {
     User findUserById(int id);
     List<User> verifyCustomerCredentials(String email, String password);
     List<User> verifySellerCredentials(String email, String password);
-    int getUserRole(int userId);
+    List<User> verifyCredentials(String email, String password);
+    List<User> getUserRoles(int userId);
     User getUserByEmail(String email);
     boolean changePassword(User user, String oldPassword, String newPassword);
 }

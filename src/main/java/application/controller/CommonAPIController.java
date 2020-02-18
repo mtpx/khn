@@ -2,10 +2,10 @@ package application.controller;
 
 import application.model.User;
 import application.service.UserService;
+import application.service.UserServiceImpl;
 import lombok.Getter;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 @RestController
 public class CommonAPIController {
@@ -28,6 +28,11 @@ public class CommonAPIController {
         return userService.changePassword(changePasswordData);
     }
 
+    @PostMapping(value = "/login")
+    public UserServiceImpl.UserData login(@RequestBody User user){
+        return userService.login(user);
+    }
+
     //K: Odnośnie pytania na slacku o HTTP to poczytaj sobie o zwracaniu ResponseEntity - Jak coś by nie szło to pomogę :)
 
     @GetMapping(value = "/user")
@@ -44,5 +49,6 @@ public class CommonAPIController {
     public User deleteUser(@PathVariable int id){
         return userService.deleteUser(id);
     }
+
 
 }

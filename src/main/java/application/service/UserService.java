@@ -12,6 +12,7 @@ public interface UserService {
     List<User> findAll();
     User findById(int id);
     int customerLogin(User user);
+    UserServiceImpl.UserData login(User user);
     int sellerLogin(User user);
     boolean changePassword(CommonAPIController.ChangePasswordData changePasswordData);
 }
