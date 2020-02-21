@@ -1,7 +1,10 @@
 $(document).ready(function() {
     let role = "#role";
+    let welcome = "#welcome";
     $("ul li").hide();
     $(role).append('');
+    alert("mail: "+sessionStorage.getItem('loggedUserEmail'));
+    $("welcome").append(sessionStorage.getItem('loggedUserEmail'));
     if(sessionStorage.getItem('loggedUserIdRole')==="1") {
         $(role).show();
         $(role).append('Administration');
@@ -35,6 +38,7 @@ function logout() {
     sessionStorage.setItem('loggedUserIdRole',"0");
     sessionStorage.setItem('loggedUserIdSecondRole', "0");
     sessionStorage.setItem('loggedUserId', "0");
+    sessionStorage.setItem('loggedUserEmail', "0");
     $("ul li").hide();
     window.location = "../index";
 }
