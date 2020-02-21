@@ -52,8 +52,8 @@ public class CommonAPIController {
     }
 
     @DeleteMapping(value = "/user/{id}")
-    public User deleteUser(@PathVariable int id){
-        return userService.deleteUser(id);
+    public void deleteUser(@PathVariable int id){
+        userService.deleteUser(id);
     }
 
 

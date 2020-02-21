@@ -9,12 +9,12 @@ import javax.validation.constraints.*;
 @Table(name = "role")
 public class Role {
     @Id
-    @NotNull
+    @NotEmpty
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public int id;
 
-    @NotNull
+    @NotEmpty
     @Column(name="name")
     private String name;
 

@@ -4,6 +4,8 @@ import application.model.User;
 import application.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 public class CustomerAPIController {
 
@@ -14,7 +16,7 @@ public class CustomerAPIController {
     }
 
     @PostMapping(value = "/customer/register")
-    public User addCustomer(@RequestBody User user){
+    public User addCustomer(@RequestBody @Valid User user){
         return userService.addCustomer(user);
     }
 

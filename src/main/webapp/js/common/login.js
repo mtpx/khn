@@ -17,26 +17,23 @@ function login(data) {
                 alert("Bad Credentials");
             }
             if(resultLogin!==0){
+                sessionStorage.setItem('loggedUserId', resultLogin);
                 $.ajax({
                     url: "http://localhost:8080/user/role/"+resultLogin,
                     type: "GET",
                     success: function(resultRole) {
-                        window.location = "../main";
-                        alert(resultRole[0].id)
-                        if(resultRole[0].id===1)
-                            $("#role").append('Administration');
-                        else if(resultRole[0].id===2)
-                            $("#role").append('Seller');
-                        else if(resultRole[0].id===3)
-                            $("#role").append('Customer');
-                        localStorage.setItem('loggedUserId', resultLogin);
-
+                        if(resultRole[0].name==="admin" ||  window.location.pathname.toString().includes(resultRole[0].name)) {    
+                            window.location = "../main";
+                            sessionStorage.setItem('loggedUserIdRole', resultRole[0].id);
+                            sessionStorage.setItem('loggedUserIdSecondRole', resultRole[1].id);
+                        }
+                        else
+                            alert("Access denied")
                     },
                     error: function() {
                         alert("Getting role from user error")
                     }
                 })
-
             }
         },
         error: function() {

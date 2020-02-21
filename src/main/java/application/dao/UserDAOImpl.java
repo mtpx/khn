@@ -59,7 +59,7 @@ public class UserDAOImpl implements UserDAO {
     @Transactional(readOnly = true)
     @Override
     public List<User> verifyCredentials(String email, String password) {
-        return em.createNamedQuery(User.VERIFY_SELLER_CREDENTIALS, User.class)
+        return em.createNamedQuery(User.VERIFY_CREDENTIALS, User.class)
                 .setParameter("email", email)
                 .setParameter("password", password)
                 .getResultList();

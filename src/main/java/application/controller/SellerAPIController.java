@@ -3,6 +3,7 @@ package application.controller;
 import application.model.User;
 import application.service.UserService;
 import org.springframework.web.bind.annotation.*;
+import javax.validation.Valid;
 
 @RestController
 public class SellerAPIController {
@@ -14,7 +15,7 @@ public class SellerAPIController {
     }
 
     @PostMapping(value = "/seller/register")
-    public User addCustomer(@RequestBody User user){
+    public User addCustomer(@RequestBody @Valid User user){
         return userService.addSeller(user);
     }
 }
