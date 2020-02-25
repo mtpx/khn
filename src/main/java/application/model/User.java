@@ -1,10 +1,7 @@
 package application.model;
-
 import lombok.Data;
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.List;
 
 @NamedQueries({
@@ -17,6 +14,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "users")
+
 public class User {
     public static final String GET_USERS = "User.get_users";
     public static final String QUERY_GET_USERS = "select u from User u";
@@ -36,19 +34,21 @@ public class User {
     @Column(name = "id")
     public int id;
 
-    @Size(min=4,message = "minimum 4 chars")
+    @NotEmpty(message="Provide firstname")
     @Column(name="firstname",nullable = false)
     private String firstname;
 
-    @Size(min=4,message = "minimum 4 chars")
+    @NotEmpty(message="Provide lastname")
     @Column(name="lastname",nullable = false)
     private String lastname;
 
-    @Email(message = "mail should be valid")
+    //@Email(message = "Provide valid email")
+    @NotEmpty(message="Provide email")
     @Column(name="email",unique = true,nullable = false)
     private String email;
 
-    @Size(min=4,message = "minimum 4 chars")
+    @NotEmpty(message="Provide password")
+    @Size(min=4,message = "Password: minimum 4 chars")
     @Column(name="password",nullable = false)
     private String password;
 

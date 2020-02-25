@@ -34,8 +34,6 @@ public class CommonAPIController {
         return userService.login(user);
     }
 
-    //K: Odnośnie pytania na slacku o HTTP to poczytaj sobie o zwracaniu ResponseEntity - Jak coś by nie szło to pomogę :)
-
     @GetMapping(value = "/user")
     public List<User> getUsers(){
         return userService.findAll();

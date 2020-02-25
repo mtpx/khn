@@ -20,8 +20,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User addCustomer(User user) {
-        LOGGER.info("user user");
         return userDAO.addCustomerRole(userDAO.addUser(user));
+        //return userDAO.addCustomerRole(userDAO.addUser(user));
     }
 
     @Override

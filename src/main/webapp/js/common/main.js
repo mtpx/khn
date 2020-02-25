@@ -3,8 +3,7 @@ $(document).ready(function() {
     let welcome = "#welcome";
     $("ul li").hide();
     $(role).append('');
-    alert("mail: "+sessionStorage.getItem('loggedUserEmail'));
-    $("welcome").append(sessionStorage.getItem('loggedUserEmail'));
+    $(welcome).show().append('hello '+sessionStorage.getItem('loggedUserEmail'));
     if(sessionStorage.getItem('loggedUserIdRole')==="1") {
         $(role).show();
         $(role).append('Administration');
