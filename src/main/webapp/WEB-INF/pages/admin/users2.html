@@ -1,0 +1,98 @@
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="../../../js/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../css/main.css">
+    <script src="../../../js/jquery-3.4.1.min.js"></script>
+    <script src="../../../js/bootstrap.min.js"></script>
+    <script src="../../../js/admin/users.js"></script>
+    <script type="text/javascript" charset="utf8"
+            src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+    <script type="text/javascript">
+        var table;
+        $(document).ready(function () {
+
+            $.ajax({
+                url: 'http://localhost:8080/user/',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    bindtoDatatable(data);
+                }
+            });
+
+
+        });
+
+        function bindtoDatatable(data) {
+            table = $('#table').dataTable({
+                data: data,
+                columns: [{
+                    data: "id"
+                }, {
+                    data: "firstname"
+                }, {
+                    data: "lastname"
+                }, {
+                    data: "email"
+                }, {
+                    // data: null,
+                    className: "center",
+                    defaultContent: '<a href="" class="deleteUser">Delete</a>'
+                }]
+            })
+        }
+
+        // Delete a record
+        $('#table').on('click', 'a.deleteUser', function (e) {
+            e.preventDefault();
+
+            table.remove( $(this).closest('tr'), {
+                title: 'Delete record',
+                message: 'Are you sure you wish to remove this record?',
+                buttons: 'Delete'
+            } );
+        } );
+    </script>
+    <title>Admin: users page</title>
+</head>
+<body>
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+            <li class="sidebar-brand">
+                <a href="#">
+                    Administration
+                </a>
+            </li>
+            <li>
+                <a href="/admin/users">Users</a>
+            </li>
+            <li>
+                <a href="../index">Log out</a>
+            </li>
+        </ul>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <table id="table" class="display">
+            <thead>
+            <tr>
+                <th>id</th>
+                <th>firstname</th>
+                <th>lastname</th>
+                <th>email</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <!-- /#page-content-wrapper -->
+
+</div>
+</body>
+</html>

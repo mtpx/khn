@@ -29,6 +29,11 @@ public class ViewsController {
         return "admin/users";
     }
 
+    @GetMapping(value ="/admin/users2")
+    public String adminUsers2() {
+        return "admin/users2";
+    }
+
 
 
 
