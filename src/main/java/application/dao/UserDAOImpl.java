@@ -1,10 +1,8 @@
 package application.dao;
-import application.model.Role;
 import application.model.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -24,22 +22,6 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public User deleteUser(User user) {
         em.remove(user);
-        return user;
-    }
-
-    @Override
-    public User addCustomerRole(User user) {
-        List<Role> roles= new ArrayList<>();
-        roles.add(em.find(Role.class,3));
-        user.setRoles(roles);
-        return user;
-    }
-
-    @Override
-    public User addSellerRole(User user) {
-        List<Role> roles= new ArrayList<>();
-        roles.add(em.find(Role.class,2));
-        user.setRoles(roles);
         return user;
     }
 
@@ -81,7 +63,6 @@ public class UserDAOImpl implements UserDAO {
                 .getSingleResult();
     }
 
-    //K: Ja bym zrobiła tutaj update zamiast merge
     @Transactional
     @Override
     public boolean changePassword(User user, String oldPassword, String newPassword) {

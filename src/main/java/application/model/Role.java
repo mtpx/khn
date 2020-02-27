@@ -6,15 +6,17 @@ import javax.validation.constraints.*;
 
 @Data
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "role")
 public class Role {
+
     @Id
-    @NotEmpty
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull
     @Column(name = "id")
     public int id;
 
-    @NotEmpty
+    @NotNull
     @Column(name="name")
     private String name;
 

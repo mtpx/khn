@@ -52,7 +52,7 @@ public class User {
     @Column(name="password",nullable = false)
     private String password;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name="user_roles")
     private List<Role> roles;
 }

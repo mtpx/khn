@@ -2,16 +2,17 @@ package application.service;
 
 import application.controller.CommonAPIController;
 import application.dao.UserDAO;
+import application.model.Role;
 import application.model.User;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
     final static Logger LOGGER = Logger.getLogger(UserServiceImpl.class.getName());
-
 
     private final UserDAO userDAO;
     public UserServiceImpl(UserDAO userDAO) {
@@ -20,13 +21,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User addCustomer(User user) {
-        return userDAO.addCustomerRole(userDAO.addUser(user));
-        //return userDAO.addCustomerRole(userDAO.addUser(user));
+        return userDAO.addUser(addCustomerRole(user));
     }
 
     @Override
     public User addSeller(User user) {
-        return userDAO.addSellerRole(userDAO.addUser(user));
+        return userDAO.addUser(addSellerRole(user));
+    }
+
+    @Override
+    public User addSellerRole(User user) {
+        List<Role> roles= new ArrayList<>();
+        roles.add(new Role(2,"seller"));
+        user.setRoles(roles);
+        return user;
+    }
+
+    @Override
+    public User addCustomerRole(User user) {
+        List<Role> roles= new ArrayList<>();
+        roles.add(new Role(3,"customer"));
+        user.setRoles(roles);
+        return user;
     }
 
     @Override

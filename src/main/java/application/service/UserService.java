@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.List;
 
 public interface UserService {
+    User addCustomerRole(User user);
+    User addSellerRole(User user);
     User addCustomer(User user);
     User addSeller(User user);
     User deleteUser (int id);
