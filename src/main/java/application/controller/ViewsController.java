@@ -20,6 +20,11 @@ public class ViewsController {
         return "main";
     }
 
+    @GetMapping(value ="/footer")
+    public String footer() {
+        return "footer";
+    }
+
 
 
 

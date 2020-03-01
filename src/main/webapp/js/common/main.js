@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    $("#footer").load("/footer.html");
     let role = "#role";
     let welcome = "#welcome";
     $("ul li").hide();

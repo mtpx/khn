@@ -5,6 +5,11 @@
     <script src="../../../js/jquery-3.4.1.min.js"></script>
     <script src="../../../js/bootstrap.min.js"></script>
     <script src="../../../js/admin/users.js"></script>
+    <script src="../../../js/common/footer.js"></script>
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css">
     <title>Admin: users page</title>
 </head>
 <body>
@@ -30,22 +35,22 @@
 
     <!-- Page Content -->
     <div id="page-content-wrapper">
-        <button class="button" id="getUsers" onclick="getUsers()" type="button">Get users</button>
-        <table class="table">
+        <table id="table" class="display">
             <thead>
             <tr>
-                <th scope="col">id</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Mail</th>
+                <th>id</th>
+                <th>firstname</th>
+                <th>lastname</th>
+                <th>email</th>
+                <th>actions</th>
             </tr>
             </thead>
-            <tbody>
-            </tbody>
+            <tbody></tbody>
         </table>
     </div>
     <!-- /#page-content-wrapper -->
-
+    <div id="footerPlaceholder">
+    </div>
 </div>
 </body>
 </html>

@@ -1,27 +1,46 @@
-function getUsers() {
-    $list = $('.table tbody');
+$(document).ready(function ()  {
+    getUsers()
+});
+
+let table;
+
+function getUsers(){
     $.ajax({
-        url: 'http://localhost:8080/user',
-        dataType: 'json'
+        url: 'http://localhost:8080/user/',
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            bindtoDatatable(data);
+        }
+    });
+}
+
+function bindtoDatatable(data) {
+    table = $('#table').dataTable({
+        data: data,
+        paging: false,
+        searching: false,
+        destroy: true,
+        columns: [{
+            data: "id"
+        }, {
+            data: "firstname"
+        }, {
+            data: "lastname"
+        }, {
+            data: "email"
+        }, {
+            sortable: false,
+            "render": function ( data, type, full, meta ) {
+                let userId = full.id;
+                return '<a onclick="deleteUser('+full.id+')" class="btn btn-danger" role="button">Delete</a>';
+            }
+        }]
     })
-        .done((res) => {
-            $list.empty();
-            $.each(res, function (i, item) {
-                $list.append('<tr>' +
-                    '<th scope="row" >' + res[i].id + '</th>' +
-                    '<td>' + res[i].firstname + '</td>' +
-                    '<td>' + res[i].lastname + '</td>' +
-                    '<td>' + res[i].email + '</td>' +
-                    '<td><button class="btn btn-danger btn-xs btn-delete" onclick="deleteUser(id)" id=' + res[i].id + '>Delete</button></td>' +
-                    '</tr>');
-            })
-        })
 }
 
 function deleteUser(id) {
-    let id2 = this.id;
-    let row = $(this);
-    let loggedUserId = sessionStorage.getItem('loggedUserId');
+    let loggedUserId = parseInt(sessionStorage.getItem('loggedUserId'),10);
     if (loggedUserId === id)
         alert('admin cannot delete his account');
     else {
@@ -31,13 +50,12 @@ function deleteUser(id) {
             contentType:'application/json',
             dataType: 'text',
             success: function () {
-                alert('user: ' + id + ' deleted')
-                $("#getUsers").click();
+                alert('user: ' + id + ' deleted');
+                getUsers();
             },
             error: function () {
                 alert('cannot delete user: ' + id);
             }
         });
     }
-
 }
