@@ -21,6 +21,7 @@ function bindtoDatatable(data) {
         paging: false,
         searching: false,
         destroy: true,
+        autoWidth: true,
         columns: [{
             data: "id"
         }, {
@@ -33,7 +34,7 @@ function bindtoDatatable(data) {
             sortable: false,
             "render": function ( data, type, full, meta ) {
                 let userId = full.id;
-                return '<a onclick="deleteUser('+full.id+')" class="btn btn-danger" role="button">Delete</a>';
+                return '<a onclick="deleteUser('+userId+')" class="btn btn-danger" role="button">Delete</a>';
             }
         }]
     })

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -29,16 +30,15 @@ public class UserServiceImpl implements UserService {
         return userDAO.addUser(addSellerRole(user));
     }
 
-    @Override
-    public User addSellerRole(User user) {
+
+    private User addSellerRole(User user) {
         List<Role> roles= new ArrayList<>();
         roles.add(new Role(2,"seller"));
         user.setRoles(roles);
         return user;
     }
 
-    @Override
-    public User addCustomerRole(User user) {
+    private User addCustomerRole(User user) {
         List<Role> roles= new ArrayList<>();
         roles.add(new Role(3,"customer"));
         user.setRoles(roles);
@@ -70,11 +70,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean changePassword(CommonAPIController.ChangePasswordData changePasswordData){
-        User myUser = userDAO.getUserByEmail(changePasswordData.getEmail());
-        String oldPassword = myUser.getPassword();
-        if(oldPassword.equals(changePasswordData.getOldPassword()))
-            return userDAO.changePassword(myUser, changePasswordData.getOldPassword(), changePasswordData.getNewPassword());
+    public boolean changePassword(Map<String,String> changePasswordDataRequest){
+        String newPassword =changePasswordDataRequest.get("newPassword");
+        User myUser = userDAO.getUserByEmail(changePasswordDataRequest.get("email"));
+        String oldPasswordFromJson = changePasswordDataRequest.get("oldPassword");
+        String oldPasswordFromDb = myUser.getPassword();
+        if(oldPasswordFromDb.equals(oldPasswordFromJson))
+            return userDAO.changePassword(myUser, oldPasswordFromJson, newPassword);
         else
             return false;
     }

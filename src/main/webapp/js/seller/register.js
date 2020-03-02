@@ -1,8 +1,14 @@
+let firstnameVal, lastnameVal, emailVal, passwordVal;
+
 function prepareRegisterData() {
-    let firstnameVal = $('#firstname').val();
-    let lastnameVal = $('#lastname').val();
-    let emailVal = $('#email').val();
-    let passwordVal = $('#password').val();
+    firstnameVal = $('#firstname').val();
+    lastnameVal = $('#lastname').val();
+    emailVal = $('#email').val();
+    passwordVal = $('#password').val();
+    validateRegisterFields();
+}
+
+function validateRegisterFields() {
     if (passwordVal.trim().length ===0 || emailVal.trim().length===0 || firstnameVal.trim().length===0 || lastnameVal.trim().length===0)
         alert("Register fields cannot be empty ");
     else {

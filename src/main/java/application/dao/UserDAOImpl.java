@@ -50,7 +50,7 @@ public class UserDAOImpl implements UserDAO {
     @Transactional(readOnly = true)
     @Override
     public Collection getUserRoles(int id) {
-        return  em.createNamedQuery(User.GET_USER_ROLE, Collection.class)
+        return  em.createNamedQuery(User.GET_USER_ROLES, Collection.class)
                 .setParameter("id", id)
                 .getResultList();
     }

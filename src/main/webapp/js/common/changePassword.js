@@ -1,7 +1,13 @@
+let oldPasswordVal,newPasswordVal, emailVal;
+
 function preparePasswordChangeData() {
-    let oldPasswordVal = $('#oldPassword').val();
-    let newPasswordVal = $('#newPassword').val();
-    let emailVal = $('#email').val();
+    oldPasswordVal = $('#oldPassword').val();
+    newPasswordVal = $('#newPassword').val();
+    emailVal = $('#email').val();
+    validateChangePasswordFields();
+}
+
+function validateChangePasswordFields(){
     if (oldPasswordVal.trim().length === 0 || newPasswordVal.trim().length === 0 || emailVal.trim().length === 0)
         alert("Password change fields cannot be empty");
     else if (oldPasswordVal.trim() === newPasswordVal.trim())

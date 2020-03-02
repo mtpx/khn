@@ -1,5 +1,22 @@
 $(document).ready(function() {
     $("#footer").load("/footer.html");
+    showMenuOptions();
+});
+
+function goBack() {
+    window.history.back();
+}
+
+function logout() {
+    sessionStorage.setItem('loggedUserIdRole',"0");
+    sessionStorage.setItem('loggedUserIdSecondRole', "0");
+    sessionStorage.setItem('loggedUserId', "0");
+    sessionStorage.setItem('loggedUserEmail', "0");
+    $("ul li").hide();
+    window.location = "../index";
+}
+
+function showMenuOptions() {
     let role = "#role";
     let welcome = "#welcome";
     $("ul li").hide();
@@ -29,16 +46,4 @@ $(document).ready(function() {
         $("#profile").show();
         $("#logout").show();
     }
-});
-function goBack() {
-    window.history.back();
-}
-
-function logout() {
-    sessionStorage.setItem('loggedUserIdRole',"0");
-    sessionStorage.setItem('loggedUserIdSecondRole', "0");
-    sessionStorage.setItem('loggedUserId', "0");
-    sessionStorage.setItem('loggedUserEmail', "0");
-    $("ul li").hide();
-    window.location = "../index";
 }

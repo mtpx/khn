@@ -4,9 +4,9 @@ import application.model.User;
 import application.service.UserService;
 import lombok.Getter;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class CommonAPIController {
@@ -25,8 +25,8 @@ public class CommonAPIController {
     }
 
     @PostMapping(value = "/changePassword")
-    public boolean changePassword(@RequestBody ChangePasswordData changePasswordData){
-        return userService.changePassword(changePasswordData);
+    public boolean changePassword(@RequestBody Map<String,String> changePasswordDataRequest){
+        return userService.changePassword(changePasswordDataRequest);
     }
 
     @PostMapping(value = "/login")
