@@ -1,5 +1,7 @@
 $(document).ready(function() {
     $("#footer").load("/footer.html");
+    $("#footerPlaceholder").load("/footer.html");
+    $("#navigationMenuPlaceholder").load("/navigationMenu.html");
     showMenuOptions();
 });
 

@@ -10,12 +10,12 @@ function getUsers(){
         type: 'GET',
         dataType: 'json',
         success: function (data) {
-            bindtoDatatable(data);
+            bindToDatatable(data);
         }
     });
 }
 
-function bindtoDatatable(data) {
+function bindToDatatable(data) {
     table = $('#table').dataTable({
         data: data,
         paging: false,
@@ -43,20 +43,22 @@ function bindtoDatatable(data) {
 function deleteUser(id) {
     let loggedUserId = parseInt(sessionStorage.getItem('loggedUserId'),10);
     if (loggedUserId === id)
-        alert('admin cannot delete his account');
-    else {
+        alert('Admin cannot delete his account');
+    if (confirm('Delete user '+id+'?')) {
         $.ajax({
             url: 'http://localhost:8080/user/' + id,
             type: 'DELETE',
             contentType:'application/json',
             dataType: 'text',
             success: function () {
-                alert('user: ' + id + ' deleted');
+                alert('User: ' + id + ' deleted');
                 getUsers();
             },
             error: function () {
-                alert('cannot delete user: ' + id);
+                alert('Cannot delete user: ' + id);
             }
         });
+    } else {
+        //back to user list
     }
 }
