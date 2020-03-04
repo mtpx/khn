@@ -25,6 +25,11 @@ public class ViewsController {
         return "footer";
     }
 
+    @GetMapping(value ="/navigationMenu")
+    public String navigationMenu() {
+        return "navigationMenu";
+    }
+
 
 
 

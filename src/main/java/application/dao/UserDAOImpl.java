@@ -1,5 +1,8 @@
 package application.dao;
+
 import application.model.User;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.*;
@@ -21,54 +24,81 @@ public class UserDAOImpl implements UserDAO {
     @Transactional
     @Override
     public User deleteUser(User user) {
-        em.remove(user);
-        return user;
+        try {
+            em.remove(user);
+            return user;
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<User> findAll() {
-        return em.createNamedQuery(User.GET_USERS, User.class)
-                .getResultList();
+        try {
+            return em.createNamedQuery(User.GET_USERS, User.class)
+                    .getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Transactional(readOnly = true)
     @Override
     public User findUserById(int id) {
-        return em.find(User.class,id);
+        try {
+            return em.find(User.class, id);
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<User> verifyCredentials(String email, String password) {
-        return em.createNamedQuery(User.VERIFY_CREDENTIALS, User.class)
-                .setParameter("email", email)
-                .setParameter("password", password)
-                .getResultList();
+        try {
+            return em.createNamedQuery(User.VERIFY_CREDENTIALS, User.class)
+                    .setParameter("email", email)
+                    .setParameter("password", password)
+                    .getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Transactional(readOnly = true)
     @Override
     public Collection getUserRoles(int id) {
-        return  em.createNamedQuery(User.GET_USER_ROLES, Collection.class)
-                .setParameter("id", id)
-                .getResultList();
+        try {
+            return em.createNamedQuery(User.GET_USER_ROLES, Collection.class)
+                    .setParameter("id", id)
+                    .getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Transactional(readOnly = true)
     @Override
     public User getUserByEmail(String email) {
-        return em.createNamedQuery(User.GET_USER_ID_BY_EMAIL,User.class)
-                .setParameter("email",email)
-                .getSingleResult();
+        try {
+            return em.createNamedQuery(User.GET_USER_ID_BY_EMAIL, User.class)
+                    .setParameter("email", email)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     @Transactional
     @Override
-    public boolean changePassword(User user, String oldPassword, String newPassword) {
+    public User changePassword(User user, String oldPassword, String newPassword) {
+        try {
             user.setPassword(newPassword);
             em.merge(user);
-            return true;
+            return user;
+        } catch (NoResultException e) {
+            return null;
+        }
     }
-
 }

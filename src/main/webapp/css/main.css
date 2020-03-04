@@ -18,7 +18,7 @@
     padding-left: 250px;
 }
 
-#sidebar-wrapper {
+#navigationMenuPlaceholder {
     z-index: 1000;
     position: fixed;
     left: 250px;
@@ -34,7 +34,7 @@
     transition: all 0.5s ease;
 }
 
-#wrapper.toggled #sidebar-wrapper {
+#wrapper.toggled #navigationMenuPlaceholder {
     width: 250px;
 }
 
@@ -104,11 +104,11 @@
         padding-left: 0;
     }
 
-    #sidebar-wrapper {
+    #navigationMenuPlaceholder {
         width: 250px;
     }
 
-    #wrapper.toggled #sidebar-wrapper {
+    #wrapper.toggled #navigationMenuPlaceholder {
         width: 0;
     }
 

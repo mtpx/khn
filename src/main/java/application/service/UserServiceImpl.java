@@ -1,10 +1,12 @@
 package application.service;
 
-import application.controller.CommonAPIController;
+import application.ControllerExceptionHandler;
 import application.dao.UserDAO;
 import application.model.Role;
 import application.model.User;
 import org.apache.log4j.Logger;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -46,9 +48,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User deleteUser(int id) {
+    public ResponseEntity<Object> deleteUser(int id) {
         User deletedUser = userDAO.findUserById(id);
-        return userDAO.deleteUser(deletedUser);
+        if(deletedUser==null)
+            return new ResponseEntity<>("User doesnt exists", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(userDAO.deleteUser(deletedUser), HttpStatus.OK);
     }
 
     @Override
@@ -70,15 +74,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean changePassword(Map<String,String> changePasswordDataRequest){
-        String newPassword =changePasswordDataRequest.get("newPassword");
+    public ResponseEntity<Object> changePassword(Map<String,String> changePasswordDataRequest){
         User myUser = userDAO.getUserByEmail(changePasswordDataRequest.get("email"));
+        if(myUser==null)
+            return new ControllerExceptionHandler().response("User not exists", HttpStatus.BAD_REQUEST);
+
+        String newPassword =changePasswordDataRequest.get("newPassword");
         String oldPasswordFromJson = changePasswordDataRequest.get("oldPassword");
         String oldPasswordFromDb = myUser.getPassword();
-        if(oldPasswordFromDb.equals(oldPasswordFromJson))
-            return userDAO.changePassword(myUser, oldPasswordFromJson, newPassword);
+
+        if(oldPasswordFromJson.equals(newPassword))
+            return new ControllerExceptionHandler().response("New and old passwords should be different", HttpStatus.BAD_REQUEST);
+
+        if(oldPasswordFromDb.equals(oldPasswordFromJson)) {
+            userDAO.changePassword(myUser, oldPasswordFromJson, newPassword);
+            return new ControllerExceptionHandler().response(myUser, HttpStatus.OK);
+        }
         else
-            return false;
+            return new ControllerExceptionHandler().response("Invalid old password", HttpStatus.BAD_REQUEST);
     }
 
     @Override

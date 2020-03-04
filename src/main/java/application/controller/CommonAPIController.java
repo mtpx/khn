@@ -2,7 +2,7 @@ package application.controller;
 
 import application.model.User;
 import application.service.UserService;
-import lombok.Getter;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 import java.util.List;
@@ -11,13 +11,6 @@ import java.util.Map;
 @RestController
 public class CommonAPIController {
 
-    @Getter
-    public static class ChangePasswordData {
-        String email;
-        String oldPassword;
-        String newPassword;
-    }
-
     private UserService userService;
 
     public CommonAPIController(UserService userService) {
@@ -25,7 +18,7 @@ public class CommonAPIController {
     }
 
     @PostMapping(value = "/changePassword")
-    public boolean changePassword(@RequestBody Map<String,String> changePasswordDataRequest){
+    public ResponseEntity<Object> changePassword(@RequestBody Map<String,String> changePasswordDataRequest){
         return userService.changePassword(changePasswordDataRequest);
     }
 
