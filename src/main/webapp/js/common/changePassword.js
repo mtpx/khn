@@ -29,14 +29,10 @@ function changePassword(data) {
         contentType: "application/json",
         data: JSON.stringify(data),
         success: function (res) {
-            if (res === true) {
-                alert("Your password has been changed");
-            } else if (res === false) {
-                alert("Invalid old password");
-            }
+            alert(res);
         },
-        error: function () {
-            alert("Password change error")
+        error: function (res) {
+            alert(res.responseText);
         }
     })
 }

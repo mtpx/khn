@@ -1,6 +1,5 @@
 package application.service;
 
-import application.ControllerExceptionHandler;
 import application.dao.UserDAO;
 import application.model.Role;
 import application.model.User;
@@ -74,24 +73,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<Object> changePassword(Map<String,String> changePasswordDataRequest){
+    public ResponseEntity<String> changePassword(Map<String,String> changePasswordDataRequest){
         User myUser = userDAO.getUserByEmail(changePasswordDataRequest.get("email"));
         if(myUser==null)
-            return new ControllerExceptionHandler().response("User not exists", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("User not exists",HttpStatus.BAD_REQUEST);
 
         String newPassword =changePasswordDataRequest.get("newPassword");
         String oldPasswordFromJson = changePasswordDataRequest.get("oldPassword");
         String oldPasswordFromDb = myUser.getPassword();
 
         if(oldPasswordFromJson.equals(newPassword))
-            return new ControllerExceptionHandler().response("New and old passwords should be different", HttpStatus.BAD_REQUEST);
-
-        if(oldPasswordFromDb.equals(oldPasswordFromJson)) {
+            return new ResponseEntity<>("New and old passwords should be different",HttpStatus.BAD_REQUEST);
+        else if(!oldPasswordFromDb.equals(oldPasswordFromJson))
+            return new ResponseEntity<>("Invalid old password", HttpStatus.BAD_REQUEST);
+        else {
             userDAO.changePassword(myUser, oldPasswordFromJson, newPassword);
-            return new ControllerExceptionHandler().response(myUser, HttpStatus.OK);
+            return new ResponseEntity<>("Your password has been changed", HttpStatus.OK);
         }
-        else
-            return new ControllerExceptionHandler().response("Invalid old password", HttpStatus.BAD_REQUEST);
+
     }
 
     @Override

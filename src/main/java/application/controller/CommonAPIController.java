@@ -18,7 +18,7 @@ public class CommonAPIController {
     }
 
     @PostMapping(value = "/changePassword")
-    public ResponseEntity<Object> changePassword(@RequestBody Map<String,String> changePasswordDataRequest){
+    public ResponseEntity<String> changePassword(@RequestBody Map<String,String> changePasswordDataRequest){
         return userService.changePassword(changePasswordDataRequest);
     }
 

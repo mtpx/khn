@@ -8,12 +8,11 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.util.*;
 import java.util.stream.Collectors;
 
-@ControllerAdvice   //entity exception handler
+@ControllerAdvice
 public class EntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-
 
         Map<String, Object> body = new LinkedHashMap<>();
         //body.put("timestamp", new Date());

@@ -14,6 +14,6 @@ public interface UserService {
     User findById(int id);
     List<User> findAll();
     int login(User user);
-    ResponseEntity<Object> changePassword(Map<String,String> json);
+    ResponseEntity<String> changePassword(Map<String,String> json);
     Collection getRolesById(int id);
 }
