@@ -47,6 +47,7 @@ public class ViewsController {
 
 
 
+
     @GetMapping(value ="/seller/register")
     public String sellerRegister() {
         return "seller/register";
@@ -69,6 +70,11 @@ public class ViewsController {
     @GetMapping(value ="/customer/login")
     public String customerLogin() {
         return "customer/login";
+    }
+
+    @GetMapping(value ="/customer/auctions")
+    public String customerAuctions() {
+        return "customer/auctions";
     }
 
 
