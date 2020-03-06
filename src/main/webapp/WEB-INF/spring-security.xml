@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans
+        xmlns="http://www.springframework.org/schema/security"
+        xmlns:beans="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+                    http://www.springframework.org/schema/beans/spring-beans-5.2.xsd
+                    http://www.springframework.org/schema/security
+                    http://www.springframework.org/schema/security/spring-security-5.2.xsd">
+
+    <!-- enable use-expressions -->
+    <http auto-config="true">
+        <intercept-url pattern="/admin**"
+                       access="hasRole('admin')" />
+
+        <!-- user-defined login form redirection -->
+        <form-login login-page="/login" default-target-url="/"
+                    authentication-failure-url="/login?error" />
+
+        <!-- logout url -->
+        <logout logout-success-url="/login?logout" />
+
+        <!-- csrf disabled -->
+        <csrf disabled="true" />
+    </http>
+
+    <!-- Select users and user_roles from database -->
+    <authentication-manager>
+        <authentication-provider>
+            <jdbc-user-service data-source-ref="dataSource"
+                               users-by-username-query=
+                                       "select email,password from users where email=?"
+                               authorities-by-username-query=
+                                       "select u.email, r.name from users u, role r, user_roles ur where u.id = ur.user_id and ur.roles_id = r.id and u.email =?" />
+        </authentication-provider>
+    </authentication-manager>
+</beans:beans>
