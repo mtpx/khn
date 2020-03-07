@@ -4,6 +4,7 @@ import application.model.User;
 import application.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -23,8 +24,7 @@ public class CommonAPIController {
     }
 
     @PostMapping(value = "/login")
-    public int login(@RequestBody User user){
-        return userService.login(user);
+    public void login(@RequestBody User user){
     }
 
     @GetMapping(value = "/user")

@@ -53,7 +53,7 @@ public class ViewsController {
         return "seller/register";
     }
 
-    @GetMapping(value ="/seller/login")
+    @GetMapping(value ="/login")
     public String sellerLogin() {
         return "seller/login";
     }

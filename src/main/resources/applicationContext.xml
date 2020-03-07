@@ -12,6 +12,7 @@
     <context:annotation-config />
     <mvc:annotation-driven />
     <tx:annotation-driven transaction-manager="transactionManager1"/>
+    <import resource="classpath:spring-security.xml" />
 
     <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
 

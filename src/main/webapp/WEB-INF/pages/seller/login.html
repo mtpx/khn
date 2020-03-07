@@ -22,8 +22,28 @@
 
     <label class="col-md-4 control-label"></label>
     <div class="col-md-4">
-        <input type="button" value="Login" id="loginBtn" onclick="prepareloginData()" class="btn btn-info btn-block">
+        <input type="button" value="Login" id="loginBtn"  class="btn btn-info btn-block">
+<!--        onclick="prepareloginData()"-->
     </div>
+
+    <form name="loginform" action="/loginProcessing" method="POST">
+        <table>
+            <tr>
+                <td>Enter username:</td>
+                <td><input type='text' name='username' value=''></td>
+            </tr>
+            <tr>
+                <td>Enter password:</td>
+                <td><input type='password' name='password' /></td>
+            </tr>
+            <tr>
+                <td colspan="2"> </td>
+            </tr>
+            <tr>
+                <td colspan='2'><input name="submit" type="submit" value="Submit" /></td>
+            </tr>
+        </table>
+    </form>
 
     <label class="col-md-4 control-label"></label>
     <div class="col-md-4">
