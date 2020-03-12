@@ -44,7 +44,7 @@ function deleteUser(id) {
     let loggedUserId = parseInt(sessionStorage.getItem('loggedUserId'),10);
     if (loggedUserId === id)
         alert('Admin cannot delete his account');
-    if (confirm('Delete user '+id+'?')) {
+    else if (confirm('Delete user '+id+'?')) {
         $.ajax({
             url: 'http://localhost:8080/user/' + id,
             type: 'DELETE',

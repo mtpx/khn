@@ -1,11 +1,13 @@
 package application.dao;
 
 import application.model.User;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import javax.persistence.*;
+
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import java.util.Collection;
 import java.util.List;
 
@@ -72,6 +74,17 @@ public class UserDAOImpl implements UserDAO {
         try {
             return em.createNamedQuery(User.GET_USER_ROLES, Collection.class)
                     .setParameter("id", id)
+                    .getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public Collection getUserRolesByEmail(String email) {
+        try {
+            return em.createNamedQuery(User.GET_USER_ROLES_BY_EMAIL, Collection.class)
+                    .setParameter("email", email)
                     .getResultList();
         } catch (NoResultException e) {
             return null;

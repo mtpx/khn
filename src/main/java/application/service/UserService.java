@@ -2,7 +2,6 @@ package application.service;
 
 import application.model.User;
 import org.springframework.http.ResponseEntity;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -16,4 +15,6 @@ public interface UserService {
     int login(User user);
     ResponseEntity<String> changePassword(Map<String,String> json);
     Collection getRolesById(int id);
+    Collection getRolesByEmail(String email);
+    User getUserByEmail(String email);
 }

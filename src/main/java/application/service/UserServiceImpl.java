@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+
 public class UserServiceImpl implements UserService {
     final static Logger LOGGER = Logger.getLogger(UserServiceImpl.class.getName());
 
@@ -96,6 +97,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public Collection getRolesById(int id) {
         return userDAO.getUserRoles(id);
+    }
+
+    @Override
+    public Collection getRolesByEmail(String email) {
+        return userDAO.getUserRolesByEmail(email);
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        return userDAO.getUserByEmail(email);
     }
 
 

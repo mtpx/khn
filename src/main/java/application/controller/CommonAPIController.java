@@ -3,6 +3,9 @@ package application.controller;
 import application.model.User;
 import application.service.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -27,6 +30,7 @@ public class CommonAPIController {
     public void login(@RequestBody User user){
     }
 
+
     @GetMapping(value = "/user")
     public List<User> getUsers(){
         return userService.findAll();
@@ -42,9 +46,40 @@ public class CommonAPIController {
         return userService.getRolesById(id);
     }
 
+    @GetMapping(value = "/user/role/email/{email}")
+    public Collection getRolesByEmail(@PathVariable String email){
+        return userService.getRolesByEmail(email);
+    }
+
     @DeleteMapping(value = "/user/{id}")
     public void deleteUser(@PathVariable int id){
         userService.deleteUser(id);
+    }
+
+    @GetMapping(value = "/user/email/{email}")
+    public User getUserByEmail(@PathVariable String email){
+        return userService.getUserByEmail(email);
+    }
+
+
+    //spring security
+
+    @GetMapping(value = "/user/getSecuredUserName")
+    public String getSecuredUserName(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getName();
+    }
+
+    @GetMapping(value = "/user/getSecuredUserAuthorities")
+    public Collection<? extends GrantedAuthority> getSecuredUserRoles(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getAuthorities();
+    }
+
+    @GetMapping(value = "/user/getSecuredUserPrincipal")
+    public Object getSecuredUserPrincipal(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getPrincipal();
     }
 
 

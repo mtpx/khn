@@ -12,6 +12,7 @@ public interface UserDAO {
     User findUserById(int id);
     List<User> verifyCredentials(String email, String password);
     Collection getUserRoles(int userId);
+    Collection getUserRolesByEmail(String email);
     User getUserByEmail(String email);
     User changePassword(User user, String oldPassword, String newPassword);
 }
