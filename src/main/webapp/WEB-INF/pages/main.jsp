@@ -23,12 +23,14 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h1><label id="welcome"></label></h1>
-                    <h1><label id="welcomeSecured"></label>
+                    <h1><label id="welcomeSecured"></label></h1>
                     <h1>
                     <sec:authorize access="isAuthenticated()">
-                        Hello security jsp taglibs: <sec:authentication property="name"/>
+                        Name from security jsp taglibs: <sec:authentication property="name"/>
                     </sec:authorize>
                     </h1>
+                    <h1>Roles from model attribute: ${roles}</h1>
+                    <h1>Name from model attribute: ${email}</h1>
                 </div>
             </div>
         </div>

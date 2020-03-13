@@ -1,5 +1,6 @@
 package application.controller;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +20,8 @@ public class ViewsController {
 
     @GetMapping(value ="/main")
     public String main(Model model) {
-       // model.addAttribute("email",SecurityContextHolder.getContext().getAuthentication().getName());
+        model.addAttribute("email", SecurityContextHolder.getContext().getAuthentication().getName());
+        model.addAttribute("roles", SecurityContextHolder.getContext().getAuthentication().getAuthorities());
         return "main.jsp";
     }
 
