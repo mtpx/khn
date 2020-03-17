@@ -2,6 +2,7 @@ package application.controller;
 
 import application.model.User;
 import application.service.UserService;
+import io.swagger.annotations.ApiImplicitParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -36,26 +37,32 @@ public class CommonAPIController {
         return userService.findAll();
     }
 
+
+    @ApiImplicitParam(name = "id", value = "User id", required = true, dataType = "int", paramType = "path", defaultValue="1")
     @GetMapping(value = "/user/{id}")
     public User getUser(@PathVariable int id){
         return userService.findById(id);
     }
 
+    @ApiImplicitParam(name = "id", value = "User id", required = true, dataType = "int", paramType = "path", defaultValue="1")
     @GetMapping(value = "/user/role/{id}")
     public Collection getRoles(@PathVariable int id){
         return userService.getRolesById(id);
     }
 
+    @ApiImplicitParam(name = "email", value = "User email", required = true, dataType = "String", paramType = "path", defaultValue="email@email.com")
     @GetMapping(value = "/user/role/email/{email}")
     public Collection getRolesByEmail(@PathVariable String email){
         return userService.getRolesByEmail(email);
     }
 
+    @ApiImplicitParam(name = "id", value = "User id", required = true, dataType = "int", paramType = "path", defaultValue="1")
     @DeleteMapping(value = "/user/{id}")
     public void deleteUser(@PathVariable int id){
         userService.deleteUser(id);
     }
 
+    @ApiImplicitParam(name = "email", value = "User email", required = true, dataType = "String", paramType = "path", defaultValue="email@email.com")
     @GetMapping(value = "/user/email/{email}")
     public User getUserByEmail(@PathVariable String email){
         return userService.getUserByEmail(email);
