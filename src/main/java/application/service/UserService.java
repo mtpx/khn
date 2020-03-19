@@ -1,10 +1,10 @@
 package application.service;
 
 import application.model.User;
+import application.model.UserChangePassword;
 import org.springframework.http.ResponseEntity;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 public interface UserService {
     User addCustomer(User user);
@@ -12,9 +12,6 @@ public interface UserService {
     ResponseEntity<Object> deleteUser (int id);
     User findById(int id);
     List<User> findAll();
-    int login(User user);
-    ResponseEntity<String> changePassword(Map<String,String> json);
-    Collection getRolesById(int id);
-    Collection getRolesByEmail(String email);
+    ResponseEntity<String> changePassword(UserChangePassword userChangePassword);
     User getUserByEmail(String email);
 }

@@ -16,12 +16,12 @@ function validateLoginFields(){
 
 function validateUserRoles(email) {
     $.ajax({
-        url: "http://localhost:8080/user/role/email/" + email,
+        url: "http://localhost:8080/user/email/" + email,
         type: "GET",
-        success: function (resultRole) {
-            if (resultRole.length === 0)
+        success: function (resultUser) {
+            if (resultUser.roles.length === 0)
                 alert("Login error - user without role/user not exists");
-            else if (resultRole[0].name === "admin" || window.location.pathname.toString().includes(resultRole[0].name)) {
+            else if (resultUser.roles[0].name === "admin" || window.location.pathname.toString().includes(resultUser.roles[0].name)) {
                 let loginData = $('form').serialize();
                 loginSecured(loginData);
             } else

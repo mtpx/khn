@@ -1,25 +1,7 @@
 $(document).ready(function() {
-    // getRolesByEmail(sessionStorage.getItem("loggedUserEmail"));
-    getSecuredUserName();
     $("#footerPlaceholder").load("/footer.html");
     $("#navigationMenuPlaceholder").load("/navigationMenu.html");
 });
-
-function getSecuredUserName() {
-    let name;
-    $.ajax({
-        url: "http://localhost:8080/user/getSecuredUserName",
-        type: "GET",
-        contentType: "application/json",
-        success: function (result) {
-            console.log('secured user name: '+result);
-            //sessionStorage.setItem('loggedUserEmail', result);
-            //getRolesByEmail(result)
-            name=result;
-        },
-    });
-    return name;
-}
 
 function goBack() {
     window.history.back();

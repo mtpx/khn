@@ -23,7 +23,6 @@
             <div class="row">
                 <div class="col-lg-12">
                     <h1><label id="welcome"></label></h1>
-                    <h1><label id="welcomeSecured"></label></h1>
                     <h1>
                     <sec:authorize access="isAuthenticated()">
                         Name from security jsp taglibs: <sec:authentication property="name"/>
