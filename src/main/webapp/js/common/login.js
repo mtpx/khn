@@ -16,7 +16,7 @@ function validateLoginFields(){
 
 function validateUserRoles(email) {
     $.ajax({
-        url: "http://localhost:8080/user/email/" + email,
+        url: "http://localhost:8080/user/email/" + encodeURIComponent(email),
         type: "GET",
         success: function (resultUser) {
             if (resultUser.roles.length === 0)

@@ -10,9 +10,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.List;
 
-@Api(value = "KHN common API controller")
+@Api(value = "KHN user API controller")
 @RestController
 public class APIUserController {
 
@@ -42,7 +45,7 @@ public class APIUserController {
         return userService.changePassword(userChangePassword);
     }
 
-
+    @ApiOperation(value = "Get all users", response = User.class)
     @GetMapping(value = "/user")
     public List<User> getUsers(){
         return userService.findAll();
@@ -55,7 +58,7 @@ public class APIUserController {
         return userService.findById(id);
     }
 
-    @ApiOperation(value = "Get user data by id", response = User.class)
+    @ApiOperation(value = "Get user data by id")
     @ApiImplicitParam(name = "id", value = "User id", required = true, dataType = "int", paramType = "path", defaultValue="1")
     @DeleteMapping(value = "/user/{id}")
     public void deleteUser(@PathVariable int id){
@@ -64,7 +67,7 @@ public class APIUserController {
 
     @ApiOperation(value = "Get user data by email", response = Iterable.class)
     @ApiImplicitParam(name = "email", value = "User email", required = true, dataType = "String", paramType = "path", defaultValue="email@email.com")
-    @GetMapping(value = "/user/email/{email}")
+    @GetMapping(value = "/user/email/{email:.+}")
     public User getUserByEmail(@PathVariable String email){
         return userService.getUserByEmail(email);
     }
