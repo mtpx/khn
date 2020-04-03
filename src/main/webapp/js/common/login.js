@@ -18,7 +18,7 @@ function validateUserRoles(email, loginPageType) {
     //loginPageType - parametr przechowujacy informacje z której strony logowania został wysłany request (seller/customer)
     //służy do weryfikacji czy użytkownik z właściwą rolą loguje się przez właściwą stronę do logowania
     $.ajax({
-            url: "http://localhost:8080/user/email/" + encodeURIComponent(email),
+            url: "http://localhost:8080/user/email/" + encodeURIComponent(email)+"/",
             type: "GET",
             success: function (resultUser) {
                 let rolesArray = [];
@@ -73,7 +73,7 @@ function loginSecured(data) {
 
 function getRolesByEmail(email) {
     $.ajax({
-        url: "http://localhost:8080/user/email/" + email,
+        url: "http://localhost:8080/user/email/"+email+"/",
         type: "GET",
         contentType: "application/json",
         success: function (result) {

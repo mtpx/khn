@@ -69,7 +69,7 @@ public class APIUserController {
 
     @ApiOperation(value = "Get user by email", response = User.class)
     @ApiImplicitParam(name = "email", value = "User email", required = true, dataType = "String", paramType = "path", defaultValue="email@email.com")
-    @GetMapping(value = "/user/email/{email:.+}")
+    @GetMapping(value = "/user/email/{email:.+}/")
     public ResponseEntity<Object> getUserByEmail(@PathVariable String email){
         return userService.getUserByEmail(email);
     }
