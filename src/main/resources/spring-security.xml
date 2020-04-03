@@ -45,6 +45,8 @@
         <csrf disabled="true" />
     </http>
 
+
+
     <authentication-manager>
         <authentication-provider>
             <jdbc-user-service data-source-ref="dataSource"

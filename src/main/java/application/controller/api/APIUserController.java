@@ -2,17 +2,12 @@ package application.controller.api;
 
 import application.model.User;
 import application.model.UserChangePassword;
+import application.model.UserRegister;
 import application.service.UserService;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.List;
 
 @Api(value = "KHN user API controller")
@@ -29,20 +24,27 @@ public class APIUserController {
 
     @ApiOperation(value = "Registering seller", response = User.class)
     @PostMapping(value = "/seller/register")
-    public User addSeller(@RequestBody @Valid User user){
-        return userService.addSeller(user);
+    public ResponseEntity<Object> addSeller(@RequestBody @Valid UserRegister userRegister){
+        return userService.addUser(userRegister, "seller");
     }
 
     @ApiOperation(value = "Registering customer", response = User.class)
     @PostMapping(value = "/customer/register")
-    public User addCustomer(@RequestBody @Valid User user){
-        return userService.addCustomer(user);
+    public ResponseEntity<Object> addCustomer(@RequestBody @Valid UserRegister userRegister){
+        return userService.addUser(userRegister, "customer");
     }
 
     @ApiOperation(value = "Change password")
     @PostMapping(value = "/changePassword")
     public ResponseEntity<String> changePassword(@RequestBody UserChangePassword userChangePassword) {
         return userService.changePassword(userChangePassword);
+    }
+
+    @ApiOperation(value = "Edit user data")
+    @ApiImplicitParam(name = "id", value = "User id", required = true, dataType = "int", paramType = "path", defaultValue="1")
+    @PostMapping(value = "user/{id}")
+    public ResponseEntity<Object> editUserData(@PathVariable int id,@RequestBody UserRegister userRegister) {
+        return userService.editUserData(userRegister,id);
     }
 
     @ApiOperation(value = "Get all users", response = User.class)
@@ -58,18 +60,25 @@ public class APIUserController {
         return userService.findById(id);
     }
 
-    @ApiOperation(value = "Get user data by id")
+    @ApiOperation(value = "Delete user")
     @ApiImplicitParam(name = "id", value = "User id", required = true, dataType = "int", paramType = "path", defaultValue="1")
     @DeleteMapping(value = "/user/{id}")
     public void deleteUser(@PathVariable int id){
         userService.deleteUser(id);
     }
 
-    @ApiOperation(value = "Get user data by email", response = Iterable.class)
+    @ApiOperation(value = "Get user by email", response = User.class)
     @ApiImplicitParam(name = "email", value = "User email", required = true, dataType = "String", paramType = "path", defaultValue="email@email.com")
     @GetMapping(value = "/user/email/{email:.+}")
-    public User getUserByEmail(@PathVariable String email){
+    public ResponseEntity<Object> getUserByEmail(@PathVariable String email){
         return userService.getUserByEmail(email);
+    }
+
+    @ApiOperation(value = "Get user by email", response = Iterable.class)
+    @ApiImplicitParam(name = "email", value = "User email", required = true, dataType = "String", paramType = "path", defaultValue="email@email.com")
+    @PostMapping(value = "/user/becomeCustomer/{id}")
+    public ResponseEntity<Object> getUserByEmail(@PathVariable int id){
+        return userService.addCustomerRoleToSeller(id);
     }
 
 

@@ -14,7 +14,7 @@ function logout() {
         contentType: "application/json",
     });
     sessionStorage.setItem('loggedUserRole',"0");
-    sessionStorage.setItem('loggedUserSecondRole', "0");
+    sessionStorage.setItem('loggedUserRole2', "0");
     sessionStorage.setItem('loggedUserId', "0");
     sessionStorage.setItem('loggedUserEmail', "0");
     $("ul li").hide();

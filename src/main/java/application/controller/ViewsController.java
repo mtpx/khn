@@ -30,11 +30,6 @@ public class ViewsController {
         return "footer.html";
     }
 
-    @GetMapping(value ="/profile")
-    public String profile() {
-        return "profile.html";
-    }
-
     @GetMapping(value ="/navigationMenu")
     public String navigationMenu() {
         return "navigationMenu.html";
@@ -43,6 +38,12 @@ public class ViewsController {
     @GetMapping(value ="/auctions")
     public String auctions() {
         return "auctions.html";
+    }
+
+    @GetMapping(value ="/profile")
+    public String sellerProfile(Model model) {
+        model.addAttribute("userName", SecurityContextHolder.getContext().getAuthentication().getName());
+        return "profile.jsp";
     }
 
 
@@ -57,7 +58,6 @@ public class ViewsController {
     public String adminUsers2() {
         return "admin/users2.html";
     }
-
 
 
 
@@ -85,7 +85,6 @@ public class ViewsController {
 
 
 
-
     @GetMapping(value ="/customer/register")
     public String customerRegister() {
         return "customer/register.html";
@@ -105,8 +104,4 @@ public class ViewsController {
     public String buyings() {
         return "customer/buyings.html";
     }
-
-
-
-
 }

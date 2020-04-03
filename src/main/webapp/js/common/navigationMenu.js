@@ -1,6 +1,7 @@
-let welcome = "#welcome";
-let role = "#role";
+let welcome,role;
 $(document).ready(function() {
+   welcome = "#welcome";
+   role = "#role";
    showLoggedUser();
    renderMenu();
 });
@@ -8,24 +9,26 @@ function showLoggedUser(){
    $(welcome).show().append('hello session storage ' + sessionStorage.getItem('loggedUserEmail'));
 }
 function renderMenu(){
+   //wyświetlanie opcji w menu w zależności od posiadanych ról
    $("ul li").hide();
    $(role).append('');
    $("#logout").show();
-   if (sessionStorage.getItem('loggedUserRole') === "1") {
+   if (sessionStorage.getItem('loggedUserRole') === "1" || sessionStorage.getItem('loggedUserRole2') === "1") {
       $(role).show();
-      $(role).append('Administration');
+      $(role).append('Administrator ');
       $("#users").show();
-      $("#profile").show();
-   } else if (sessionStorage.getItem('loggedUserRole') === "2") {
+   }
+   if (sessionStorage.getItem('loggedUserRole') === "2" || sessionStorage.getItem('loggedUserRole2') === "2") {
       $(role).show();
-      $(role).append('Seller');
+      $(role).append('Seller ');
       $("#auctions").show();
       $("#sales").show();
       $("#addProperty").show();
       $("#profile").show();
-   } else if (sessionStorage.getItem('loggedUserRole') === "3") {
+   }
+   if (sessionStorage.getItem('loggedUserRole') === "3" || sessionStorage.getItem('loggedUserRole2') === "3") {
       $(role).show();
-      $(role).append('Customer');
+      $(role).append('Customer ');
       $("#auctions").show();
       $("#buyings").show();
       $("#credits").show();
