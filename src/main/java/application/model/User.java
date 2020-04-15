@@ -1,5 +1,6 @@
 package application.model;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.List;
@@ -10,7 +11,9 @@ import java.util.List;
         @NamedQuery(name = User.GET_USER_ID_BY_EMAIL, query = User.QUERY_GET_USER_ID_BY_EMAIL),
 })
 
-@Data
+//@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "users")
 
@@ -39,7 +42,7 @@ public class User {
     @Column(name="lastname",nullable = false)
     private String lastname;
 
-    //@Email(message = "Provide valid email")
+    @Email(message = "Provide valid email")
     @NotEmpty(message="Provide email")
     @Column(name="email",unique = true,nullable = false)
     private String email;
@@ -52,6 +55,8 @@ public class User {
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name="user_roles")
     private List<Role> roles;
+
+
 }
 
 // dodawanie ról i admina

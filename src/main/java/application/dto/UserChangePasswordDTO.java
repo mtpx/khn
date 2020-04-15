@@ -1,9 +1,9 @@
-package application.model;
+package application.dto;
 
 import lombok.Data;
 
 @Data
-public class UserChangePassword {
+public class UserChangePasswordDTO {
     private String email;
     private String newPassword;
     private String oldPassword;

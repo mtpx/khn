@@ -1,8 +1,8 @@
 package application.controller.api;
 
 import application.model.User;
-import application.model.UserChangePassword;
-import application.model.UserRegister;
+import application.dto.UserChangePasswordDTO;
+import application.dto.UserRegisterDTO;
 import application.service.UserService;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -24,27 +24,27 @@ public class APIUserController {
 
     @ApiOperation(value = "Registering seller", response = User.class)
     @PostMapping(value = "/seller/register")
-    public ResponseEntity<Object> addSeller(@RequestBody @Valid UserRegister userRegister){
-        return userService.addUser(userRegister, "seller");
+    public ResponseEntity<Object> addSeller(@RequestBody @Valid UserRegisterDTO userRegisterDTO){
+        return userService.addUser(userRegisterDTO, "seller");
     }
 
     @ApiOperation(value = "Registering customer", response = User.class)
     @PostMapping(value = "/customer/register")
-    public ResponseEntity<Object> addCustomer(@RequestBody @Valid UserRegister userRegister){
-        return userService.addUser(userRegister, "customer");
+    public ResponseEntity<Object> addCustomer(@RequestBody @Valid UserRegisterDTO userRegisterDTO){
+        return userService.addUser(userRegisterDTO, "customer");
     }
 
     @ApiOperation(value = "Change password")
     @PostMapping(value = "/changePassword")
-    public ResponseEntity<String> changePassword(@RequestBody UserChangePassword userChangePassword) {
-        return userService.changePassword(userChangePassword);
+    public ResponseEntity<String> changePassword(@RequestBody UserChangePasswordDTO userChangePasswordDTO) {
+        return userService.changePassword(userChangePasswordDTO);
     }
 
     @ApiOperation(value = "Edit user data")
     @ApiImplicitParam(name = "id", value = "User id", required = true, dataType = "int", paramType = "path", defaultValue="1")
     @PostMapping(value = "user/{id}")
-    public ResponseEntity<Object> editUserData(@PathVariable int id,@RequestBody UserRegister userRegister) {
-        return userService.editUserData(userRegister,id);
+    public ResponseEntity<Object> editUserData(@PathVariable int id,@RequestBody UserRegisterDTO userRegisterDTO) {
+        return userService.editUserData(userRegisterDTO,id);
     }
 
     @ApiOperation(value = "Get all users", response = User.class)

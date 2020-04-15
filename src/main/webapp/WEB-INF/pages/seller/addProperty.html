@@ -5,6 +5,7 @@
     <script src="/js/jquery-3.4.1.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/js/common/main.js"></script>
+    <script type="text/javascript" src="/js/seller/addProperty.js"></script>
 
     <title>Add Property</title>
 
@@ -19,7 +20,83 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1><label id="welcome"></label></h1>
+                    <h3>Add property</h3>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="propertyRadio" id="houseRadio"
+                               value="option1" checked>
+                        <label class="form-check-label" for="houseRadio">
+                            House
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="propertyRadio" id="flatRadio"
+                               value="option2">
+                        <label class="form-check-label" for="flatRadio">
+                            Flat
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="propertyRadio" id="plotRadio"
+                               value="option2">
+                        <label class="form-check-label" for="plotRadio">
+                            Plot
+                        </label>
+                    </div>
+
+                    <div class="col-md-4">
+                        <input id="streetInput" name="streetInput" type="text" placeholder="Street"
+                               class="form-control input-md" required="">
+
+                        <div class="row">
+                            <div class="col">
+                                <input id="houseNumberInput" name="houseNumberInput" type="text" placeholder="House no"
+                                       class="form-control input-md" required="">
+                            </div>
+                            <div class="col">
+                                <input id="localNumberInput" name="localNumberInput" type="text" placeholder="Local no"
+                                       class="form-control input-md" required="">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col">
+                                <input id="postCodeInput" name="postCodeInput" type="text" placeholder="00-000"
+                                       class="form-control input-md" required="">
+                            </div>
+                            <div class="col">
+                                <input id="cityInput" name="cityInput" type="text" placeholder="city"
+                                       class="form-control input-md" required="">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col">
+                                <input id="priceInput" name="priceInput" type="text" placeholder="price"
+                                       class="form-control input-md" required="">
+                            </div>
+                            <div class="col">
+                                <input id="areaInput" name="areaInput" type="text" placeholder="area"
+                                       class="form-control input-md" required="">
+                            </div>
+                        </div>
+
+                        <input id="typeInput" name="typeInput" type="text" placeholder="plot type"
+                               class="form-control input-md" required="">
+
+                        <div class="row">
+                            <div class="col">
+                                <input id="roomsInput" name="roomsInput" type="text" placeholder="rooms no"
+                                       class="form-control input-md" required="">
+                            </div>
+                            <div class="col">
+                                <input id="floorInput" name="floorInput" type="text" placeholder="floors no"
+                                       class="form-control input-md" required="">
+                            </div>
+                        </div>
+                        <br>
+                        <input type="button" value="submitBtn" id="submitBtn" onclick="preparePropertyData()" class="btn btn-info btn-block">
+                    </div>
                 </div>
             </div>
         </div>

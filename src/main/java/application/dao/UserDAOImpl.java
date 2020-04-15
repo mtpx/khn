@@ -17,13 +17,13 @@ public class UserDAOImpl implements UserDAO {
 
     @Transactional
     @Override
-    public User addUser(User user) {
+    public User save(User user) {
         return em.merge(user);
     }
 
     @Transactional
     @Override
-    public User deleteUser(User user) {
+    public User delete(User user) {
         try {
             em.remove(user);
             return user;
@@ -45,7 +45,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Transactional(readOnly = true)
     @Override
-    public User findUserById(int id) {
+    public User findById(int id) {
         try {
             return em.find(User.class, id);
         } catch (NoResultException e) {
@@ -55,7 +55,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Transactional(readOnly = true)
     @Override
-    public User getUserByEmail(String email) {
+    public User findByEmail(String email) {
         try {
             return em.createNamedQuery(User.GET_USER_ID_BY_EMAIL, User.class)
                     .setParameter("email", email)

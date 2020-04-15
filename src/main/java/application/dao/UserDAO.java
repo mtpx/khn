@@ -4,10 +4,10 @@ import application.model.User;
 import java.util.List;
 
 public interface UserDAO {
-    User addUser(User user);
-    User deleteUser(User user);
+    User save(User user);
+    User delete(User user);
     List<User> findAll();
-    User findUserById(int id);
-    User getUserByEmail(String email);
+    User findById(int id);
+    User findByEmail(String email);
     User changePassword(User user, String oldPassword, String newPassword);
 }

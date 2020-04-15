@@ -1,9 +1,9 @@
-package application.model;
+package application.dto;
 
 import lombok.Data;
 
 @Data
-public class UserRegister {
+public class UserRegisterDTO {
     private String email;
     private String firstname;
     private String lastname;
