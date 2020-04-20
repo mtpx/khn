@@ -1,11 +1,7 @@
 package application.model;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import java.util.List;
 
 @NamedQueries({
         //@NamedQuery(name = Flat.GET_FLAT, query = Flat.QUERY_GET_USERS),

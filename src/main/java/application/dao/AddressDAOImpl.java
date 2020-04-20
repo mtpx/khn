@@ -1,13 +1,13 @@
 package application.dao;
 
 import application.model.Address;
-import application.model.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
+import java.util.List;
 
 @Repository
 public class AddressDAOImpl implements AddressDAO {
@@ -25,6 +25,21 @@ public class AddressDAOImpl implements AddressDAO {
     public Address findById(int id) {
         try {
             return em.find(Address.class, id);
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public List<Address> verifyAddress(Address address) {
+        try {
+            return em.createNamedQuery(Address.VERIFY_ADDRESS, Address.class)
+                    .setParameter("street", address.getStreet())
+                    .setParameter("homeNumber", address.getHomeNumber())
+                    .setParameter("localNumber", address.getLocalNumber())
+                    .setParameter("postCode", address.getPostCode())
+                    .setParameter("city", address.getCity())
+                    .getResultList();
         } catch (NoResultException e) {
             return null;
         }

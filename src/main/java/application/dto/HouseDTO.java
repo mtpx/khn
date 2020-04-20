@@ -10,7 +10,6 @@ public class HouseDTO {
     private int localNumber;
     private String postCode;
 
-    private int realAssetId;
     private int userId;
 
     private int size;

@@ -1,6 +1,6 @@
 let floorInput, roomsInput, typeInput, areaInput, priceInput, streetInput, houseNumberInput, localNumberInput, postCodeInput, cityInput;
 let houseRadioBtn, flatRadioBtn, plotRadioBtn, allRadioBtns;
-let realAssetId, requestUrlSuffix;
+let realAssetId, requestUrlSuffix="house";
 $(document).ready(function () {
     floorInput = $('#floorInput');
     roomsInput = $('#roomsInput');
@@ -66,6 +66,17 @@ function preparePropertyData(){
         };
     submitProperty(propertyData);
 }
+
+function submitPropertyConfirmation() {
+    if (confirm('Add Property?')) {
+        preparePropertyData();
+        console.log('Thing was saved to the database.');
+    } else {
+        // Do nothing!
+        console.log('Thing was not saved to the database.');
+    }
+}
+
 function submitProperty(propertyData) {
     $.ajax({
         url: "http://localhost:8080/property/"+requestUrlSuffix,

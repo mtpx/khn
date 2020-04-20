@@ -3,10 +3,7 @@ package application.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Data
@@ -21,21 +18,21 @@ public class UserRealAssets {
     @Column(name = "id")
     public int id;
 
-    @Column
-    @NotNull
-    public int idUser;
+    @ManyToOne
+    @JoinColumn(name = "userId", nullable = false)
+    private User user;
 
-    @Column
-    @NotNull
-    public int idHouse;
+    @ManyToOne
+    @JoinColumn(name = "houseId", nullable = false)
+    private House house;
 
-    @Column
-    @NotNull
-    public int idFlat;
+    @ManyToOne
+    @JoinColumn(name = "flatId", nullable = false)
+    private Flat flat;
 
-    @Column
-    @NotNull
-    public int idPlot;
+    @ManyToOne
+    @JoinColumn(name = "plotId", nullable = false)
+    private Plot plot;
 
 }
 

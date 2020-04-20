@@ -25,11 +25,11 @@ function bindToDatatable(data) {
         columns: [{
             data: "id"
         }, {
-            data: "firstname"
+            data: "city"
         }, {
-            data: "lastname"
+            data: "price"
         }, {
-            data: "email"
+            data: "area"
         }, {
             sortable: false,
             "render": function ( data, type, full, meta ) {

@@ -3,8 +3,11 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/main.css">
     <script src="/js/jquery-3.4.1.min.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/js/common/main.js"></script>
+    <script type="text/javascript" src="/js/common/auctions.js"></script>
+
 
     <title>Auctions</title>
 
@@ -19,7 +22,16 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1><label id="welcome"></label></h1>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Property type
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <button class="dropdown-item" id="flatsBtn" onclick="showFlats()" type="button">Flats</button>
+                            <button class="dropdown-item" id="plotsBtn" onclick="showPlots()" type="button">Plots</button>
+                            <button class="dropdown-item" id="housesBtn" onclick="showHouses()" type="button">Houses</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

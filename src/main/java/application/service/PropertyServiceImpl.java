@@ -11,20 +11,24 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 
 public class PropertyServiceImpl implements PropertyService {
     final static Logger LOGGER = Logger.getLogger(PropertyServiceImpl.class.getName());
 
     private final AddressDAO addressDAO;
+    private final AuctionViewDAO auctionViewDAO;
     private final FlatDAO flatDAO;
     private final HouseDAO houseDAO;
     private final PlotDAO plotDAO;
     private final UserDAO userDAO;
 
 
-    public PropertyServiceImpl(AddressDAO addressDAO,FlatDAO flatDAO, HouseDAO houseDAO, PlotDAO plotDAO, UserDAO userDAO) {
+    public PropertyServiceImpl(AddressDAO addressDAO, AuctionViewDAO auctionViewDAO, FlatDAO flatDAO, HouseDAO houseDAO, PlotDAO plotDAO, UserDAO userDAO) {
         this.addressDAO = addressDAO;
+        this.auctionViewDAO = auctionViewDAO;
         this.flatDAO = flatDAO;
         this.houseDAO = houseDAO;
         this.plotDAO = plotDAO;
@@ -41,16 +45,19 @@ public class PropertyServiceImpl implements PropertyService {
         address.setPostCode(flatDTO.getPostCode());
         address.setStreet(flatDTO.getStreet());
         address.setRealAssets(new RealAssets(1,"flat"));
-        User user = userDAO.findById(flatDTO.getUserId());
-
-        Flat flat = new Flat();
-        flat.setFloor(flatDTO.getFloor());
-        flat.setAddress(address);
-        flat.setUser(user);
-        flat.setSize(flatDTO.getSize());
-        flat.setPrice(flatDTO.getPrice());
-        flat.setRooms(flatDTO.getRooms());
-        return new ResponseEntity<>(flatDAO.save(flat), HttpStatus.CREATED);
+        if(addressDAO.verifyAddress(address).size()!=0) //jeśli w bazie istnieje podany adres nie możemy dodać mieszkania
+            return new ResponseEntity<>("property at this address exists", HttpStatus.BAD_REQUEST);
+        else {
+            User user = userDAO.findById(flatDTO.getUserId());
+            Flat flat = new Flat();
+            flat.setFloor(flatDTO.getFloor());
+            flat.setAddress(address);
+            flat.setUser(user);
+            flat.setSize(flatDTO.getSize());
+            flat.setPrice(flatDTO.getPrice());
+            flat.setRooms(flatDTO.getRooms());
+            return new ResponseEntity<>(flatDAO.save(flat), HttpStatus.CREATED);
+        }
     }
 
     @Override
@@ -61,10 +68,16 @@ public class PropertyServiceImpl implements PropertyService {
         address.setLocalNumber(houseDTO.getLocalNumber());
         address.setPostCode(houseDTO.getPostCode());
         address.setStreet(houseDTO.getStreet());
-        address.setRealAssets(new RealAssets(2,"house"));
-        User user = userDAO.findById(houseDTO.getUserId());
+        address.setRealAssets(new RealAssets(2, "house"));
 
+        User user = userDAO.findById(houseDTO.getUserId());
         House house = new House();
+
+        List<Address> existingAddresses = addressDAO.verifyAddress(address);
+        if (existingAddresses.size() > 0) {
+            if (existingAddresses.get(0).getRealAssets().getType().equals("house") || existingAddresses.get(0).getRealAssets().getType().equals("flat"))
+                return new ResponseEntity<>("property at this address exists", HttpStatus.BAD_REQUEST);
+        }
         house.setAddress(address);
         house.setUser(user);
         house.setRooms(houseDTO.getRooms());
@@ -72,6 +85,7 @@ public class PropertyServiceImpl implements PropertyService {
         house.setPrice(houseDTO.getPrice());
         return new ResponseEntity<>(houseDAO.save(house), HttpStatus.CREATED);
     }
+
 
     @Override
     public ResponseEntity<Object> addPlot(PlotDTO plotDTO) {
@@ -83,15 +97,31 @@ public class PropertyServiceImpl implements PropertyService {
         address.setStreet(plotDTO.getStreet());
         address.setRealAssets(new RealAssets(3,"plot"));
         User user = userDAO.findById(plotDTO.getUserId());
-
         Plot plot = new Plot();
         plot.setAddress(address);
+
+
+        List<Address> existingAddresses = addressDAO.verifyAddress(address);
+        if (existingAddresses.size() > 0) {
+            if (existingAddresses.get(0).getRealAssets().getType().equals("plot") || existingAddresses.get(0).getRealAssets().getType().equals("flat"))
+                return new ResponseEntity<>("property at this address exists", HttpStatus.BAD_REQUEST);
+            if (existingAddresses.get(0).getRealAssets().getType().equals("house")) {
+                plot.setHouse(houseDAO.findByAddressId(existingAddresses.get(0).getId()));
+                plot.setAddress(addressDAO.findById(existingAddresses.get(0).getId()));
+            }
+        }
+
         plot.setUser(user);
         plot.setSize(plotDTO.getSize());
         plot.setPrice(plotDTO.getPrice());
         plot.setType(plotDTO.getType());
         return new ResponseEntity<>(plotDAO.save(plot), HttpStatus.CREATED);
 
+    }
+
+    @Override
+    public ResponseEntity<Object> findAllProperties() {
+        return new ResponseEntity<>(auctionViewDAO.findAll(), HttpStatus.OK);
     }
 
 

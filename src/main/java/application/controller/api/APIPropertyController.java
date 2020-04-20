@@ -7,6 +7,7 @@ import application.dto.HouseDTO;
 import application.dto.PlotDTO;
 import application.dto.PropertyBaseDTO;
 import application.model.*;
+import application.model.views.AuctionView;
 import application.service.PropertyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -51,6 +52,12 @@ public class APIPropertyController {
     @PostMapping(value = "/property/plot")
     public ResponseEntity<Object> addPlot(@RequestBody @Valid PlotDTO plotDTO){
         return propertyService.addPlot(plotDTO);
+    }
+
+    @ApiOperation(value = "Get all properties", response = AuctionView.class)
+    @GetMapping(value = "/property")
+    public ResponseEntity<Object> findAllProperties(){
+        return propertyService.findAllProperties();
     }
 
 }

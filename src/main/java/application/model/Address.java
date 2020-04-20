@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 
 
 @NamedQueries({
-//        @NamedQuery(name = Flat.GET_USERS, query = Flat.QUERY_GET_USERS),
+        @NamedQuery(name = Address.VERIFY_ADDRESS, query = Address.QUERY_VERIFY_ADDRESS),
 })
 
 @Data
@@ -16,8 +16,8 @@ import javax.validation.constraints.NotNull;
 @Table(name = "address")
 
 public class Address {
-//    public static final String GET_USERS = "User.get_flats";
-//    public static final String QUERY_GET_USERS = "select f from Flat f";
+    public static final String VERIFY_ADDRESS = "Address.verify_address";
+    public static final String QUERY_VERIFY_ADDRESS = "select a from Address a where a.city = :city and a.homeNumber = :homeNumber and a.localNumber = :localNumber and a.postCode = :postCode and a.street= :street";
 
 
     @Id

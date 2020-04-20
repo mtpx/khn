@@ -40,11 +40,11 @@ public class Plot {
     @JoinColumn(name="userId", nullable=false)
     private User user;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade={CascadeType.PERSIST,CascadeType.REMOVE}, fetch = FetchType.EAGER)
     @JoinColumn(name = "addressId", referencedColumnName = "id")
     private Address address;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade={CascadeType.PERSIST,CascadeType.REMOVE}, fetch = FetchType.EAGER)
     @JoinColumn(name = "houseId", referencedColumnName = "id")
     private House house;
 }

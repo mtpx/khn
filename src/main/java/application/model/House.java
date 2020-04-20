@@ -8,7 +8,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @NamedQueries({
-//        @NamedQuery(name = Flat.GET_USERS, query = Flat.QUERY_GET_USERS),
+        @NamedQuery(name = House.GET_BY_ADDRESSID, query = House.QUERY_GET_BY_ADDRESSID),
 })
 
 @Data
@@ -16,8 +16,8 @@ import javax.validation.constraints.NotNull;
 @Table(name = "house")
 
 public class House {
-//    public static final String GET_USERS = "User.get_flats";
-//    public static final String QUERY_GET_USERS = "select f from Flat f";
+    public static final String GET_BY_ADDRESSID = "House.get_by_addressId";
+    public static final String QUERY_GET_BY_ADDRESSID = "select h from House h where h.address.id= :addressId";
 
 
     @Id
@@ -42,9 +42,4 @@ public class House {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "addressId", referencedColumnName = "id")
     private Address address;
-
-    @JsonIgnore
-    @OneToOne(mappedBy = "address")
-    private Plot plot;
-
 }
