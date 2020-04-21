@@ -1,6 +1,7 @@
 package application.dao;
 
-import application.model.House;
+import application.model.User;
+import application.model.UserRealAssets;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
@@ -9,34 +10,27 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 
 @Repository
-public class HouseDAOImpl implements HouseDAO {
+public class UserRealAssetsDAOImpl implements UserRealAssetsDAO {
 
     @PersistenceContext(type = PersistenceContextType.EXTENDED)
     private EntityManager em;
 
     @Transactional
     @Override
-    public House save(House house) {
-        return em.merge(house);
+    public UserRealAssets save(UserRealAssets userRealAssets) {
+        return em.merge(userRealAssets);
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public House findById(int id) {
+    public UserRealAssets getByHouseId(int houseId) {
         try {
-            return em.find(House.class, id);
-        } catch (NoResultException e) {
-            return null;
-        }
-    }
-
-    @Override
-    public House findByAddressId(int addressId) {
-        try {
-            return em.createNamedQuery(House.GET_BY_ADDRESSID, House.class)
-                    .setParameter("addressId", addressId)
+            return em.createNamedQuery(UserRealAssets.GET_BY_HOUSE_ID, UserRealAssets.class)
+                    .setParameter("houseId", houseId)
                     .getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
     }
+
 }

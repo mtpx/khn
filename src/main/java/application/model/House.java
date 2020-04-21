@@ -22,7 +22,7 @@ public class House {
 
     @Id
     @NotNull
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public int id;
 

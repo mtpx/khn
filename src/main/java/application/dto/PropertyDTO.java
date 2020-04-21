@@ -3,7 +3,7 @@ package application.dto;
 import lombok.Data;
 
 @Data
-public class PropertyBaseDTO {
+public class PropertyDTO {
     private String city;
     private String street;
     private int houseNumber;
@@ -15,5 +15,9 @@ public class PropertyBaseDTO {
 
     private int size;
     private int price;
+
+    private int floor;
+    private int rooms;
+    private String type;
 }
 

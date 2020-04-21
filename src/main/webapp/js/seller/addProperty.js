@@ -1,6 +1,6 @@
 let floorInput, roomsInput, typeInput, areaInput, priceInput, streetInput, houseNumberInput, localNumberInput, postCodeInput, cityInput;
 let houseRadioBtn, flatRadioBtn, plotRadioBtn, allRadioBtns;
-let realAssetId, requestUrlSuffix="house";
+let realAssetId=2; //default radio button - house
 $(document).ready(function () {
     floorInput = $('#floorInput');
     roomsInput = $('#roomsInput');
@@ -22,7 +22,6 @@ $(document).ready(function () {
     roomsInput.hide();
     typeInput.hide();
     plotRadioBtn.click(function () {
-        requestUrlSuffix="plot";
         realAssetId = 3;
         allRadioBtns.removeClass("checked")
         plotRadioBtn.addClass("checked");
@@ -31,7 +30,6 @@ $(document).ready(function () {
         typeInput.show();
     });
     houseRadioBtn.click(function () {
-        requestUrlSuffix="house";
         realAssetId = 2;
         allRadioBtns.removeClass("checked")
         houseRadioBtn.addClass("checked");
@@ -40,7 +38,6 @@ $(document).ready(function () {
         typeInput.hide();
     });
     flatRadioBtn.click(function () {
-        requestUrlSuffix="flat";
         realAssetId = 1;
         allRadioBtns.removeClass("checked")
         flatRadioBtn.addClass("checked");
@@ -62,6 +59,7 @@ function preparePropertyData(){
             rooms: roomsInput.val(),
             floor: floorInput.val(),
             type: typeInput.val(),
+            realAssetId: realAssetId,
             userId: sessionStorage.getItem('loggedUserId')
         };
     submitProperty(propertyData);
@@ -70,24 +68,22 @@ function preparePropertyData(){
 function submitPropertyConfirmation() {
     if (confirm('Add Property?')) {
         preparePropertyData();
-        console.log('Thing was saved to the database.');
     } else {
-        // Do nothing!
-        console.log('Thing was not saved to the database.');
+        //back
     }
 }
 
 function submitProperty(propertyData) {
     $.ajax({
-        url: "http://localhost:8080/property/"+requestUrlSuffix,
+        url: "http://localhost:8080/property",
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify(propertyData),
         success: function() {
             alert("Property added")
         },
-        error: function() {
-            alert("Property adding error")
+        error: function(response) {
+            alert("Property adding error: " + response.responseText)
         }
     })
 }

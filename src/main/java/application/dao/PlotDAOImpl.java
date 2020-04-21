@@ -1,7 +1,6 @@
 package application.dao;
 
 import application.model.Plot;
-import application.model.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;

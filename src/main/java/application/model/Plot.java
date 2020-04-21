@@ -22,7 +22,7 @@ public class Plot {
 
     @Id
     @NotNull
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public int id;
 
@@ -40,11 +40,11 @@ public class Plot {
     @JoinColumn(name="userId", nullable=false)
     private User user;
 
-    @OneToOne(cascade={CascadeType.PERSIST,CascadeType.REMOVE}, fetch = FetchType.EAGER)
+    @OneToOne(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "addressId", referencedColumnName = "id")
     private Address address;
 
-    @OneToOne(cascade={CascadeType.PERSIST,CascadeType.REMOVE}, fetch = FetchType.EAGER)
+    @OneToOne(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "houseId", referencedColumnName = "id")
     private House house;
 }
