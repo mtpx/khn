@@ -88,11 +88,18 @@ public class PropertyServiceImpl implements PropertyService {
         User user = userDAO.findById(plotDTO.getUserId()); //pobieramy użytkownika zawartego w propertyDTO
         List<Address> existingAddresses = addressDAO.verifyAddress(address); //pobieramy listę adresów takich jak ten który chcemy dodać
         Plot plot;
-        //jeśli adres już istnieje i jest to działka lub mieszkanie - nie możemy dodać działki pod tym adresem
-        if (addressDAO.verifyAddress(address).size() > 0 && existingAddresses.get(0).getRealAssets().getType().equals("plot") || existingAddresses.get(0).getRealAssets().getType().equals("flat"))
+        if(addressDAO.verifyAddress(address).size()==0){ //jeśli adres nie istnieje w bazie - dodajemy działkę oraz wpis w userrealassets
+            plot = savePlotObject(address, user, plotDTO);
+            UserRealAssets userRealAssets = new UserRealAssets();
+            userRealAssets.setUser(user);
+            userRealAssets.setPlot(plot);
+            userRealAssetsDAO.save(userRealAssets);
+            return new ResponseEntity<>(plot, HttpStatus.CREATED);
+        } else if (addressDAO.verifyAddress(address).size() > 0 && existingAddresses.get(0).getRealAssets().getType().equals("plot") || existingAddresses.get(0).getRealAssets().getType().equals("flat")) {
+            //jeśli adres już istnieje i jest to działka lub mieszkanie - nie możemy dodać działki pod tym adresem
             return new ResponseEntity<>("property at this address exists", HttpStatus.BAD_REQUEST);
-        //jeśli pod istniejącym adresem mamy dom
-        else if (addressDAO.verifyAddress(address).size() > 0 && existingAddresses.get(0).getRealAssets().getType().equals("house")) {
+        } else if (addressDAO.verifyAddress(address).size() > 0 && existingAddresses.get(0).getRealAssets().getType().equals("house")) {
+            //jeśli pod istniejącym adresem mamy dom
             House house = houseDAO.findByAddressId(existingAddresses.get(0).getId());
             UserRealAssets userRealAssets = userRealAssetsDAO.getByHouseId(house.getId());
             if (userRealAssets.getPlot() != null) //jeśli do domu jest przypisana już działka - nie możemy przypisać kolejnej
@@ -104,14 +111,8 @@ public class PropertyServiceImpl implements PropertyService {
             userRealAssets.setPlot(plot);
             userRealAssetsDAO.save(userRealAssets);
             return new ResponseEntity<>(plot, HttpStatus.CREATED);
-        } else { //jeśli adres nie istnieje w bazie - dodajemy działkę oraz wpis w userrealassets
-            plot = savePlotObject(address, user, plotDTO);
-            UserRealAssets userRealAssets = new UserRealAssets();
-            userRealAssets.setUser(user);
-            userRealAssets.setPlot(plot);
-            userRealAssetsDAO.save(userRealAssets);
-            return new ResponseEntity<>(plot, HttpStatus.CREATED);
-        }
+        }else
+            return new ResponseEntity<>("error", HttpStatus.BAD_REQUEST);
     }
 
     public Flat saveFlatObject(Address address, User user, FlatDTO flatDTO) {
