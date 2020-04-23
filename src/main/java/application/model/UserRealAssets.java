@@ -39,6 +39,5 @@ public class UserRealAssets {
     @ManyToOne
     @JoinColumn(name = "plotId")
     private Plot plot;
-
 }
 

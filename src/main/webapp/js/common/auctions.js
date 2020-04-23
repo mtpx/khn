@@ -1,5 +1,29 @@
-function showFlats() {
+$(document).ready(function ()  {
+    getAuctionView("all");
+});
 
+let table;
+
+function getAuctionView(type){
+    let url='http://localhost:8080/auctionView/';
+    switch (type) {
+        case "all": url='http://localhost:8080/auctionView/'; break;
+        case "flat": url='http://localhost:8080/auctionView/flat'; break;
+        case "plot": url='http://localhost:8080/auctionView/plot'; break;
+        case "house": url='http://localhost:8080/auctionView/house'; break;
+    }
+    $.ajax({
+        url: url,
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            bindToDatatable(data);
+        }
+    });
+}
+
+
+function bindToDatatable(data) {
     table = $('#table').dataTable({
         data: data,
         paging: false,
@@ -7,19 +31,17 @@ function showFlats() {
         destroy: true,
         autoWidth: true,
         columns: [{
-            data: "id"
+            data: "type"
         }, {
-            data: "firstname"
+            data: "propertyId"
         }, {
-            data: "lastname"
+            data: "city"
         }, {
-            data: "email"
+            data: "street"
         }, {
-            sortable: false,
-            "render": function ( data, type, full, meta ) {
-                let userId = full.id;
-                return '<a onclick="deleteUser('+userId+')" class="btn btn-danger" role="button">Delete</a>';
-            }
+            data: "price"
+        }, {
+            data: "size"
         }]
     })
 }

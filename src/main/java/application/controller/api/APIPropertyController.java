@@ -1,8 +1,13 @@
 package application.controller.api;
 
-import application.dao.AddressDAO;
-import application.dao.UserDAO;
+import application.dao.*;
+import application.dto.FlatDTO;
+import application.dto.HouseDTO;
+import application.dto.PlotDTO;
 import application.dto.PropertyDTO;
+import application.model.Flat;
+import application.model.House;
+import application.model.Plot;
 import application.model.views.AuctionView;
 import application.service.PropertyService;
 import io.swagger.annotations.Api;
@@ -18,23 +23,61 @@ public class APIPropertyController {
     private PropertyService propertyService;
     private AddressDAO addressDAO;
     private UserDAO userDAO;
+    private PlotDAO plotDAO;
+    private HouseDAO houseDAO;
+    private FlatDAO flatDAO;
 
-    public APIPropertyController(PropertyService propertyService, UserDAO userDAO, AddressDAO addressDAO) {
+
+    public APIPropertyController(PropertyService propertyService, FlatDAO flatDAO,HouseDAO houseDAO,PlotDAO plotDAO, UserDAO userDAO, AddressDAO addressDAO) {
         this.propertyService = propertyService;
         this.userDAO = userDAO;
+        this.plotDAO = plotDAO;
+        this.houseDAO = houseDAO;
+        this.flatDAO = flatDAO;
         this.addressDAO = addressDAO;
     }
 
-    @ApiOperation(value = "Adding property")
-    @PostMapping(value = "/property")
-    public ResponseEntity<Object> addProperty(@RequestBody @Valid PropertyDTO propertyDTO){
-        return propertyService.addProperty(propertyDTO);
+    @ApiOperation(value = "Adding flat", response = Flat.class)
+    @PostMapping(value = "/property/flat")
+    public ResponseEntity<Object> addFlat(@RequestBody @Valid FlatDTO flatDTO){
+        return propertyService.addFlat(flatDTO);
+    }
+
+    @ApiOperation(value = "Adding house", response = House.class)
+    @PostMapping(value = "/property/house")
+    public ResponseEntity<Object> addHouse(@RequestBody @Valid HouseDTO houseDTO){
+        return propertyService.addHouse(houseDTO);
+    }
+
+    @ApiOperation(value = "Adding plot", response = Plot.class)
+    @PostMapping(value = "/property/plot")
+    public ResponseEntity<Object> addPlot(@RequestBody @Valid PlotDTO plotDTO){
+        return propertyService.addPlot(plotDTO);
+    }
+
+
+    @ApiOperation(value = "Get all properties", response = AuctionView.class)
+    @GetMapping(value = "/auctionView")
+    public ResponseEntity<Object> findAllProperties(){
+        return propertyService.findAllProperties();
     }
 
     @ApiOperation(value = "Get all properties", response = AuctionView.class)
-    @GetMapping(value = "/property")
-    public ResponseEntity<Object> findAllProperties(){
-        return propertyService.findAllProperties();
+    @GetMapping(value = "/auctionView/flat")
+    public ResponseEntity<Object> findFlats(){
+        return propertyService.findPropertiesByType("flat");
+    }
+
+    @ApiOperation(value = "Get all properties", response = AuctionView.class)
+    @GetMapping(value = "/auctionView/plot")
+    public ResponseEntity<Object> findPlots(){
+        return propertyService.findPropertiesByType("plot");
+    }
+
+    @ApiOperation(value = "Get all properties", response = AuctionView.class)
+    @GetMapping(value = "/auctionView/house")
+    public ResponseEntity<Object> findHouses(){
+        return propertyService.findPropertiesByType("house");
     }
 
 }

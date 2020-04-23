@@ -1,6 +1,6 @@
 let floorInput, roomsInput, typeInput, areaInput, priceInput, streetInput, houseNumberInput, localNumberInput, postCodeInput, cityInput;
 let houseRadioBtn, flatRadioBtn, plotRadioBtn, allRadioBtns;
-let realAssetId=2; //default radio button - house
+let realAssetId, requestUrlSuffix="house";//default radio button - house
 $(document).ready(function () {
     floorInput = $('#floorInput');
     roomsInput = $('#roomsInput');
@@ -19,9 +19,9 @@ $(document).ready(function () {
     allRadioBtns = $('.form-check-input');
 
     floorInput.hide();
-    roomsInput.hide();
     typeInput.hide();
     plotRadioBtn.click(function () {
+        requestUrlSuffix="plot";
         realAssetId = 3;
         allRadioBtns.removeClass("checked")
         plotRadioBtn.addClass("checked");
@@ -30,6 +30,7 @@ $(document).ready(function () {
         typeInput.show();
     });
     houseRadioBtn.click(function () {
+        requestUrlSuffix="house";
         realAssetId = 2;
         allRadioBtns.removeClass("checked")
         houseRadioBtn.addClass("checked");
@@ -38,6 +39,7 @@ $(document).ready(function () {
         typeInput.hide();
     });
     flatRadioBtn.click(function () {
+        requestUrlSuffix="flat";
         realAssetId = 1;
         allRadioBtns.removeClass("checked")
         flatRadioBtn.addClass("checked");
@@ -50,7 +52,7 @@ $(document).ready(function () {
 function preparePropertyData(){
         let propertyData = {
             street: streetInput.val(),
-            homeNumber: houseNumberInput.val(),
+            houseNumber: houseNumberInput.val(),
             localNumber: localNumberInput.val(),
             postCode: postCodeInput.val(),
             city: cityInput.val(),
@@ -59,7 +61,6 @@ function preparePropertyData(){
             rooms: roomsInput.val(),
             floor: floorInput.val(),
             type: typeInput.val(),
-            realAssetId: realAssetId,
             userId: sessionStorage.getItem('loggedUserId')
         };
     submitProperty(propertyData);
@@ -75,7 +76,8 @@ function submitPropertyConfirmation() {
 
 function submitProperty(propertyData) {
     $.ajax({
-        url: "http://localhost:8080/property",
+        //suffix urla ustawiony na flat/plot/house w zależności od wybranego radio buttona przy dodawaniu nieruchomości
+        url: "http://localhost:8080/property/"+requestUrlSuffix,
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify(propertyData),

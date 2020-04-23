@@ -25,11 +25,11 @@ function bindToDatatable(data) {
         columns: [{
             data: "id"
         }, {
-            data: "city"
+            data: "firstname"
         }, {
-            data: "price"
+            data: "lastname"
         }, {
-            data: "area"
+            data: "email"
         }, {
             sortable: false,
             "render": function ( data, type, full, meta ) {
@@ -39,6 +39,7 @@ function bindToDatatable(data) {
         }]
     })
 }
+
 
 function deleteUser(id) {
     let loggedUserId = parseInt(sessionStorage.getItem('loggedUserId'),10);

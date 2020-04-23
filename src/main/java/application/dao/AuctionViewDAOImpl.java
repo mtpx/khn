@@ -25,5 +25,17 @@ public class AuctionViewDAOImpl implements AuctionViewDAO {
             return null;
         }
     }
+
+    @Override
+    public List<AuctionView> findByType(String propertyType) {
+        try {
+            return em.createNamedQuery(AuctionView.GET_PROPERTIES_BY_TYPE, AuctionView.class)
+                    .setParameter("type", propertyType)
+                    .getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
 }
 

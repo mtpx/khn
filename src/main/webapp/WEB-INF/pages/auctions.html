@@ -7,10 +7,11 @@
     <script src="/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/js/common/main.js"></script>
     <script type="text/javascript" src="/js/common/auctions.js"></script>
-
-
+    <script type="text/javascript" charset="utf8" src="/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/jquery.dataTables.min.css">
+    <script type="text/javascript" charset="utf8" src="/js/dataTables.buttons.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/buttons.dataTables.min.css">
     <title>Auctions</title>
-
 </head>
 <body>
 <div id="wrapper">
@@ -27,11 +28,26 @@
                             Property type
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <button class="dropdown-item" id="flatsBtn" onclick="showFlats()" type="button">Flats</button>
-                            <button class="dropdown-item" id="plotsBtn" onclick="showPlots()" type="button">Plots</button>
-                            <button class="dropdown-item" id="housesBtn" onclick="showHouses()" type="button">Houses</button>
+                            <button class="dropdown-item" id="allPropertiesBtn" onclick="getAuctionView('all')" type="button">All properties</button>
+                            <button class="dropdown-item" id="flatsBtn" onclick="getAuctionView('flat')" type="button">Flats</button>
+                            <button class="dropdown-item" id="plotsBtn" onclick="getAuctionView('plot')" type="button">Plots</button>
+                            <button class="dropdown-item" id="housesBtn" onclick="getAuctionView('house')" type="button">Houses</button>
                         </div>
                     </div>
+                    <br>
+                    <table id="table" class="display">
+                        <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>PropertyId</th>
+                            <th>City</th>
+                            <th>Street</th>
+                            <th>Price</th>
+                            <th>Size</th>
+                        </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
                 </div>
             </div>
         </div>

@@ -29,7 +29,6 @@
                     </sec:authorize>
                     </h1>
                     <h1>Roles from model attribute: ${roles}</h1>
-                    <h1>Name from model attribute: ${email}</h1>
                 </div>
             </div>
         </div>

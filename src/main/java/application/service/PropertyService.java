@@ -1,9 +1,14 @@
 package application.service;
 
-import application.dto.PropertyDTO;
+import application.dto.*;
 import org.springframework.http.ResponseEntity;
 
 public interface PropertyService {
-    ResponseEntity<Object> addProperty(PropertyDTO propertyDTO);
+    ResponseEntity<Object> addFlat(FlatDTO flatDTO);
+    ResponseEntity<Object> addHouse(HouseDTO houseDTO);
+    ResponseEntity<Object> addPlot(PlotDTO plotDTO);
+
     ResponseEntity<Object> findAllProperties();
+    ResponseEntity<Object> findPropertiesByType(String propertyType);
+
 }
