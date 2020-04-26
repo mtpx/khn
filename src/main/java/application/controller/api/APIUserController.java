@@ -20,8 +20,6 @@ public class APIUserController {
         this.userService = userService;
     }
 
-
-
     @ApiOperation(value = "Registering seller", response = User.class)
     @PostMapping(value = "/seller/register")
     public ResponseEntity<Object> addSeller(@RequestBody @Valid UserRegisterDTO userRegisterDTO){

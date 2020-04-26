@@ -5,6 +5,7 @@ import application.model.Role;
 import application.model.User;
 import application.dto.UserChangePasswordDTO;
 import application.dto.UserRegisterDTO;
+import application.model.enums.UserType;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +42,7 @@ public class UserServiceImpl implements UserService {
 
     private User addSellerRole(User user) {
         List<Role> roles = new ArrayList<>();
-        roles.add(new Role(2,"seller"));
+        roles.add(new Role(UserType.ID_SELLER,UserType.SELLER));
         user.setRoles(roles);
         return user;
     }
@@ -50,7 +51,7 @@ public class UserServiceImpl implements UserService {
         List<Role> roles = new ArrayList<>();;
         if(user.getRoles()!=null)   //w przypadku gdy lista ról użytkownika nie jest pusta (przy dodawaniu roli customer dla sprzedawcy)
             roles = user.getRoles();    //uzupełniamy listę rolami aktualnie przypisanymi do użytkownika
-        roles.add(new Role(3,"customer"));
+        roles.add(new Role(UserType.ID_CUSTOMER,UserType.CUSTOMER));
         user.setRoles(roles);
         return user;
     }

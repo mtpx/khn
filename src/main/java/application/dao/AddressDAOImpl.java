@@ -31,7 +31,7 @@ public class AddressDAOImpl implements AddressDAO {
     }
 
     @Override
-    public List<Address> verifyAddress(Address address) {
+    public Address getAddress(Address address) {
         try {
             return em.createNamedQuery(Address.VERIFY_ADDRESS, Address.class)
                     .setParameter("street", address.getStreet())
@@ -39,7 +39,7 @@ public class AddressDAOImpl implements AddressDAO {
                     .setParameter("localNumber", address.getLocalNumber())
                     .setParameter("postCode", address.getPostCode())
                     .setParameter("city", address.getCity())
-                    .getResultList();
+                    .getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
