@@ -1,5 +1,6 @@
 package application.controller.api;
 
+import application.dto.TransactionDTO;
 import application.dto.FlatDTO;
 import application.dto.HouseDTO;
 import application.dto.PlotDTO;
@@ -43,6 +44,15 @@ public class APIPropertyController {
     public ResponseEntity<Object> addPlot(@RequestBody @Valid PlotDTO plotDTO){
         return propertyFacadeService.addPlot(plotDTO);
     }
+
+
+    @ApiOperation(value = "Adding plot")
+    @PostMapping(value = "/property/transaction")
+    public ResponseEntity<Object> buyProperty(@RequestBody @Valid TransactionDTO buyPropertyDTO){
+        return propertyFacadeService.executeTransaction(buyPropertyDTO);
+    }
+
+
 
     @ApiOperation(value = "Get all properties", response = AuctionView.class)
     @GetMapping(value = "/auctionView")

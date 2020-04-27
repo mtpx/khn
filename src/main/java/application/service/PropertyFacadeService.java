@@ -1,5 +1,6 @@
 package application.service;
 
+import application.dto.TransactionDTO;
 import application.dto.FlatDTO;
 import application.dto.HouseDTO;
 import application.dto.PlotDTO;
@@ -10,4 +11,5 @@ public interface PropertyFacadeService {
     ResponseEntity<Object> addFlat(FlatDTO flatDTO);
     ResponseEntity<Object> addHouse(HouseDTO houseDTO);
 
+    ResponseEntity<Object> executeTransaction(TransactionDTO buyPropertyDTO);
 }

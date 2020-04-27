@@ -1,5 +1,6 @@
 package application.service;
 
+import application.dto.TransactionDTO;
 import application.dto.FlatDTO;
 import application.dto.HouseDTO;
 import application.dto.PlotDTO;
@@ -14,11 +15,14 @@ public class PropertyFacadeServiceImpl implements PropertyFacadeService {
     private final FlatService flatService;
     private final HouseService houseService;
     private final PlotService plotService;
+    private final TransactionService transactionService;
 
-    public PropertyFacadeServiceImpl(FlatService flatService, HouseService houseService, PlotService plotService) {
+
+    public PropertyFacadeServiceImpl(FlatService flatService, HouseService houseService, PlotService plotService,TransactionService transactionService) {
         this.flatService = flatService;
         this.houseService = houseService;
         this.plotService = plotService;
+        this.transactionService = transactionService;
     }
 
 
@@ -35,5 +39,10 @@ public class PropertyFacadeServiceImpl implements PropertyFacadeService {
     @Override
     public ResponseEntity<Object> addHouse(HouseDTO houseDTO) {
         return houseService.addHouse(houseDTO);
+    }
+
+    @Override
+    public ResponseEntity<Object> executeTransaction(TransactionDTO transactionDTO) {
+       return transactionService.executeTransaction(transactionDTO);
     }
 }

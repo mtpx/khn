@@ -67,11 +67,8 @@ function preparePropertyData(){
 }
 
 function submitPropertyConfirmation() {
-    if (confirm('Add Property?')) {
+    if (confirm('Add Property?'))
         preparePropertyData();
-    } else {
-        //back
-    }
 }
 
 function submitProperty(propertyData) {

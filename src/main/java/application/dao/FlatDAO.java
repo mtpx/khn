@@ -4,4 +4,5 @@ import application.model.Flat;
 
 public interface FlatDAO {
     Flat save(Flat flat);
+    Flat findById(int id);
 }
