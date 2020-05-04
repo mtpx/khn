@@ -1,6 +1,8 @@
 package application.service;
 
+import application.dao.FinanceDAO;
 import application.dao.UserDAO;
+import application.model.Finance;
 import application.model.Role;
 import application.model.User;
 import application.dto.UserChangePasswordDTO;
@@ -19,8 +21,10 @@ public class UserServiceImpl implements UserService {
     final static Logger LOGGER = Logger.getLogger(UserServiceImpl.class.getName());
 
     private final UserDAO userDAO;
-    public UserServiceImpl(UserDAO userDAO) {
+    private final FinanceService financeService;
+    public UserServiceImpl(UserDAO userDAO, FinanceService financeService) {
         this.userDAO = userDAO;
+        this.financeService = financeService;
     }
 
     public ResponseEntity<Object> addUser(UserRegisterDTO userRegisterDTO, String userType) {
@@ -33,27 +37,12 @@ public class UserServiceImpl implements UserService {
         user.setPassword(userRegisterDTO.getPassword());
         switch (userType){
             case "customer":
-                return new ResponseEntity<>(userDAO.save(addCustomerRole(user)), HttpStatus.CREATED);
+                user = userDAO.save(addCustomerRole(user)); break;
             case "seller":
-                return new ResponseEntity<>(userDAO.save(addSellerRole(user)), HttpStatus.CREATED);
+                user = userDAO.save(addSellerRole(user)); break;
         }
-        return new ResponseEntity<>("Wrong user type", HttpStatus.BAD_REQUEST);
-    }
-
-    private User addSellerRole(User user) {
-        List<Role> roles = new ArrayList<>();
-        roles.add(new Role(UserType.ID_SELLER,UserType.SELLER));
-        user.setRoles(roles);
-        return user;
-    }
-
-    private User addCustomerRole(User user) {
-        List<Role> roles = new ArrayList<>();;
-        if(user.getRoles()!=null)   //w przypadku gdy lista ról użytkownika nie jest pusta (przy dodawaniu roli customer dla sprzedawcy)
-            roles = user.getRoles();    //uzupełniamy listę rolami aktualnie przypisanymi do użytkownika
-        roles.add(new Role(UserType.ID_CUSTOMER,UserType.CUSTOMER));
-        user.setRoles(roles);
-        return user;
+        financeService.addFinanceToUser(user);
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
     @Override
@@ -90,9 +79,7 @@ public class UserServiceImpl implements UserService {
             userDAO.changePassword(myUser, userChangePasswordDTO.getOldPassword(), userChangePasswordDTO.getNewPassword());
             return new ResponseEntity<>("Your password has been changed", HttpStatus.OK);
         }
-
     }
-
 
     @Override
     public ResponseEntity<Object> getUserByEmail(String email) {
@@ -124,5 +111,19 @@ public class UserServiceImpl implements UserService {
         return new ResponseEntity<>("Adding customer role error: user has customer role or cannot have seller role", HttpStatus.BAD_REQUEST);
     }
 
+    private User addSellerRole(User user) {
+        List<Role> roles = new ArrayList<>();
+        roles.add(new Role(UserType.ID_SELLER,UserType.SELLER));
+        user.setRoles(roles);
+        return user;
+    }
 
+    private User addCustomerRole(User user) {
+        List<Role> roles = new ArrayList<>();;
+        if(user.getRoles()!=null)   //w przypadku gdy lista ról użytkownika nie jest pusta (przy dodawaniu roli customer dla sprzedawcy)
+            roles = user.getRoles();    //uzupełniamy listę rolami aktualnie przypisanymi do użytkownika
+        roles.add(new Role(UserType.ID_CUSTOMER,UserType.CUSTOMER));
+        user.setRoles(roles);
+        return user;
+    }
 }

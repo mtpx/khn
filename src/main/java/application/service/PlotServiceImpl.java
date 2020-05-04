@@ -55,7 +55,7 @@ public class PlotServiceImpl implements PlotService {
         plot.setSize(plotDTO.getSize());
         plot.setPrice(plotDTO.getPrice());
         plot.setType(plotDTO.getType());
-        return plotDAO.save(plot);
+        return plotDAO.save(plot); //czasami poleci tutaj org.hibernate.PersistentObjectException: detached entity passed to persist: application.model.Address
     }
 
     private Address createAddressObject(PlotDTO plotDTO) {

@@ -74,7 +74,7 @@ function submitPropertyConfirmation() {
 function submitProperty(propertyData) {
     $.ajax({
         //suffix urla ustawiony na flat/plot/house w zależności od wybranego radio buttona przy dodawaniu nieruchomości
-        url: "http://localhost:8080/property/"+requestUrlSuffix,
+        url: "http://localhost:8080/property/add/"+requestUrlSuffix,
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify(propertyData),

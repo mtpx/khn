@@ -7,5 +7,5 @@ public interface UserRealAssetsDAO {
     UserRealAssets getByHouseId(int houseId);
     UserRealAssets getByFlatId(int flatId);
     UserRealAssets getByPlotId(int plotId);
-
+    UserRealAssets delete(UserRealAssets userRealAssets);
 }

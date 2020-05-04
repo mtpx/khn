@@ -24,7 +24,6 @@ public class FlatServiceImpl implements FlatService {
         this.userRealAssetsDAO = userRealAssetsDAO;
     }
 
-
     @Override
     public ResponseEntity<Object> addFlat(FlatDTO flatDTO) {
         Address address=createAddressObject(flatDTO);
@@ -49,7 +48,6 @@ public class FlatServiceImpl implements FlatService {
         flat.setRooms(flatDTO.getRooms());
         return flatDAO.save(flat);
     }
-
 
     private Address createAddressObject(FlatDTO flatDTO) {
         Address address = new Address();

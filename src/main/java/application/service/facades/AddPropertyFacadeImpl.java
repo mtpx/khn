@@ -1,30 +1,28 @@
-package application.service;
+package application.service.facades;
 
-import application.dto.TransactionDTO;
 import application.dto.FlatDTO;
 import application.dto.HouseDTO;
 import application.dto.PlotDTO;
+import application.service.FlatService;
+import application.service.HouseService;
+import application.service.PlotService;
 import org.apache.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PropertyFacadeServiceImpl implements PropertyFacadeService {
-    final static Logger LOGGER = Logger.getLogger(PropertyFacadeServiceImpl.class.getName());
+public class AddPropertyFacadeImpl implements AddPropertyFacade {
+    final static Logger LOGGER = Logger.getLogger(AddPropertyFacadeImpl.class.getName());
 
     private final FlatService flatService;
     private final HouseService houseService;
     private final PlotService plotService;
-    private final TransactionService transactionService;
 
-
-    public PropertyFacadeServiceImpl(FlatService flatService, HouseService houseService, PlotService plotService,TransactionService transactionService) {
+    public AddPropertyFacadeImpl(FlatService flatService, HouseService houseService, PlotService plotService) {
         this.flatService = flatService;
         this.houseService = houseService;
         this.plotService = plotService;
-        this.transactionService = transactionService;
     }
-
 
     @Override
     public ResponseEntity<Object> addPlot(PlotDTO plotDTO) {
@@ -40,9 +38,5 @@ public class PropertyFacadeServiceImpl implements PropertyFacadeService {
     public ResponseEntity<Object> addHouse(HouseDTO houseDTO) {
         return houseService.addHouse(houseDTO);
     }
-
-    @Override
-    public ResponseEntity<Object> executeTransaction(TransactionDTO transactionDTO) {
-       return transactionService.executeTransaction(transactionDTO);
-    }
 }
+

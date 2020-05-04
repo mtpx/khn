@@ -18,7 +18,7 @@ public class Flat {
 
     @Id
     @NotNull
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id")
     public int id;
 
@@ -34,7 +34,7 @@ public class Flat {
     @Column(name="floor",nullable = false)
     private int floor;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="userId")
     private User user;
 

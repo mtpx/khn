@@ -1,5 +1,6 @@
 package application.dao;
 
+import application.model.User;
 import application.model.UserRealAssets;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,6 +52,17 @@ public class UserRealAssetsDAOImpl implements UserRealAssetsDAO {
             return em.createNamedQuery(UserRealAssets.GET_BY_PLOT_ID, UserRealAssets.class)
                     .setParameter("plotId", plotId)
                     .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    @Transactional
+    @Override
+    public UserRealAssets delete(UserRealAssets userRealAssets) {
+        try {
+            em.remove(userRealAssets);
+            return userRealAssets;
         } catch (NoResultException e) {
             return null;
         }

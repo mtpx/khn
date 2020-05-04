@@ -25,7 +25,6 @@ public class HouseServiceImpl implements HouseService {
         this.userRealAssetsDAO = userRealAssetsDAO;
     }
 
-
     @Override
     public ResponseEntity<Object> addHouse(HouseDTO houseDTO) {
         Address address=createAddressObject(houseDTO);
@@ -60,7 +59,6 @@ public class HouseServiceImpl implements HouseService {
         address.setStreet(houseDTO.getStreet());
         return address;
     }
-
     private UserRealAssets saveUserRealAsset(User user, House house){
         UserRealAssets userRealAssets = new UserRealAssets();
         userRealAssets.setUser(user);

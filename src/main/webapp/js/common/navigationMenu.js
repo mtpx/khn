@@ -1,13 +1,9 @@
-let welcome,role;
+let role;
 $(document).ready(function() {
-   welcome = "#welcome";
    role = "#role";
-   showLoggedUser();
    renderMenu();
 });
-function showLoggedUser(){
-   $(welcome).show().append('hello session storage ' + sessionStorage.getItem('loggedUserEmail'));
-}
+
 function renderMenu(){
    //wyświetlanie opcji w menu w zależności od posiadanych ról
    $("ul li").hide();

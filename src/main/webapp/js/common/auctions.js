@@ -5,12 +5,12 @@ $(document).ready(function ()  {
 let table;
 
 function getAuctionView(type){
-    let url='http://localhost:8080/auctionView/';
+    let url='http://localhost:8080/property/view/all';
     switch (type) {
-        case "all": url='http://localhost:8080/auctionView/'; break;
-        case "flat": url='http://localhost:8080/auctionView/flat'; break;
-        case "plot": url='http://localhost:8080/auctionView/plot'; break;
-        case "house": url='http://localhost:8080/auctionView/house'; break;
+        case "all": url='http://localhost:8080/property/view/all'; break;
+        case "flat": url='http://localhost:8080/property/view/flat'; break;
+        case "plot": url='http://localhost:8080/property/view/plot'; break;
+        case "house": url='http://localhost:8080/property/view/house'; break;
     }
     $.ajax({
         url: url,
@@ -86,19 +86,18 @@ function buyPropertyConfirmation(propertyType, propertyId) {
 
 function executeTransaction(propertyType, propertyId) {
     $.ajax({
-        url: "http://localhost:8080/property/transaction",
+        url: "http://localhost:8080/property/transaction/"+propertyType,
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify({
             propertyId: propertyId,
-            propertyType: propertyType,
             customerId: sessionStorage.getItem('loggedUserId')
         }),
         success: function() {
             alert('You bought '+propertyType+', id: '+propertyId);
         },
         error: function(response) {
-            alert("Transaction error ")
+            alert("Transaction error: "+response.responseText)
         }
     });
 }
