@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PlotServiceImpl implements PlotService {
     final static Logger LOGGER = Logger.getLogger(PlotServiceImpl.class.getName());
@@ -32,17 +34,19 @@ public class PlotServiceImpl implements PlotService {
         Address address=createAddressObject(plotDTO);
         address.setRealAssets(new RealAssets(PropertyType.ID_PLOT, PropertyType.PLOT));//tworzymy obiekt z adresem na podstawie danych z DTO
         User user = userDAO.findById(plotDTO.getUserId()); //pobieramy użytkownika zawartego w propertyDTO
-        Address existingAddresses = addressDAO.getAddress(address); //pobieramy listę adresów takich jak ten który chcemy dodać
+        List<Address> existingAddresses = addressDAO.getAddress(address); //pobieramy listę adresów takich jak ten który chcemy dodać
         Plot plot;
-        if(existingAddresses==null) { //jeśli adres nie istnieje w bazie - dodajemy działkę oraz wpis w userrealassets
+        if(existingAddresses.size()==0) { //jeśli adres nie istnieje w bazie - dodajemy działkę oraz wpis w userrealassets
             plot = savePlot(address, user, plotDTO);
             saveUserRealAssets(user, plot);
             return new ResponseEntity<>(plot, HttpStatus.CREATED);
-        }else{ //jeśli adres istnieje w bazie
-            if (!existingAddresses.getRealAssets().getType().equals("house")) { //jeśli istniejący adres to nie dom, czyli mieszkanie/działka
+        }else if(existingAddresses.size()>1){  //jeśli w bazie istnieją 2 takie same adresy (działka+dom)
+            return new ResponseEntity<>("home at this address have assigned plot", HttpStatus.BAD_REQUEST);
+        }else{ //jeśli jeden taki adres istnieje w bazie
+            if (!existingAddresses.get(0).getRealAssets().getType().equals("house")) { //jeśli istniejący adres to nie dom, czyli mieszkanie/działka - nie możemy dodać kolejnej działki pod tym adresem
                 return new ResponseEntity<>("property at this address exists", HttpStatus.BAD_REQUEST);
             }else{ //jeśli istniejący adres to dom - możemy podpiąć pod niego działkę
-                return assignPlotToHouse(existingAddresses,user,plotDTO);
+                return assignPlotToHouse(existingAddresses.get(0),user,plotDTO, address);
             }
         }
     }
@@ -80,14 +84,12 @@ public class PlotServiceImpl implements PlotService {
         return userRealAssetsDAO.save(userRealAssets);
     }
 
-    private ResponseEntity<Object> assignPlotToHouse(Address existingAddresses, User user, PlotDTO plotDTO){
-        House house = houseDAO.findByAddressId(existingAddresses.getId());
+    private ResponseEntity<Object> assignPlotToHouse(Address existingAddresses, User user, PlotDTO plotDTO, Address newAddress){
+        House house = houseDAO.findByAddressId(existingAddresses.getId()); //pobieramy dom na podstawie adresu który został podany przy dodawaniu działki
         UserRealAssets userRealAssets = userRealAssetsDAO.getByHouseId(house.getId());
-        if (userRealAssets.getPlot() != null) //jeśli do domu jest przypisana już działka - nie możemy przypisać kolejnej
-            return new ResponseEntity<>("home at this address have assigned plot", HttpStatus.BAD_REQUEST);
-        Plot plot = savePlot(existingAddresses, user, plotDTO);
-        plot.setHouse(houseDAO.findByAddressId(existingAddresses.getId()));
-        plot.setAddress(addressDAO.findById(existingAddresses.getId()));
+        Plot plot = savePlot(newAddress, user, plotDTO);
+        plot.setHouse(house);
+        plotDAO.save(plot);
         addPlotToUserRealAssets(userRealAssets,plot);
         return new ResponseEntity<>(plot, HttpStatus.CREATED);
     }

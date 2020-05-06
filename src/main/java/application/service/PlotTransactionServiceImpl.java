@@ -16,53 +16,52 @@ public class PlotTransactionServiceImpl implements PlotTransactionService {
     private final UserDAO userDAO;
     private final UserRealAssetsDAO userRealAssetsDAO;
     private final FinanceService financeService;
+    private final HouseTransactionService houseTransactionService;
 
-    public PlotTransactionServiceImpl(PlotDAO plotDAO, UserDAO userDAO, UserRealAssetsDAO userRealAssetsDAO, FinanceService financeService) {
+    public PlotTransactionServiceImpl(PlotDAO plotDAO, UserDAO userDAO, UserRealAssetsDAO userRealAssetsDAO, FinanceService financeService, HouseTransactionService houseTransactionService) {
         this.plotDAO = plotDAO;
         this.userDAO = userDAO;
         this.userRealAssetsDAO = userRealAssetsDAO;
         this.financeService = financeService;
+        this.houseTransactionService = houseTransactionService;
     }
 
     @Override
     public ResponseEntity<Object> plotTransaction(TransactionDTO transactionDTO) {
         Plot plot = plotDAO.findById(transactionDTO.getPropertyId());
         Finance finance = financeService.getFinance(transactionDTO.getCustomerId());
+        UserRealAssets userRealAssets = userRealAssetsDAO.getByPlotId(transactionDTO.getPropertyId());
+        if(userRealAssets.getHouse()==null) //jeśli kupujemy samą działkę (bez domu)
+            return plotOnlyTransaction(finance,plot,transactionDTO);
+        else    //jeśli kupujemy działkę z domem
+            return houseTransactionService.houseAndPlotTransaction(finance,userRealAssets.getHouse(),plot,transactionDTO);
+    }
+
+    private ResponseEntity<Object> plotOnlyTransaction(Finance finance, Plot plot, TransactionDTO transactionDTO) {
+
         if(finance.getAmount()>=plot.getPrice()) { //jeśli kupujący ma więcej pieniędzy niż jest warta nieruchomość
             User customer = userDAO.findById(transactionDTO.getCustomerId());
 
             financeService.changeSellerFinance(plot.getUser().id,plot.getPrice());
             financeService.changeCustomerFinance(customer.getId(),plot.getPrice());
 
-            deassignSellerFromPlotInUserrealassets(transactionDTO.getPropertyId());
             assignNewOwnerToPlotInUserrealassets(plot,customer);
 
             plot = assignNewOwnerToPlot(plot,customer);
-
-            return new ResponseEntity<>(plot, HttpStatus.OK);
+            return new ResponseEntity<>("You bought plot( id: "+plot.getId()+", area:  "+plot.getSize()+", price: "+plot.getPrice()+")", HttpStatus.OK);
         }else
             return new ResponseEntity<>("You have not enough money on account", HttpStatus.BAD_REQUEST);
     }
 
-
-    private Plot assignNewOwnerToPlot(Plot plot, User customer){
+    @Override
+    public Plot assignNewOwnerToPlot(Plot plot, User customer){
         plot.setUser(customer);
         return plotDAO.save(plot);
     }
 
-    private UserRealAssets deassignSellerFromPlotInUserrealassets(int plotId){
-        UserRealAssets userRealAssets = userRealAssetsDAO.getByPlotId(plotId);
-        userRealAssets.setPlot(null);
-        if(userRealAssets.getHouse()==null) //jeśli we wpisie w userrealassets była tylko działka - usuwamy cały wpis
-            return userRealAssetsDAO.delete(userRealAssets);
-        else    //jeśli działka+dom -> plotId=null + zapis wpisu z samym domem
-            return userRealAssetsDAO.save(userRealAssets);
-    }
-
     private UserRealAssets assignNewOwnerToPlotInUserrealassets(Plot plot, User customer){
-        UserRealAssets userRealAssets = new UserRealAssets();
+        UserRealAssets userRealAssets = userRealAssetsDAO.getByPlotId(plot.getId());
         userRealAssets.setUser(customer);
-        userRealAssets.setPlot(plot);
         return userRealAssetsDAO.save(userRealAssets);
     }
 }

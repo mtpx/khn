@@ -30,7 +30,7 @@ public class HouseServiceImpl implements HouseService {
         Address address=createAddressObject(houseDTO);
         address.setRealAssets(new RealAssets(PropertyType.ID_HOUSE, PropertyType.HOUSE));//tworzymy obiekt z adresem na podstawie danych z DTO
         User user = userDAO.findById(houseDTO.getUserId()); //pobieramy użytkownika zawartego w propertyDTO
-        if (addressDAO.getAddress(address)!=null) {
+        if (addressDAO.getAddress(address).size()!=0) {
             //jeśli w bazie istnieje już taki adres oraz jeśli istniejący adres to dom lub mieszkanie - nie możemy dodać domu pod tym adresem
             return new ResponseEntity<>("property at this address exists", HttpStatus.BAD_REQUEST);
         } else {//jeśli adres nie istnieje w bazie - dodajemy dom oraz wpis w userrealassets

@@ -93,8 +93,9 @@ function executeTransaction(propertyType, propertyId) {
             propertyId: propertyId,
             customerId: sessionStorage.getItem('loggedUserId')
         }),
-        success: function() {
-            alert('You bought '+propertyType+', id: '+propertyId);
+        success: function(response) {
+            alert(JSON.stringify(response));
+            alert(JSON.stringify(response));
         },
         error: function(response) {
             alert("Transaction error: "+response.responseText)

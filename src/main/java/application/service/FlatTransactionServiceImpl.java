@@ -36,9 +36,9 @@ public class FlatTransactionServiceImpl implements FlatTransactionService {
 
             assignNewOwnerToFlatInUserrealassets(transactionDTO.getPropertyId(),customer);
 
-            flat = assignNewOwnerToFlat(flat,customer);
+            assignNewOwnerToFlat(flat,customer);
 
-            return new ResponseEntity<>(flat, HttpStatus.OK);
+            return new ResponseEntity<>("You bought house (id: "+flat.getId()+", area:  "+flat.getSize()+", price: "+flat.getPrice()+")", HttpStatus.OK);
         }else
             return new ResponseEntity<>("You have not enough money on account", HttpStatus.BAD_REQUEST);
     }

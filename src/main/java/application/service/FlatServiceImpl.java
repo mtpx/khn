@@ -29,7 +29,7 @@ public class FlatServiceImpl implements FlatService {
         Address address=createAddressObject(flatDTO);
         address.setRealAssets(new RealAssets(PropertyType.ID_FLAT,PropertyType.FLAT)); //tworzymy obiekt z adresem na podstawie danych z DTO
         User user = userDAO.findById(flatDTO.getUserId()); //pobieramy użytkownika zawartego w propertyDTO
-        if (addressDAO.getAddress(address)!=null) //jeśli w bazie istnieje podany adres nie możemy dodać mieszkania
+        if (addressDAO.getAddress(address).size()!=0) //jeśli w bazie istnieje podany adres nie możemy dodać mieszkania
             return new ResponseEntity<>("property at this address exists", HttpStatus.BAD_REQUEST);
         else {//jeśli adres nie istnieje w bazie - dodajemy mieszkanie oraz wpis w userrealassets
             Flat flat = saveFlat(address, user, flatDTO);

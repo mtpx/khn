@@ -6,5 +6,5 @@ import java.util.List;
 public interface AddressDAO {
     Address save(Address address);
     Address findById(int id);
-    Address getAddress(Address address);
+    List<Address> getAddress(Address address);
 }
