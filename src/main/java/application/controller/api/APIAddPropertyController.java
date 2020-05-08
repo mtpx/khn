@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
-@Api(value = "KHN property API controller")
+@Api(value = "Adding property API controller")
 @RestController
 @RequestMapping("/property/add")
 public class APIAddPropertyController {

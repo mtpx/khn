@@ -35,10 +35,10 @@ public class Address {
     private String street;
 
     @Column(name="homeNumber",nullable = false)
-    private int homeNumber;
+    private String homeNumber;
 
     @Column(name="localNumber",nullable = false)
-    private int localNumber;
+    private String localNumber;
 
     @Column(name="postCode",nullable = false)
     private String postCode;

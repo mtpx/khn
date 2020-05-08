@@ -21,6 +21,7 @@ public class AddressDAOImpl implements AddressDAO {
         return em.merge(address);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Address findById(int id) {
         try {
@@ -30,6 +31,7 @@ public class AddressDAOImpl implements AddressDAO {
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Address> getAddress(Address address) {
         try {

@@ -1,10 +1,12 @@
 package application.service;
 
 import application.dao.*;
+import application.model.views.AuctionView;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class AuctionViewServiceImpl implements AuctionViewService {
@@ -17,8 +19,8 @@ public class AuctionViewServiceImpl implements AuctionViewService {
     }
 
     @Override
-    public ResponseEntity<Object> findAllProperties() {
-        return new ResponseEntity<>(auctionViewDAO.findAll(), HttpStatus.OK);
+    public List<AuctionView> findAllProperties() {
+        return auctionViewDAO.findAll();
     }
 
     @Override

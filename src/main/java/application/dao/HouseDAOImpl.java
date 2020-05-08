@@ -20,6 +20,7 @@ public class HouseDAOImpl implements HouseDAO {
         return em.merge(house);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public House findById(int id) {
         try {

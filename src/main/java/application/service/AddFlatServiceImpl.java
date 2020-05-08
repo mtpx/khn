@@ -10,30 +10,30 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
-public class FlatServiceImpl implements FlatService {
-    final static Logger LOGGER = Logger.getLogger(FlatServiceImpl.class.getName());
-    private final AddressDAO addressDAO;
+public class AddFlatServiceImpl implements AddFlatService {
+    final static Logger LOGGER = Logger.getLogger(AddFlatServiceImpl.class.getName());
     private final FlatDAO flatDAO;
     private final UserDAO userDAO;
-    private final UserRealAssetsDAO userRealAssetsDAO;
+    private final UserRealAssetsService userRealAssetsService;
+    private final AddressService addressService;
 
-    public FlatServiceImpl(AddressDAO addressDAO, UserRealAssetsDAO userRealAssetsDAO, FlatDAO flatDAO, UserDAO userDAO) {
-        this.addressDAO = addressDAO;
+    public AddFlatServiceImpl(UserRealAssetsService userRealAssetsService, FlatDAO flatDAO, UserDAO userDAO, AddressService addressService) {
         this.flatDAO = flatDAO;
         this.userDAO = userDAO;
-        this.userRealAssetsDAO = userRealAssetsDAO;
+        this.userRealAssetsService = userRealAssetsService;
+        this.addressService = addressService;
     }
 
     @Override
     public ResponseEntity<Object> addFlat(FlatDTO flatDTO) {
-        Address address=createAddressObject(flatDTO);
+        Address address=addressService.createAddressObject(flatDTO);
         address.setRealAssets(new RealAssets(PropertyType.ID_FLAT,PropertyType.FLAT)); //tworzymy obiekt z adresem na podstawie danych z DTO
         User user = userDAO.findById(flatDTO.getUserId()); //pobieramy użytkownika zawartego w propertyDTO
-        if (addressDAO.getAddress(address).size()!=0) //jeśli w bazie istnieje podany adres nie możemy dodać mieszkania
+        if (addressService.getAddress(address).size()!=0) //jeśli w bazie istnieje podany adres nie możemy dodać mieszkania
             return new ResponseEntity<>("property at this address exists", HttpStatus.BAD_REQUEST);
         else {//jeśli adres nie istnieje w bazie - dodajemy mieszkanie oraz wpis w userrealassets
             Flat flat = saveFlat(address, user, flatDTO);
-            saveUserRealAsset(user,flat);
+            userRealAssetsService.saveUserRealAsset(user,flat);
             return new ResponseEntity<>(flat, HttpStatus.CREATED);
         }
     }
@@ -47,22 +47,5 @@ public class FlatServiceImpl implements FlatService {
         flat.setPrice(flatDTO.getPrice());
         flat.setRooms(flatDTO.getRooms());
         return flatDAO.save(flat);
-    }
-
-    private Address createAddressObject(FlatDTO flatDTO) {
-        Address address = new Address();
-        address.setCity(flatDTO.getCity());
-        address.setHomeNumber(flatDTO.getHouseNumber());
-        address.setLocalNumber(flatDTO.getLocalNumber());
-        address.setPostCode(flatDTO.getPostCode());
-        address.setStreet(flatDTO.getStreet());
-        return address;
-    }
-
-    private UserRealAssets saveUserRealAsset(User user, Flat flat){
-        UserRealAssets userRealAssets = new UserRealAssets();
-        userRealAssets.setUser(user);
-        userRealAssets.setFlat(flat);
-        return userRealAssetsDAO.save(userRealAssets);
     }
 }

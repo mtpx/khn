@@ -10,32 +10,32 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
-public class HouseServiceImpl implements HouseService {
-    final static Logger LOGGER = Logger.getLogger(HouseServiceImpl.class.getName());
+public class AddHouseServiceImpl implements AddHouseService {
+    final static Logger LOGGER = Logger.getLogger(AddHouseServiceImpl.class.getName());
 
-    private final AddressDAO addressDAO;
+    private final AddressService addressService;
     private final HouseDAO houseDAO;
     private final UserDAO userDAO;
-    private final UserRealAssetsDAO userRealAssetsDAO;
+    private final UserRealAssetsService userRealAssetsService;
 
-    public HouseServiceImpl(AddressDAO addressDAO, UserRealAssetsDAO userRealAssetsDAO, HouseDAO houseDAO, UserDAO userDAO) {
-        this.addressDAO = addressDAO;
+    public AddHouseServiceImpl(AddressService addressService, UserRealAssetsService userRealAssetsService, HouseDAO houseDAO, UserDAO userDAO) {
+        this.addressService = addressService;
         this.houseDAO = houseDAO;
         this.userDAO = userDAO;
-        this.userRealAssetsDAO = userRealAssetsDAO;
+        this.userRealAssetsService = userRealAssetsService;
     }
 
     @Override
     public ResponseEntity<Object> addHouse(HouseDTO houseDTO) {
-        Address address=createAddressObject(houseDTO);
+        Address address=addressService.createAddressObject(houseDTO);
         address.setRealAssets(new RealAssets(PropertyType.ID_HOUSE, PropertyType.HOUSE));//tworzymy obiekt z adresem na podstawie danych z DTO
         User user = userDAO.findById(houseDTO.getUserId()); //pobieramy użytkownika zawartego w propertyDTO
-        if (addressDAO.getAddress(address).size()!=0) {
+        if (addressService.getAddress(address).size()!=0) {
             //jeśli w bazie istnieje już taki adres oraz jeśli istniejący adres to dom lub mieszkanie - nie możemy dodać domu pod tym adresem
             return new ResponseEntity<>("property at this address exists", HttpStatus.BAD_REQUEST);
         } else {//jeśli adres nie istnieje w bazie - dodajemy dom oraz wpis w userrealassets
             House house = saveHouse(address, user, houseDTO);
-            saveUserRealAsset(user,house);
+            userRealAssetsService.saveUserRealAsset(user,house);
             return new ResponseEntity<>(house, HttpStatus.CREATED);
         }
     }
@@ -48,21 +48,5 @@ public class HouseServiceImpl implements HouseService {
         house.setPrice(houseDTO.getPrice());
         house.setRooms(houseDTO.getRooms());
         return houseDAO.save(house);
-    }
-
-    private Address createAddressObject(HouseDTO houseDTO) {
-        Address address = new Address();
-        address.setCity(houseDTO.getCity());
-        address.setHomeNumber(houseDTO.getHouseNumber());
-        address.setLocalNumber(houseDTO.getLocalNumber());
-        address.setPostCode(houseDTO.getPostCode());
-        address.setStreet(houseDTO.getStreet());
-        return address;
-    }
-    private UserRealAssets saveUserRealAsset(User user, House house){
-        UserRealAssets userRealAssets = new UserRealAssets();
-        userRealAssets.setUser(user);
-        userRealAssets.setHouse(house);
-        return userRealAssetsDAO.save(userRealAssets);
     }
 }

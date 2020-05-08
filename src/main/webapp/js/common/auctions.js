@@ -25,7 +25,6 @@ function getAuctionView(type){
     });
 }
 
-
 function bindToDatatableSeller(data){
     $('#actionColumn').hide();
     table = $('#table').dataTable({
@@ -95,7 +94,7 @@ function executeTransaction(propertyType, propertyId) {
         }),
         success: function(response) {
             alert(JSON.stringify(response));
-            alert(JSON.stringify(response));
+            getAuctionView("all");
         },
         error: function(response) {
             alert("Transaction error: "+response.responseText)

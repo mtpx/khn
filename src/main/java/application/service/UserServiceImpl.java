@@ -1,8 +1,6 @@
 package application.service;
 
-import application.dao.FinanceDAO;
 import application.dao.UserDAO;
-import application.model.Finance;
 import application.model.Role;
 import application.model.User;
 import application.dto.UserChangePasswordDTO;
@@ -41,7 +39,7 @@ public class UserServiceImpl implements UserService {
             case "seller":
                 user = userDAO.save(addSellerRole(user)); break;
         }
-        financeService.addFinanceToUser(user);
+        financeService.addFinanceRecordToUserAfterRegister(user);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 

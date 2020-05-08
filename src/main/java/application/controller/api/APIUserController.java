@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-@Api(value = "KHN user API controller")
+@Api(value = "User operations API controller")
 @RestController
 public class APIUserController {
 

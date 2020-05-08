@@ -6,8 +6,8 @@ import lombok.Data;
 public class FlatDTO {
     private String city;
     private String street;
-    private int houseNumber;
-    private int localNumber;
+    private String houseNumber;
+    private String localNumber;
     private String postCode;
 
     private int userId;

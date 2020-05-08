@@ -49,26 +49,54 @@ $(document).ready(function () {
     });
 });
 
-function preparePropertyData(){
-        let propertyData = {
-            street: streetInput.val(),
-            houseNumber: houseNumberInput.val(),
-            localNumber: localNumberInput.val(),
-            postCode: postCodeInput.val(),
-            city: cityInput.val(),
-            size: areaInput.val(),
-            price: priceInput.val(),
-            rooms: roomsInput.val(),
-            floor: floorInput.val(),
-            type: typeInput.val(),
-            userId: sessionStorage.getItem('loggedUserId')
-        };
-    submitProperty(propertyData);
-}
-
 function submitPropertyConfirmation() {
     if (confirm('Add Property?'))
-        preparePropertyData();
+        validateForm();
+}
+
+function validateForm(){
+    let errors =[];
+    if (streetInput.val() === '')
+        errors.push("Street should not be empty");
+    if (houseNumberInput.val() === '')
+        errors.push("House number should not be empty");
+    if (localNumberInput.val() === '')
+        errors.push("Local number should not be empty");
+    if (postCodeInput.val() === '')
+        errors.push("Post code should not be empty");
+    if (cityInput.val() === '')
+        errors.push("City should not be empty");
+    if (priceInput.val() === '')
+        errors.push("Price should not be empty");
+    if (areaInput.val() === '')
+        errors.push("Area should not be empty");
+    if (roomsInput.val() === '' && (requestUrlSuffix==='flat' || requestUrlSuffix==='house'))
+        errors.push("Rooms should not be empty");
+    if (floorInput.val() === '' && requestUrlSuffix==='flat')
+        errors.push("Floor should not be empty");
+    if (typeInput.val() ==='' && requestUrlSuffix==='plot')
+        errors.push("Plot type should not be empty");
+    if(errors.length === 0){
+        preparePropertyData()
+    }else{
+        alert("Form errors: "+errors)
+    }
+}
+function preparePropertyData(){
+    let propertyData = {
+        street: streetInput.val(),
+        houseNumber: houseNumberInput.val(),
+        localNumber: localNumberInput.val(),
+        postCode: postCodeInput.val(),
+        city: cityInput.val(),
+        size: areaInput.val(),
+        price: priceInput.val(),
+        rooms: roomsInput.val(),
+        floor: floorInput.val(),
+        type: typeInput.val(),
+        userId: sessionStorage.getItem('loggedUserId')
+    };
+    submitProperty(propertyData);
 }
 
 function submitProperty(propertyData) {

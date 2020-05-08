@@ -15,29 +15,27 @@ public class FinanceServiceImpl implements FinanceService {
     }
 
     @Override
-    public Finance addFinanceToUser(User user) {
+    public Finance addFinanceRecordToUserAfterRegister(User user) {
         Finance finance = new Finance();
         finance.setCurrency("PLN");
-        finance.setAmount(0);
+        finance.setAmount(1000000); //milion jako prezent za rejestrację :) po to żeby nie grzebać ręcznie w tabeli z finansami
         finance.setUser(user);
         return financeDAO.save(finance);
     }
 
     @Override
+    //odejmowanie kwoty za nieruchomość od stanu konta kupującego
     public Finance changeCustomerFinance(int customerId, int propertyPrice) {
         Finance finance = financeDAO.findByUserId(customerId);
-        int oldValue = finance.getAmount();
-        int newValue = oldValue-propertyPrice;
-        finance.setAmount(newValue);
+        finance.setAmount(finance.getAmount()-propertyPrice);
         return financeDAO.save(finance);
     }
 
     @Override
+    //dodawanie kwoty za nieruchomość do stanu konta sprzedającego
     public Finance changeSellerFinance(int sellerId, int propertyPrice) {
         Finance finance = financeDAO.findByUserId(sellerId);
-        int oldValue = finance.getAmount();
-        int newValue = oldValue+propertyPrice;
-        finance.setAmount(newValue);
+        finance.setAmount(finance.getAmount()+propertyPrice);
         return financeDAO.save(finance);
     }
 

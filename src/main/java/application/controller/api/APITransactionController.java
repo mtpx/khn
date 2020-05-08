@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
-@Api(value = "KHN property API controller")
+@Api(value = "Transactions API controller")
 @RestController
 @RequestMapping("/property/transaction")
 public class APITransactionController {
