@@ -2,6 +2,8 @@ let floorInput, roomsInput, typeInput, areaInput, priceInput, streetInput, house
 let houseRadioBtn, flatRadioBtn, plotRadioBtn, allRadioBtns;
 let realAssetId, requestUrlSuffix="house";//default radio button - house
 $(document).ready(function () {
+    //nie jestem pewna czy to wszystko powinno byc w tej metodzie
+    //chyba fajniej byloby to jakos pogrupowac - chodzi o to zeby bylo czytelne dla innego deva :)
     floorInput = $('#floorInput');
     roomsInput = $('#roomsInput');
     typeInput = $('#typeInput');

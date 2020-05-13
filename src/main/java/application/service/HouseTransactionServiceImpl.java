@@ -36,22 +36,27 @@ public class HouseTransactionServiceImpl implements HouseTransactionService {
             return houseAndPlotTransaction(finance,house,userRealAssets.getPlot(),transactionDTO);
     }
 
+
+    // Prywatne metody powinny być pod public :) - to taka ogólna uwaga
     private House assignNewOwnerToHouse(House house, User customer){
         house.setUser(customer);
         return houseDAO.save(house);
     }
 
     @Override
+    // metoda do podzielenia na mniejsze :)
     public ResponseEntity<Object> houseAndPlotTransaction(Finance finance, House house, Plot plot, TransactionDTO transactionDTO){
         int houseAndPlotPrice = house.getPrice()+plot.getPrice(); // sumujemy wartość domu i działki
         if(finance.getAmount()>=houseAndPlotPrice) { //jeśli kupujący ma więcej pieniędzy niż cena domu + działki
             User customer = userDAO.findById(transactionDTO.getCustomerId()); //pobieramy kupującego
 
+            // oddzielne metody do finansów? [wtedy i houseOnlyTransaction skorzysta]
             financeService.changeSellerFinance(house.getUser().id,houseAndPlotPrice); //zmieniamy stany kont
             financeService.changeCustomerFinance(customer.getId(),houseAndPlotPrice);
 
             userRealAssetsService.assignNewOwnerToHouseInUserRealAssets(house,customer); //podmieniamy właściciela w userrealassets
 
+            // kolejna metoda, ktora mozna wyniesc do prywatnej
             assignNewOwnerToPlot(plot,customer); //podmieniamy właściela w tabelach plot i house
             assignNewOwnerToHouse(house,customer);
 

@@ -16,6 +16,7 @@ import javax.validation.Valid;
 @Api(value = "Adding property API controller")
 @RestController
 @RequestMapping("/property/add")
+// nazewnictwo - PropertyController brzmi lepiej :) [Komentarz równiez do reszty kontrolerów]
 public class APIAddPropertyController {
 
     private AddPropertyFacade addPropertyFacade;

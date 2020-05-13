@@ -27,6 +27,7 @@ public class PlotTransactionServiceImpl implements PlotTransactionService {
     }
 
     @Override
+    //Tutaj podobne jak dla HouseTransaction - do podziału na mniejsze, podzielenie tematycznie
     public ResponseEntity<Object> plotTransaction(TransactionDTO transactionDTO) {
         Plot plot = plotDAO.findById(transactionDTO.getPropertyId());
         Finance finance = financeService.getFinance(transactionDTO.getCustomerId());

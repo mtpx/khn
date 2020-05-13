@@ -15,6 +15,7 @@ public class UserRealAssetsServiceImpl implements UserRealAssetsService {
     }
 
     @Override
+    // Ustawianie UserRealAssets wrzuciłabym do prywatnych metod - tak jak w przypadku poprzednich - ja lubię miec jak najmniejsze metody xD
     public UserRealAssets saveUserRealAsset(User user, Flat flat){ //dodawanie wpisu z mieszkaniem w userrealassets
         UserRealAssets userRealAssets = new UserRealAssets();
         userRealAssets.setUser(user);

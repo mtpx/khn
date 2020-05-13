@@ -28,6 +28,7 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<Object> addUser(UserRegisterDTO userRegisterDTO, String userType) {
         if(userDAO.findByEmail(userRegisterDTO.getEmail())!=null)
             return new ResponseEntity<>("User with provided email exists",HttpStatus.BAD_REQUEST);
+        //Zrobiłabym prywanta metode prepareUser wtedy metoda editUserData rowniez z niej skorzysta
         User user = new User();
         user.setFirstname(userRegisterDTO.getFirstname());
         user.setLastname(userRegisterDTO.getLastname());

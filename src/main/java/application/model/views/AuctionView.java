@@ -61,6 +61,8 @@ public class AuctionView {
     public Integer rooms;
 
 }
+
+// Ja mam zrobiony folder sql a w nim plik sql, w którym trzymam wszystkie skrypty na bazie - żeby nie trzymac w komentarzu :)
 /*
 
 create or replace view auction_view as

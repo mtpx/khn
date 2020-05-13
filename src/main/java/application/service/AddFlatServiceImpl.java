@@ -26,6 +26,7 @@ public class AddFlatServiceImpl implements AddFlatService {
 
     @Override
     public ResponseEntity<Object> addFlat(FlatDTO flatDTO) {
+        //Dwie linijki z address można jeszcze wyniesc do metody prywatnej
         Address address=addressService.createAddressObject(flatDTO);
         address.setRealAssets(new RealAssets(PropertyType.ID_FLAT,PropertyType.FLAT)); //tworzymy obiekt z adresem na podstawie danych z DTO
         User user = userDAO.findById(flatDTO.getUserId()); //pobieramy użytkownika zawartego w propertyDTO

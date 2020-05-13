@@ -31,11 +31,13 @@ public class AddPlotServiceImpl implements AddPlotService {
     @Override
     public ResponseEntity<Object> addPlot(PlotDTO plotDTO) {
         //ogólnie można by było troche uprosić te warunki, ale tak przynajmniej mam jasne komunikaty przekazywane na front odnośnie tego co się zadziało
+        //Tak samo jak dla flat - można do metody prywatnej te dwie linijki
         Address address=addressService.createAddressObject(plotDTO);
         address.setRealAssets(new RealAssets(PropertyType.ID_PLOT, PropertyType.PLOT));//tworzymy obiekt z adresem na podstawie danych z DTO
         User user = userDAO.findById(plotDTO.getUserId()); //pobieramy użytkownika zawartego w propertyDTO
         List<Address> existingAddresses = addressService.getAddress(address); //pobieramy listę adresów takich jak ten który chcemy dodać
         Plot plot;
+        //Hmm tutaj jeszcze można coś pokombinowac z uproszczeniem -> jakiś if else do oddzielnej metody?
         if(existingAddresses.size()==0) { //jeśli adres nie istnieje w bazie - dodajemy działkę oraz wpis w userrealassets
             plot = savePlot(address, user, plotDTO);
             userRealAssetsService.saveUserRealAssets(user, plot);
@@ -66,6 +68,7 @@ public class AddPlotServiceImpl implements AddPlotService {
         return plotDAO.save(plot);
     }
 
+// hmmm tutaj trochę się dzieje(wyszukiwanie, wypelnianie, dodawanie w jednej tabeli i w drugiej) - może jeszcze by to jakoś pogrupować tematycznie ?:)
     private ResponseEntity<Object> assignPlotToHouse(Address existingAddresses, User user, PlotDTO plotDTO, Address newAddress){
         House house = houseDAO.findByAddressId(existingAddresses.getId()); //pobieramy dom na podstawie adresu który został podany przy dodawaniu działki
         UserRealAssets userRealAssets = userRealAssetsService.getByHouseId(house.getId()); //pobieramy wpis z userrealassets zawierający rekord z domem do któego dodajemy działkę

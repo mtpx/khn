@@ -25,6 +25,7 @@ public class FlatTransactionServiceImpl implements FlatTransactionService {
     }
 
     @Override
+    // W tej metodzie pomyślałabym o uproszczeniu i podzieleniu na mniejsze
     public ResponseEntity<Object> flatTransaction(TransactionDTO transactionDTO) {
         Flat flat = flatDAO.findById(transactionDTO.getPropertyId()); //pobieramy sprzedawane mieszkanie
         Finance finance = financeService.getFinance(transactionDTO.getCustomerId());    //pobieramy finanse kupującego

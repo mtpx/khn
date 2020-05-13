@@ -27,6 +27,7 @@ public class AddHouseServiceImpl implements AddHouseService {
 
     @Override
     public ResponseEntity<Object> addHouse(HouseDTO houseDTO) {
+        //Tak samo jak dla flat - można do metody prywatnej te dwie linijki
         Address address=addressService.createAddressObject(houseDTO);
         address.setRealAssets(new RealAssets(PropertyType.ID_HOUSE, PropertyType.HOUSE));//tworzymy obiekt z adresem na podstawie danych z DTO
         User user = userDAO.findById(houseDTO.getUserId()); //pobieramy użytkownika zawartego w propertyDTO

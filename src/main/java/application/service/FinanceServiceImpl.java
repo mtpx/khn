@@ -15,10 +15,12 @@ public class FinanceServiceImpl implements FinanceService {
     }
 
     @Override
+    //torchę za długa nazwa metody :D
     public Finance addFinanceRecordToUserAfterRegister(User user) {
+        //Wypełnienei finance przeniosłabym do prywatnej metody - żeby było mniej linijek kodu ale to jak uważasz :)
         Finance finance = new Finance();
         finance.setCurrency("PLN");
-        finance.setAmount(1000000); //milion jako prezent za rejestrację :) po to żeby nie grzebać ręcznie w tabeli z finansami
+        finance.setAmount(1000000); //milion jako prezent za rejestrację :) po to żeby nie grzebać ręcznie w tabeli z finansami    <------- nice :D
         finance.setUser(user);
         return financeDAO.save(finance);
     }
