@@ -1,12 +1,15 @@
 let floorInput, roomsInput, typeInput, areaInput, priceInput, streetInput, houseNumberInput, localNumberInput, postCodeInput, cityInput;
 let houseRadioBtn, flatRadioBtn, plotRadioBtn, allRadioBtns;
 let realAssetId, requestUrlSuffix="house";//default radio button - house
+
 $(document).ready(function () {
-    //nie jestem pewna czy to wszystko powinno byc w tej metodzie
-    //chyba fajniej byloby to jakos pogrupowac - chodzi o to zeby bylo czytelne dla innego deva :)
-    floorInput = $('#floorInput');
+    initializeFormVariables();
+});
+
+function initializeFormVariables() {
+    floorInput = $('#floorInput').hide();
     roomsInput = $('#roomsInput');
-    typeInput = $('#typeInput');
+    typeInput = $('#typeInput').hide();
     areaInput = $('#areaInput');
     priceInput = $('#priceInput');
     streetInput = $('#streetInput');
@@ -19,31 +22,37 @@ $(document).ready(function () {
     plotRadioBtn = $('#plotRadio');
     flatRadioBtn = $('#flatRadio');
     allRadioBtns = $('.form-check-input');
+}
 
-    floorInput.hide();
-    typeInput.hide();
+$(function () { //akcje po kliknieciu radio plot
     plotRadioBtn.click(function () {
         requestUrlSuffix="plot";
         realAssetId = 3;
-        allRadioBtns.removeClass("checked")
+        allRadioBtns.removeClass("checked");
         plotRadioBtn.addClass("checked");
         floorInput.hide();
         roomsInput.hide();
         typeInput.show();
     });
+});
+
+$(function () { //akcje po kliknieciu radio house
     houseRadioBtn.click(function () {
         requestUrlSuffix="house";
         realAssetId = 2;
-        allRadioBtns.removeClass("checked")
+        allRadioBtns.removeClass("checked");
         houseRadioBtn.addClass("checked");
         floorInput.hide();
         roomsInput.show();
         typeInput.hide();
     });
+});
+
+$(function(){  //akcje po kliknieciu radio flat
     flatRadioBtn.click(function () {
-        requestUrlSuffix="flat";
+        requestUrlSuffix = "flat";
         realAssetId = 1;
-        allRadioBtns.removeClass("checked")
+        allRadioBtns.removeClass("checked");
         flatRadioBtn.addClass("checked");
         floorInput.show();
         roomsInput.show();
@@ -84,6 +93,7 @@ function validateForm(){
         alert("Form errors: "+errors)
     }
 }
+
 function preparePropertyData(){
     let propertyData = {
         street: streetInput.val(),

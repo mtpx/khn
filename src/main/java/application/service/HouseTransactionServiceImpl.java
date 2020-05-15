@@ -26,62 +26,69 @@ public class HouseTransactionServiceImpl implements HouseTransactionService {
     }
 
     @Override
-    public ResponseEntity<Object> houseTransaction(TransactionDTO transactionDTO) {
+    public ResponseEntity<Object> verifyExistingProperty(TransactionDTO transactionDTO) {
         House house = houseDAO.findById(transactionDTO.getPropertyId()); //pobieramy sprzedawany dom
         Finance finance = financeService.getFinance(transactionDTO.getCustomerId()); //pobieramy finanse kupującego
         UserRealAssets userRealAssets = userRealAssetsService.getByHouseId(transactionDTO.getPropertyId()); //pobieramy wpis z userrealassets zawierający sprzedawany dom
+
         if(userRealAssets.getPlot()==null) //jeśli wpis z domem w userrealassets w polu plot_id ma null kupujemy sam dom (bez działki)
-            return houseOnlyTransaction(finance,house,transactionDTO);
+            return houseTransactionVerifyFinance(finance,house,transactionDTO);
         else    //jeśli plot nie jest nullem - kupujemy dom z działką
-            return houseAndPlotTransaction(finance,house,userRealAssets.getPlot(),transactionDTO);
-    }
-
-
-    // Prywatne metody powinny być pod public :) - to taka ogólna uwaga
-    private House assignNewOwnerToHouse(House house, User customer){
-        house.setUser(customer);
-        return houseDAO.save(house);
+            return houseAndPlotVerifyFinance(finance,house,userRealAssets.getPlot(),transactionDTO);
     }
 
     @Override
-    // metoda do podzielenia na mniejsze :)
-    public ResponseEntity<Object> houseAndPlotTransaction(Finance finance, House house, Plot plot, TransactionDTO transactionDTO){
+    public ResponseEntity<Object> houseAndPlotVerifyFinance(Finance finance, House house, Plot plot, TransactionDTO transactionDTO){
         int houseAndPlotPrice = house.getPrice()+plot.getPrice(); // sumujemy wartość domu i działki
+
         if(finance.getAmount()>=houseAndPlotPrice) { //jeśli kupujący ma więcej pieniędzy niż cena domu + działki
-            User customer = userDAO.findById(transactionDTO.getCustomerId()); //pobieramy kupującego
-
-            // oddzielne metody do finansów? [wtedy i houseOnlyTransaction skorzysta]
-            financeService.changeSellerFinance(house.getUser().id,houseAndPlotPrice); //zmieniamy stany kont
-            financeService.changeCustomerFinance(customer.getId(),houseAndPlotPrice);
-
-            userRealAssetsService.assignNewOwnerToHouseInUserRealAssets(house,customer); //podmieniamy właściciela w userrealassets
-
-            // kolejna metoda, ktora mozna wyniesc do prywatnej
-            assignNewOwnerToPlot(plot,customer); //podmieniamy właściela w tabelach plot i house
-            assignNewOwnerToHouse(house,customer);
-
-            return new ResponseEntity<>("You bought house (id: "+house.getId()+", area: "+house.getSize()+", price: "+house.getPrice()+
-                    ") with plot (id: "+plot.getId()+", area "+plot.getSize()+", price: "+plot.getPrice()+") . Total price: "+houseAndPlotPrice , HttpStatus.OK);
+            return houseAndPlotTransaction(transactionDTO,house,plot,houseAndPlotPrice);
         }else //jeśli kupujący ma mniej pieniędzy niż cena domu + działki
             return new ResponseEntity<>("You have not enough money on account", HttpStatus.BAD_REQUEST);
     }
 
-    private ResponseEntity<Object> houseOnlyTransaction(Finance finance, House house, TransactionDTO transactionDTO){
+    private ResponseEntity<Object> houseTransactionVerifyFinance(Finance finance, House house, TransactionDTO transactionDTO){
         if(finance.getAmount()>=house.getPrice()) { //jeśli kupujący ma więcej pieniędzy niż jest warta nieruchomość
-            User customer = userDAO.findById(transactionDTO.getCustomerId()); //pobieramy kupującego
-
-            financeService.changeSellerFinance(house.getUser().id,house.getPrice()); //zmieniamy finanse
-            financeService.changeCustomerFinance(customer.getId(),house.getPrice());
-
-            userRealAssetsService.assignNewOwnerToHouseInUserRealAssets(house,customer); //podmieniamy właściciela nieruchomosci w userrealassets
-            assignNewOwnerToHouse(house,customer);  //podmieniamy właściciela domu w tabeli house
-            return new ResponseEntity<>("You bought house (id: "+house.getId()+", area:  "+house.getSize()+", price: "+house.getPrice()+")", HttpStatus.OK);
-        }else
+            return houseTransaction(transactionDTO,house);
+        }else //jeśli kupującego nie stać na nieruchomość
             return new ResponseEntity<>("You have not enough money on account", HttpStatus.BAD_REQUEST);
     }
 
-    private Plot assignNewOwnerToPlot(Plot plot, User customer) {
+    private ResponseEntity<Object> houseAndPlotTransaction(TransactionDTO transactionDTO, House house, Plot plot, int houseAndPlotPrice){
+        User customer = userDAO.findById(transactionDTO.getCustomerId()); //pobieramy kupującego
+
+        financeService.changeFinanceAfterTransaction(customer.getId(),house.getUser().id,houseAndPlotPrice); //zmieniamy stany kont
+        assignNewOwnerToHouseAndPlot(plot,house,customer);//podmieniamy właściela w tabelach plot/house/userrealassets
+        return new ResponseEntity<>("You bought house (id: "+house.getId()+", area: "+house.getSize()+", price: "+house.getPrice()+
+                ") with plot (id: "+plot.getId()+", area "+plot.getSize()+", price: "+plot.getPrice()+") . Total price: "+houseAndPlotPrice , HttpStatus.OK);
+    }
+
+    private ResponseEntity<Object> houseTransaction(TransactionDTO transactionDTO, House house){
+        User customer = userDAO.findById(transactionDTO.getCustomerId()); //pobieramy kupującego
+
+        financeService.changeFinanceAfterTransaction(customer.getId(),house.getUser().id,house.getPrice());
+        setNewHouseOwner(house,customer); //zmiana właściciela domu w tabelach userrealassets/house
+        return new ResponseEntity<>("You bought house (id: "+house.getId()+", area:  "+house.getSize()+", price: "+house.getPrice()+")", HttpStatus.OK);
+    }
+
+    private void setNewHouseOwner(House house, User customer) {
+        userRealAssetsService.assignNewOwnerToHouse(house,customer); //podmieniamy właściciela nieruchomosci w userrealassets
+        assignNewOwnerToHouse(house,customer);  //podmieniamy właściciela domu w tabeli house
+    }
+
+    private void assignNewOwnerToPlot(Plot plot, User customer) {
         plot.setUser(customer);
-        return plotDAO.save(plot);
+        plotDAO.save(plot);
+    }
+
+    private void assignNewOwnerToHouse(House house, User customer){
+        house.setUser(customer);
+        houseDAO.save(house);
+    }
+
+    private void assignNewOwnerToHouseAndPlot(Plot plot, House house, User customer){
+        assignNewOwnerToPlot(plot,customer);  //podmieniamy własciela w tabeli plot
+        assignNewOwnerToHouse(house,customer);  //w tabeli house
+        userRealAssetsService.assignNewOwnerToHouse(house,customer); //w userrealassets
     }
 }

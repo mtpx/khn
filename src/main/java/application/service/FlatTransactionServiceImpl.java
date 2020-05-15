@@ -25,26 +25,27 @@ public class FlatTransactionServiceImpl implements FlatTransactionService {
     }
 
     @Override
-    // W tej metodzie pomyślałabym o uproszczeniu i podzieleniu na mniejsze
-    public ResponseEntity<Object> flatTransaction(TransactionDTO transactionDTO) {
+    public ResponseEntity<Object> verifyFinance(TransactionDTO transactionDTO) {
         Flat flat = flatDAO.findById(transactionDTO.getPropertyId()); //pobieramy sprzedawane mieszkanie
         Finance finance = financeService.getFinance(transactionDTO.getCustomerId());    //pobieramy finanse kupującego
+
         if(finance.getAmount()>=flat.getPrice()) { //jeśli kupujący ma więcej pieniędzy niż kosztuje mieszkanie
-            User customer = userDAO.findById(transactionDTO.getCustomerId()); //pobieramy kupującego
-
-            financeService.changeSellerFinance(flat.getUser().id,flat.getPrice()); //zmieniamy stany kont
-            financeService.changeCustomerFinance(customer.getId(),flat.getPrice());
-
-            userRealAssetsService.assignNewOwnerToFlatInUserRealAssets(flatDAO.findById(transactionDTO.getPropertyId()),customer); //podmieniamy właściciela w userrealassets
-
-            assignNewOwnerToFlat(flat,customer); //podmieniamy właściciela w tabeli flat
-            return new ResponseEntity<>("You bought flat (id: "+flat.getId()+", area:  "+flat.getSize()+", price: "+flat.getPrice()+")", HttpStatus.OK);
-        }else
+            return flatTransaction(transactionDTO,flat);
+        }else //jeśli kupujący ma mniej pieniędzy niż kosztuje mieskanie
             return new ResponseEntity<>("You have not enough money on account", HttpStatus.BAD_REQUEST);
     }
 
-    private Flat assignNewOwnerToFlat(Flat flat, User customer){
+    private void assignNewOwnerToFlat(Flat flat, User customer){
         flat.setUser(customer);
-        return flatDAO.save(flat);
+        flatDAO.save(flat);
+    }
+
+    private ResponseEntity<Object> flatTransaction(TransactionDTO transactionDTO, Flat flat){
+        User customer = userDAO.findById(transactionDTO.getCustomerId()); //pobieramy kupującego
+
+        financeService.changeFinanceAfterTransaction(customer.getId(),flat.getUser().id,flat.getPrice()); //zmieniamy stany kont
+        userRealAssetsService.assignNewOwnerToFlat(flatDAO.findById(transactionDTO.getPropertyId()),customer); //podmieniamy właściciela w userrealassets
+        assignNewOwnerToFlat(flat,customer); //podmieniamy właściciela w tabeli flat
+        return new ResponseEntity<>("You bought flat (id: "+flat.getId()+", area:  "+flat.getSize()+", price: "+flat.getPrice()+")", HttpStatus.OK);
     }
 }

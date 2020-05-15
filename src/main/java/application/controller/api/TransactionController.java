@@ -1,10 +1,10 @@
 package application.controller.api;
 
 import application.dto.TransactionDTO;
+import application.facades.TransactionFacade;
 import application.model.Flat;
 import application.model.House;
 import application.model.Plot;
-import application.service.facades.TransactionFacade;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +17,11 @@ import javax.validation.Valid;
 @Api(value = "Transactions API controller")
 @RestController
 @RequestMapping("/property/transaction")
-public class APITransactionController {
+public class TransactionController {
 
     private TransactionFacade transactionFacade;
 
-    public APITransactionController(TransactionFacade transactionFacade) {
+    public TransactionController(TransactionFacade transactionFacade) {
         this.transactionFacade = transactionFacade;
     }
 

@@ -10,11 +10,11 @@ import java.util.List;
 @Api(value = "Property view API controller")
 @RestController
 @RequestMapping("/property/view")
-public class APIViewPropertyController {
+public class ViewPropertyController {
 
     private AuctionViewService auctionViewService;
 
-    public APIViewPropertyController(AuctionViewService auctionViewService) {
+    public ViewPropertyController(AuctionViewService auctionViewService) {
         this.auctionViewService = auctionViewService;
     }
 

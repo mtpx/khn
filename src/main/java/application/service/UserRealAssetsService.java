@@ -3,15 +3,13 @@ package application.service;
 import application.model.*;
 
 public interface UserRealAssetsService {
-    //NMetody, ktore robią tylko zapis na bazie, zmieniłabym na void
-    UserRealAssets saveUserRealAsset(User user, Flat flat);
-    UserRealAssets saveUserRealAsset(User user, House house);
-    UserRealAssets saveUserRealAssets(User user, Plot plot);
+    void saveUserRealAsset(User user, Flat flat);
+    void saveUserRealAsset(User user, House house);
+    void saveUserRealAssets(User user, Plot plot);
 
-    //nazwy metod na mniejsze :)
-    UserRealAssets assignNewOwnerToFlatInUserRealAssets(Flat flat, User customer);
-    UserRealAssets assignNewOwnerToHouseInUserRealAssets(House house, User customer);
-    UserRealAssets assignNewOwnerToPlotInUserRealAssets(Plot plot, User customer);
+    UserRealAssets assignNewOwnerToFlat(Flat flat, User customer);
+    UserRealAssets assignNewOwnerToHouse(House house, User customer);
+    UserRealAssets assignNewOwnerToPlot(Plot plot, User customer);
 
     UserRealAssets addPlotToUserRealAssets(UserRealAssets userRealAssets, Plot plot);
 

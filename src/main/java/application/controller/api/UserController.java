@@ -12,11 +12,11 @@ import java.util.List;
 
 @Api(value = "User operations API controller")
 @RestController
-public class APIUserController {
+public class UserController {
 
     private UserService userService;
 
-    public APIUserController(UserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 

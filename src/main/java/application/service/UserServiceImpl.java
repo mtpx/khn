@@ -20,6 +20,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserDAO userDAO;
     private final FinanceService financeService;
+
     public UserServiceImpl(UserDAO userDAO, FinanceService financeService) {
         this.userDAO = userDAO;
         this.financeService = financeService;
@@ -28,19 +29,14 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<Object> addUser(UserRegisterDTO userRegisterDTO, String userType) {
         if(userDAO.findByEmail(userRegisterDTO.getEmail())!=null)
             return new ResponseEntity<>("User with provided email exists",HttpStatus.BAD_REQUEST);
-        //Zrobiłabym prywanta metode prepareUser wtedy metoda editUserData rowniez z niej skorzysta
-        User user = new User();
-        user.setFirstname(userRegisterDTO.getFirstname());
-        user.setLastname(userRegisterDTO.getLastname());
-        user.setEmail(userRegisterDTO.getEmail());
-        user.setPassword(userRegisterDTO.getPassword());
+        User user = prepareUserData(userRegisterDTO, new User());
         switch (userType){
             case "customer":
                 user = userDAO.save(addCustomerRole(user)); break;
             case "seller":
                 user = userDAO.save(addSellerRole(user)); break;
         }
-        financeService.addFinanceRecordToUserAfterRegister(user);
+        financeService.addFinanceRecordToUser(user);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
@@ -91,13 +87,7 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<Object> editUserData(UserRegisterDTO userRegisterDTO, int id) {
         if(userDAO.findByEmail(userRegisterDTO.getEmail())!=null && !userDAO.findById(id).getEmail().equals(userRegisterDTO.getEmail()))
             return new ResponseEntity<>("User with following email exists",HttpStatus.BAD_REQUEST);
-        User user = userDAO.findById(id);
-        user.setFirstname(userRegisterDTO.getFirstname());
-        user.setLastname(userRegisterDTO.getLastname());
-        user.setEmail(userRegisterDTO.getEmail());
-        user.setPassword(userRegisterDTO.getPassword());
-        userDAO.save(user);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<>(userDAO.save(prepareUserData(userRegisterDTO,userDAO.findById(id))), HttpStatus.OK);
     }
 
     @Override
@@ -118,11 +108,19 @@ public class UserServiceImpl implements UserService {
     }
 
     private User addCustomerRole(User user) {
-        List<Role> roles = new ArrayList<>();;
+        List<Role> roles = new ArrayList<>();
         if(user.getRoles()!=null)   //w przypadku gdy lista ról użytkownika nie jest pusta (przy dodawaniu roli customer dla sprzedawcy)
             roles = user.getRoles();    //uzupełniamy listę rolami aktualnie przypisanymi do użytkownika
         roles.add(new Role(UserType.ID_CUSTOMER,UserType.CUSTOMER));
         user.setRoles(roles);
+        return user;
+    }
+
+    private User prepareUserData(UserRegisterDTO userRegisterDTO, User user){
+        user.setFirstname(userRegisterDTO.getFirstname());
+        user.setLastname(userRegisterDTO.getLastname());
+        user.setEmail(userRegisterDTO.getEmail());
+        user.setPassword(userRegisterDTO.getPassword());
         return user;
     }
 }

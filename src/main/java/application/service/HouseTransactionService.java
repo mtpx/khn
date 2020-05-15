@@ -7,6 +7,6 @@ import application.model.Plot;
 import org.springframework.http.ResponseEntity;
 
 public interface HouseTransactionService {
-    ResponseEntity<Object> houseTransaction(TransactionDTO transactionDTO);
-    ResponseEntity<Object> houseAndPlotTransaction(Finance finance, House house, Plot plot, TransactionDTO transactionDTO);
+    ResponseEntity<Object> verifyExistingProperty(TransactionDTO transactionDTO);
+    ResponseEntity<Object> houseAndPlotVerifyFinance(Finance finance, House house, Plot plot, TransactionDTO transactionDTO);
 }

@@ -6,6 +6,6 @@ import application.model.User;
 import org.springframework.http.ResponseEntity;
 
 public interface PlotTransactionService {
-    ResponseEntity<Object> plotTransaction(TransactionDTO transactionDTO);
+    ResponseEntity<Object> plotPreTransaction(TransactionDTO transactionDTO);
     Plot assignNewOwnerToPlot(Plot plot, User customer);
 }

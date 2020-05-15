@@ -3,10 +3,10 @@ package application.controller.api;
 import application.dto.FlatDTO;
 import application.dto.HouseDTO;
 import application.dto.PlotDTO;
+import application.facades.PropertyFacade;
 import application.model.Flat;
 import application.model.House;
 import application.model.Plot;
-import application.service.facades.AddPropertyFacade;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
@@ -16,30 +16,29 @@ import javax.validation.Valid;
 @Api(value = "Adding property API controller")
 @RestController
 @RequestMapping("/property/add")
-// nazewnictwo - PropertyController brzmi lepiej :) [Komentarz równiez do reszty kontrolerów]
-public class APIAddPropertyController {
+public class AddPropertyController {
 
-    private AddPropertyFacade addPropertyFacade;
+    private PropertyFacade propertyFacade;
 
-    public APIAddPropertyController(AddPropertyFacade addPropertyFacade) {
-        this.addPropertyFacade = addPropertyFacade;
+    public AddPropertyController(PropertyFacade propertyFacade) {
+        this.propertyFacade = propertyFacade;
     }
 
     @ApiOperation(value = "Adding flat", response = Flat.class)
     @PostMapping(value = "/flat")
     public ResponseEntity<Object> addFlat(@RequestBody @Valid FlatDTO flatDTO){
-        return addPropertyFacade.addFlat(flatDTO);
+        return propertyFacade.addFlat(flatDTO);
     }
 
     @ApiOperation(value = "Adding house", response = House.class)
     @PostMapping(value = "/house")
     public ResponseEntity<Object> addHouse(@RequestBody @Valid HouseDTO houseDTO){
-        return addPropertyFacade.addHouse(houseDTO);
+        return propertyFacade.addHouse(houseDTO);
     }
 
     @ApiOperation(value = "Adding plot", response = Plot.class)
     @PostMapping(value = "/plot")
     public ResponseEntity<Object> addPlot(@RequestBody @Valid PlotDTO plotDTO){
-        return addPropertyFacade.addPlot(plotDTO);
+        return propertyFacade.addPlot(plotDTO);
     }
 }

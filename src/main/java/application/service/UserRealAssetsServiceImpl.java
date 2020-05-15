@@ -15,46 +15,36 @@ public class UserRealAssetsServiceImpl implements UserRealAssetsService {
     }
 
     @Override
-    // Ustawianie UserRealAssets wrzuciłabym do prywatnych metod - tak jak w przypadku poprzednich - ja lubię miec jak najmniejsze metody xD
-    public UserRealAssets saveUserRealAsset(User user, Flat flat){ //dodawanie wpisu z mieszkaniem w userrealassets
-        UserRealAssets userRealAssets = new UserRealAssets();
-        userRealAssets.setUser(user);
-        userRealAssets.setFlat(flat);
-        return userRealAssetsDAO.save(userRealAssets);
+    public void saveUserRealAsset(User user, Flat flat){ //dodawanie wpisu z mieszkaniem w userrealassets
+        userRealAssetsDAO.save(setUserRealAsset(user,flat));
     }
 
     @Override
-    public UserRealAssets saveUserRealAsset(User user, House house){ //dodawanie wpisu z domem w userrealassets
-        UserRealAssets userRealAssets = new UserRealAssets();
-        userRealAssets.setUser(user);
-        userRealAssets.setHouse(house);
-        return userRealAssetsDAO.save(userRealAssets);
+    public void saveUserRealAsset(User user, House house){ //dodawanie wpisu z domem w userrealassets
+        userRealAssetsDAO.save(setUserRealAsset(user,house));
     }
 
     @Override
-    public UserRealAssets saveUserRealAssets(User user, Plot plot){ //dodawanie wpisu z działką w userrealassets
-        UserRealAssets userRealAssets = new UserRealAssets();
-        userRealAssets.setUser(user);
-        userRealAssets.setPlot(plot);
-        return userRealAssetsDAO.save(userRealAssets);
+    public void saveUserRealAssets(User user, Plot plot){ //dodawanie wpisu z działką w userrealassets
+        userRealAssetsDAO.save(setUserRealAsset(user,plot));
     }
 
     @Override
-    public UserRealAssets assignNewOwnerToFlatInUserRealAssets(Flat flat, User customer){ //zmiana właściela mieszkania w userrealassets
+    public UserRealAssets assignNewOwnerToFlat(Flat flat, User customer){ //zmiana właściela mieszkania w userrealassets
         UserRealAssets userRealAssets = getByFlatId(flat.getId());
         userRealAssets.setUser(customer);
         return userRealAssetsDAO.save(userRealAssets);
     }
 
     @Override
-    public UserRealAssets assignNewOwnerToHouseInUserRealAssets(House house, User customer){ //zmiana właściela domu w userrealassets
+    public UserRealAssets assignNewOwnerToHouse(House house, User customer){ //zmiana właściela domu w userrealassets
         UserRealAssets userRealAssets = userRealAssetsDAO.getByHouseId(house.getId());
         userRealAssets.setUser(customer);
         return userRealAssetsDAO.save(userRealAssets);
     }
 
     @Override
-    public UserRealAssets assignNewOwnerToPlotInUserRealAssets(Plot plot, User customer){ //zmiana właściela działki w userrealassets
+    public UserRealAssets assignNewOwnerToPlot(Plot plot, User customer){ //zmiana właściela działki w userrealassets
         UserRealAssets userRealAssets = userRealAssetsDAO.getByPlotId(plot.getId());
         userRealAssets.setUser(customer);
         return userRealAssetsDAO.save(userRealAssets);
@@ -79,5 +69,26 @@ public class UserRealAssetsServiceImpl implements UserRealAssetsService {
     @Override
     public UserRealAssets getByPlotId(int plotId) {
         return userRealAssetsDAO.getByPlotId(plotId);
+    }
+
+    private UserRealAssets setUserRealAsset(User user, Flat flat) {
+        UserRealAssets userRealAssets = new UserRealAssets();
+        userRealAssets.setUser(user);
+        userRealAssets.setFlat(flat);
+        return userRealAssets;
+    }
+
+    private UserRealAssets setUserRealAsset(User user, Plot plot) {
+        UserRealAssets userRealAssets = new UserRealAssets();
+        userRealAssets.setUser(user);
+        userRealAssets.setPlot(plot);
+        return userRealAssets;
+    }
+
+    private UserRealAssets setUserRealAsset(User user, House house) {
+        UserRealAssets userRealAssets = new UserRealAssets();
+        userRealAssets.setUser(user);
+        userRealAssets.setHouse(house);
+        return userRealAssets;
     }
 }
