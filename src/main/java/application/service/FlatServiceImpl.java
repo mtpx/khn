@@ -15,21 +15,21 @@ public class FlatServiceImpl implements FlatService {
     private final FlatDAO flatDAO;
     private final UserDAO userDAO;
     private final UserRealAssetsService userRealAssetsService;
-    private final AddressDAO addressDAO;
+    private final AddressService addressService;
 
-    public FlatServiceImpl(UserRealAssetsService userRealAssetsService, FlatDAO flatDAO, UserDAO userDAO, AddressDAO addressDAO) {
+    public FlatServiceImpl(UserRealAssetsService userRealAssetsService, FlatDAO flatDAO, UserDAO userDAO, AddressService addressService) {
         this.flatDAO = flatDAO;
         this.userDAO = userDAO;
         this.userRealAssetsService = userRealAssetsService;
-        this.addressDAO = addressDAO;
+        this.addressService = addressService;
     }
 
     @Override
     public ResponseEntity<Object> verifyAddress(FlatDTO flatDTO) {
-        Address address = createAddressObject(flatDTO);   //tworzymy obiekt z adresem na podstawie danych z DTO
+        Address address = addressService.createAddressObject(flatDTO, PropertyType.FLAT, PropertyType.ID_FLAT);   //tworzymy obiekt z adresem na podstawie danych z DTO
         User user = userDAO.findById(flatDTO.getUserId()); //pobieramy użytkownika zawartego w propertyDTO
 
-        if (addressDAO.getAddress(address).size()!=0) //jeśli w bazie istnieje podany adres nie możemy dodać mieszkania
+        if (addressService.getAddress(address).size()!=0) //jeśli w bazie istnieje podany adres nie możemy dodać mieszkania
             return new ResponseEntity<>("property at this address exists", HttpStatus.BAD_REQUEST);
         else {//jeśli adres nie istnieje w bazie - dodajemy mieszkanie oraz wpis w userrealassets
             return addFlat(address,user,flatDTO);
@@ -52,16 +52,5 @@ public class FlatServiceImpl implements FlatService {
         flat.setPrice(flatDTO.getPrice());
         flat.setRooms(flatDTO.getRooms());
         return flatDAO.save(flat);
-    }
-
-    private Address createAddressObject(FlatDTO flatDTO){
-        Address address = new Address();
-        address.setCity(flatDTO.getCity());
-        address.setHomeNumber(flatDTO.getHouseNumber());
-        address.setLocalNumber(flatDTO.getLocalNumber());
-        address.setPostCode(flatDTO.getPostCode());
-        address.setStreet(flatDTO.getStreet());
-        address.setRealAssets(new RealAssets(PropertyType.ID_FLAT,PropertyType.FLAT));
-        return address;
     }
 }

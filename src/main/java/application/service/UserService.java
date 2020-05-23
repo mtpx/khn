@@ -11,8 +11,5 @@ public interface UserService {
     ResponseEntity<Object> deleteUser (int id);
     User findById(int id);
     List<User> findAll();
-    ResponseEntity<String> changePassword(UserChangePasswordDTO userChangePasswordDTO);
     ResponseEntity<Object> getUserByEmail(String email);
-    ResponseEntity<Object> editUserData(UserRegisterDTO userRegisterDTO, int id);
-    ResponseEntity<Object> addCustomerRoleToSeller(int id);
 }

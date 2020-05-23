@@ -3,6 +3,8 @@ package application.controller.api;
 import application.model.User;
 import application.dto.UserChangePasswordDTO;
 import application.dto.UserRegisterDTO;
+import application.service.UserEditService;
+import application.service.UserRolesService;
 import application.service.UserService;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -15,9 +17,13 @@ import java.util.List;
 public class UserController {
 
     private UserService userService;
+    private UserRolesService userRolesService;
+    private UserEditService userEditService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserRolesService userRolesService, UserEditService userEditService) {
         this.userService = userService;
+        this.userRolesService = userRolesService;
+        this.userEditService = userEditService;
     }
 
     @ApiOperation(value = "Registering seller", response = User.class)
@@ -35,14 +41,14 @@ public class UserController {
     @ApiOperation(value = "Change password")
     @PostMapping(value = "/changePassword")
     public ResponseEntity<String> changePassword(@RequestBody UserChangePasswordDTO userChangePasswordDTO) {
-        return userService.changePassword(userChangePasswordDTO);
+        return userEditService.changePassword(userChangePasswordDTO);
     }
 
     @ApiOperation(value = "Edit user data")
     @ApiImplicitParam(name = "id", value = "User id", required = true, dataType = "int", paramType = "path", defaultValue="1")
     @PostMapping(value = "user/{id}")
     public ResponseEntity<Object> editUserData(@PathVariable int id,@RequestBody UserRegisterDTO userRegisterDTO) {
-        return userService.editUserData(userRegisterDTO,id);
+        return userEditService.editUserData(userRegisterDTO,id);
     }
 
     @ApiOperation(value = "Get all users", response = User.class)
@@ -76,7 +82,7 @@ public class UserController {
     @ApiImplicitParam(name = "email", value = "User email", required = true, dataType = "String", paramType = "path", defaultValue="email@email.com")
     @PostMapping(value = "/user/becomeCustomer/{id}")
     public ResponseEntity<Object> getUserByEmail(@PathVariable int id){
-        return userService.addCustomerRoleToSeller(id);
+        return userRolesService.addCustomerRoleToSeller(id);
     }
 
 

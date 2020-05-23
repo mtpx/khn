@@ -14,14 +14,14 @@ import java.util.List;
 public class PlotServiceImpl implements PlotService {
     final static Logger LOGGER = Logger.getLogger(PlotServiceImpl.class.getName());
 
-    private final AddressDAO addressDAO;
+    private final AddressService addressService;
     private final HouseDAO houseDAO;
     private final PlotDAO plotDAO;
     private final UserDAO userDAO;
     private final UserRealAssetsService userRealAssetsService;
 
-    public PlotServiceImpl(AddressDAO addressDAO, UserRealAssetsService userRealAssetsService, HouseDAO houseDAO, PlotDAO plotDAO, UserDAO userDAO) {
-        this.addressDAO = addressDAO;
+    public PlotServiceImpl(AddressService addressService, UserRealAssetsService userRealAssetsService, HouseDAO houseDAO, PlotDAO plotDAO, UserDAO userDAO) {
+        this.addressService = addressService;
         this.houseDAO = houseDAO;
         this.plotDAO = plotDAO;
         this.userDAO = userDAO;
@@ -30,9 +30,9 @@ public class PlotServiceImpl implements PlotService {
 
     @Override
     public ResponseEntity<Object> verifyAddress(PlotDTO plotDTO) {
-        Address address= createAddressObject(plotDTO);//tworzymy obiekt z adresem na podstawie danych z DTO
+        Address address= addressService.createAddressObject(plotDTO, PropertyType.PLOT,PropertyType.ID_PLOT);//tworzymy obiekt z adresem na podstawie danych z DTO
         User user = userDAO.findById(plotDTO.getUserId()); //pobieramy użytkownika zawartego w propertyDTO
-        List<Address> existingAddresses = addressDAO.getAddress(address); //pobieramy listę adresów takich jak ten który chcemy dodać
+        List<Address> existingAddresses = addressService.getAddress(address); //pobieramy listę adresów takich jak ten który chcemy dodać
 
         if(existingAddresses.size()==0) { //jeśli adres nie istnieje w bazie - dodajemy działkę oraz wpis w userrealassets
             return addPlot(address,user,plotDTO);
@@ -64,17 +64,6 @@ public class PlotServiceImpl implements PlotService {
         return plotDAO.save(plot);
     }
 
-    private Address createAddressObject(PlotDTO plotDTO){
-        Address address = new Address();
-        address.setCity(plotDTO.getCity());
-        address.setHomeNumber(plotDTO.getHouseNumber());
-        address.setLocalNumber(plotDTO.getLocalNumber());
-        address.setPostCode(plotDTO.getPostCode());
-        address.setStreet(plotDTO.getStreet());
-        address.setRealAssets(new RealAssets(PropertyType.ID_PLOT,PropertyType.PLOT));
-        return address;
-    }
-
     private void assignPlotToHouse(House house, Plot plot, UserRealAssets userRealAssets){
         addHouseToPlot(house, plot); //dodajemy do rekordu dodanej działki dom który na niej stoi
         userRealAssetsService.addPlotToUserRealAssets(userRealAssets, plot); //aktualizujemy wpis o działkę w userrealassets
@@ -90,8 +79,8 @@ public class PlotServiceImpl implements PlotService {
 
     private ResponseEntity<Object> addPlotToHouse(Address existingAddresses, User user, PlotDTO plotDTO, Address newAddress){
         House house = houseDAO.findByAddressId(existingAddresses.getId()); //pobieramy dom na podstawie adresu który został podany przy dodawaniu działki
-
         Plot plot = savePlot(newAddress, user, plotDTO); //zapisujemy działkę do bazy
+
         assignPlotToHouse(house,plot,userRealAssetsService.getByHouseId(house.getId()));
         return new ResponseEntity<>(plot, HttpStatus.CREATED);
     }

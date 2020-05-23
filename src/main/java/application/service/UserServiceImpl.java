@@ -1,16 +1,13 @@
 package application.service;
 
 import application.dao.UserDAO;
-import application.model.Role;
 import application.model.User;
 import application.dto.UserChangePasswordDTO;
 import application.dto.UserRegisterDTO;
-import application.model.enums.UserType;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,21 +17,27 @@ public class UserServiceImpl implements UserService {
 
     private final UserDAO userDAO;
     private final FinanceService financeService;
+    private final UserRolesService userRolesService;
+    private final UserEditService userEditService;
 
-    public UserServiceImpl(UserDAO userDAO, FinanceService financeService) {
+
+
+    public UserServiceImpl(UserDAO userDAO, FinanceService financeService, UserRolesService userRolesService, UserEditService userEditService) {
         this.userDAO = userDAO;
         this.financeService = financeService;
+        this.userRolesService = userRolesService;
+        this.userEditService = userEditService;
     }
 
     public ResponseEntity<Object> addUser(UserRegisterDTO userRegisterDTO, String userType) {
         if(userDAO.findByEmail(userRegisterDTO.getEmail())!=null)
             return new ResponseEntity<>("User with provided email exists",HttpStatus.BAD_REQUEST);
-        User user = prepareUserData(userRegisterDTO, new User());
+        User user = userEditService.prepareUserData(userRegisterDTO, new User());
         switch (userType){
             case "customer":
-                user = userDAO.save(addCustomerRole(user)); break;
+                user = userDAO.save(userRolesService.addCustomerRole(user)); break;
             case "seller":
-                user = userDAO.save(addSellerRole(user)); break;
+                user = userDAO.save(userRolesService.addSellerRole(user)); break;
         }
         financeService.addFinanceRecordToUser(user);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
@@ -59,68 +62,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<String> changePassword(UserChangePasswordDTO userChangePasswordDTO) {
-        User myUser = userDAO.findByEmail(userChangePasswordDTO.getEmail());
-        if (myUser == null)
-            return new ResponseEntity<>("User not exists", HttpStatus.BAD_REQUEST);
-
-        String oldPasswordFromDb = myUser.getPassword();
-
-        if (userChangePasswordDTO.getOldPassword().equals(userChangePasswordDTO.getNewPassword())){
-            return new ResponseEntity<>("New and old passwords should be different", HttpStatus.BAD_REQUEST);
-        }else if (!oldPasswordFromDb.equals(userChangePasswordDTO.getOldPassword())){
-            return new ResponseEntity<>("Invalid old password", HttpStatus.BAD_REQUEST);
-        }else {
-            userDAO.changePassword(myUser, userChangePasswordDTO.getOldPassword(), userChangePasswordDTO.getNewPassword());
-            return new ResponseEntity<>("Your password has been changed", HttpStatus.OK);
-        }
-    }
-
-    @Override
     public ResponseEntity<Object> getUserByEmail(String email) {
         if(userDAO.findByEmail(email)==null)
             return new ResponseEntity<>("user not exists",HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(userDAO.findByEmail(email),HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<Object> editUserData(UserRegisterDTO userRegisterDTO, int id) {
-        if(userDAO.findByEmail(userRegisterDTO.getEmail())!=null && !userDAO.findById(id).getEmail().equals(userRegisterDTO.getEmail()))
-            return new ResponseEntity<>("User with following email exists",HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<>(userDAO.save(prepareUserData(userRegisterDTO,userDAO.findById(id))), HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<Object> addCustomerRoleToSeller(int id) {
-        User user = userDAO.findById(id);
-        if (user.getRoles().size()==1) {    //możemy dodać customera jedynie jeśli użytkownik ma jedną rolę 'seller'
-            if (user.getRoles().get(0).getName().equals("seller"))
-                return new ResponseEntity<>(userDAO.save(addCustomerRole(user)), HttpStatus.OK);
-        }
-        return new ResponseEntity<>("Adding customer role error: user has customer role or cannot have seller role", HttpStatus.BAD_REQUEST);
-    }
-
-    private User addSellerRole(User user) {
-        List<Role> roles = new ArrayList<>();
-        roles.add(new Role(UserType.ID_SELLER,UserType.SELLER));
-        user.setRoles(roles);
-        return user;
-    }
-
-    private User addCustomerRole(User user) {
-        List<Role> roles = new ArrayList<>();
-        if(user.getRoles()!=null)   //w przypadku gdy lista ról użytkownika nie jest pusta (przy dodawaniu roli customer dla sprzedawcy)
-            roles = user.getRoles();    //uzupełniamy listę rolami aktualnie przypisanymi do użytkownika
-        roles.add(new Role(UserType.ID_CUSTOMER,UserType.CUSTOMER));
-        user.setRoles(roles);
-        return user;
-    }
-
-    private User prepareUserData(UserRegisterDTO userRegisterDTO, User user){
-        user.setFirstname(userRegisterDTO.getFirstname());
-        user.setLastname(userRegisterDTO.getLastname());
-        user.setEmail(userRegisterDTO.getEmail());
-        user.setPassword(userRegisterDTO.getPassword());
-        return user;
     }
 }
