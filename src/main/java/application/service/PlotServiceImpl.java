@@ -56,6 +56,7 @@ public class PlotServiceImpl implements PlotService {
         plot.setSize(plotDTO.getSize());
         plot.setPrice(plotDTO.getPrice());
         plot.setType(plotDTO.getType());
+        plot.setSold(false);
         return plotDAO.save(plot);
     }
 

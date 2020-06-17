@@ -78,11 +78,13 @@ public class HouseTransactionServiceImpl implements HouseTransactionService {
 
     private void assignNewOwnerToPlot(Plot plot, User customer) {
         plot.setUser(customer);
+        plot.setSold(true);
         plotDAO.save(plot);
     }
 
     private void assignNewOwnerToHouse(House house, User customer){
         house.setUser(customer);
+        house.setSold(true);
         houseDAO.save(house);
     }
 

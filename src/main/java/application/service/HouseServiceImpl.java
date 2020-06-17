@@ -51,6 +51,7 @@ public class HouseServiceImpl implements HouseService {
         house.setSize(houseDTO.getSize());
         house.setPrice(houseDTO.getPrice());
         house.setRooms(houseDTO.getRooms());
+        house.setSold(false);
         return houseDAO.save(house);
     }
 }

@@ -32,6 +32,9 @@ public class Plot {
     @Column(name="price",nullable = false)
     private int price;
 
+    @Column(name="sold",nullable = false)
+    private boolean sold;
+
     @NotEmpty(message="Provide type")
     @Column(name="type",nullable = false)
     private String type;

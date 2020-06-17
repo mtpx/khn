@@ -37,6 +37,7 @@ public class FlatTransactionServiceImpl implements FlatTransactionService {
 
     private void assignNewOwnerToFlat(Flat flat, User customer){
         flat.setUser(customer);
+        flat.setSold(true);
         flatDAO.save(flat);
     }
 

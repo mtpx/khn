@@ -1,8 +1,10 @@
 package application.controller.api;
 
+import application.dao.PropertyViewDAO;
 import application.model.User;
 import application.dto.UserChangePasswordDTO;
 import application.dto.UserRegisterDTO;
+import application.model.views.PropertyView;
 import application.service.UserEditService;
 import application.service.UserRolesService;
 import application.service.UserService;
@@ -19,11 +21,13 @@ public class UserController {
     private UserService userService;
     private UserRolesService userRolesService;
     private UserEditService userEditService;
+    private PropertyViewDAO propertyViewDAO;
 
-    public UserController(UserService userService, UserRolesService userRolesService, UserEditService userEditService) {
+    public UserController(UserService userService, UserRolesService userRolesService, UserEditService userEditService, PropertyViewDAO propertyViewDAO) {
         this.userService = userService;
         this.userRolesService = userRolesService;
         this.userEditService = userEditService;
+        this.propertyViewDAO = propertyViewDAO;
     }
 
     @ApiOperation(value = "Registering seller", response = User.class)
@@ -83,6 +87,13 @@ public class UserController {
     @PostMapping(value = "/user/becomeCustomer/{id}")
     public ResponseEntity<Object> getUserByEmail(@PathVariable int id){
         return userRolesService.addCustomerRoleToSeller(id);
+    }
+
+    @ApiOperation(value = "Get user by email", response = Iterable.class)
+    @ApiImplicitParam(name = "email", value = "User email", required = true, dataType = "String", paramType = "path", defaultValue="email@email.com")
+    @GetMapping(value = "/user/prop/{email:.+}/")
+    public List<PropertyView> getPropByEmail(@PathVariable String email){
+        return propertyViewDAO.findByEmailForSale(email);
     }
 
 

@@ -10,40 +10,40 @@ public class ViewsController {
 
     @GetMapping(value ="/index")
     public String index() {
-        return "index.html";
+        return "/index.html";
     }
 
     @GetMapping(value ="/changePassword")
     public String changePassword() {
-        return "changePassword.html";
+        return "/changePassword.html";
     }
 
     @GetMapping(value ="/main")
     public String main(Model model) {
         model.addAttribute("email", SecurityContextHolder.getContext().getAuthentication().getName());
         model.addAttribute("roles", SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-        return "main.jsp";
+        return "/main.jsp";
     }
 
     @GetMapping(value ="/footer")
     public String footer() {
-        return "footer.html";
+        return "/footer.html";
     }
 
     @GetMapping(value ="/navigationMenu")
     public String navigationMenu() {
-        return "navigationMenu.html";
+        return "/navigationMenu.html";
     }
 
     @GetMapping(value ="/auctions")
     public String auctions() {
-        return "auctions.html";
+        return "/auctions.html";
     }
 
     @GetMapping(value ="/profile")
     public String sellerProfile(Model model) {
         model.addAttribute("userName", SecurityContextHolder.getContext().getAuthentication().getName());
-        return "profile.jsp";
+        return "/profile.jsp";
     }
 
 
@@ -74,7 +74,7 @@ public class ViewsController {
 
     @GetMapping(value ="/seller/sales")
     public String sellerSales() {
-        return "seller/sales.html";
+        return "seller/sales.xhtml";
     }
 
     @GetMapping(value ="/seller/addProperty")
@@ -90,11 +90,6 @@ public class ViewsController {
         return "customer/register.html";
     }
 
-    @GetMapping(value ="/customer/credits")
-    public String credits() {
-        return "customer/credits.html";
-    }
-
     @GetMapping(value ="/customer/login")
     public String customerLogin() {
         return "customer/login.html";
@@ -102,6 +97,6 @@ public class ViewsController {
 
     @GetMapping(value ="/customer/buyings")
     public String buyings() {
-        return "customer/buyings.html";
+        return "customer/buyings.xhtml";
     }
 }

@@ -34,6 +34,9 @@ public class Flat {
     @Column(name="floor",nullable = false)
     private int floor;
 
+    @Column(name="sold",nullable = false)
+    private boolean sold;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="userId")
     private User user;

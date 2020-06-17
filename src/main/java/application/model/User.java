@@ -8,7 +8,7 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(name = User.GET_USERS, query = User.QUERY_GET_USERS),
         @NamedQuery(name = User.VERIFY_CREDENTIALS, query = User.QUERY_VERIFY_CREDENTIALS),
-        @NamedQuery(name = User.GET_USER_ID_BY_EMAIL, query = User.QUERY_GET_USER_ID_BY_EMAIL),
+        @NamedQuery(name = User.GET_USER_BY_EMAIL, query = User.QUERY_GET_USER_BY_EMAIL),
 })
 
 //@Data
@@ -24,8 +24,8 @@ public class User {
     public static final String VERIFY_CREDENTIALS = "User.verify_credentials";
     public static final String QUERY_VERIFY_CREDENTIALS = "select u from User u where u.email = :email and u.password = :password";
 
-    public static final String GET_USER_ID_BY_EMAIL = "User.get_userId_by_mail";
-    public static final String QUERY_GET_USER_ID_BY_EMAIL = "select u from User u where u.email= :email";
+    public static final String GET_USER_BY_EMAIL = "User.get_user_by_mail";
+    public static final String QUERY_GET_USER_BY_EMAIL = "select u from User u where u.email= :email";
 
 
     @Id

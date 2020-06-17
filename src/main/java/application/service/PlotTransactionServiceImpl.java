@@ -29,6 +29,7 @@ public class PlotTransactionServiceImpl implements PlotTransactionService {
     @Override
     public Plot assignNewOwnerToPlot(Plot plot, User customer){
         plot.setUser(customer);
+        plot.setSold(true);
         return plotDAO.save(plot);
     }
 

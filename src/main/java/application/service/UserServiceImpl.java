@@ -2,11 +2,13 @@ package application.service;
 
 import application.dao.UserDAO;
 import application.model.User;
-import application.dto.UserChangePasswordDTO;
 import application.dto.UserRegisterDTO;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -66,5 +68,18 @@ public class UserServiceImpl implements UserService {
         if(userDAO.findByEmail(email)==null)
             return new ResponseEntity<>("user not exists",HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(userDAO.findByEmail(email),HttpStatus.OK);
+    }
+
+    @Override
+    public String getLoggedUser() {
+        SecurityContext context = SecurityContextHolder.getContext();
+        if (context == null)
+            return null;
+
+        Authentication authentication = context.getAuthentication();
+        if (authentication == null)
+            return null;
+
+        return context.getAuthentication().getName();
     }
 }

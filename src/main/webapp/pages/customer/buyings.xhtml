@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/sales.css"/>
+    <script src="${pageContext.request.contextPath}/js/jquery-3.4.1.min.js" type=""></script>
+    <script src="${pageContext.request.contextPath}/js/bootstrap.min.js" type=""></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/common/main.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/common/exchangeRates.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/seller/sales.js"></script>
+
+    <title>Buyings</title>
+</h:head>
+<h:body>
+    <div id="wrapper">
+
+        <div id="navigationMenuPlaceholder"></div>
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <h:form>
+                            <p:dataTable var="property" id="propertyData" value="#{propertyBean.propertiesSold}"
+                                         scrollable="true" height="100" paginator="true" rows="10" tableStyle="table-layout:auto">
+                                <p:column headerText="PropertyId" sortBy="#{property.propertyId}">
+                                    <h:outputText value="#{property.propertyId}"/>
+                                </p:column>
+
+                                <p:column headerText="UserId" sortBy="#{property.userId}">
+                                    <h:outputText value="#{property.userId}"/>
+                                </p:column>
+
+                                <p:column headerText="Street" sortBy="#{property.street}">
+                                    <h:outputText value="#{property.street}"/>
+                                </p:column>
+
+                                <p:column headerText="House no" sortBy="#{property.homeNumber}">
+                                    <h:outputText value="#{property.homeNumber}"/>
+                                </p:column>
+
+                                <p:column headerText="Local no" sortBy="#{property.localNumber}">
+                                    <h:outputText value="#{property.localNumber}"/>
+                                </p:column>
+
+                                <p:column headerText="Post code" sortBy="#{property.postCode}">
+                                    <h:outputText value="#{property.postCode}"/>
+                                </p:column>
+
+                                <p:column headerText="City" sortBy="#{property.city}">
+                                    <h:outputText value="#{property.city}"/>
+                                </p:column>
+
+                                <p:column headerText="Price" sortBy="#{property.price}">
+                                    <h:outputText value="#{property.price}"/>
+                                </p:column>
+
+                                <p:column headerText="Size" sortBy="#{property.size}">
+                                    <h:outputText value="#{property.size}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </h:form>
+                        <br/>
+                        <h:form>
+                            <p:panelGrid columns="2">
+                                <h:outputText value="Balance (PLN): "/>
+                                <h:outputText id="balancePLN" class="balanceData" value="#{propertyBean.customerBalance}"/>
+                                <h:outputText value="Balance (EUR): "/>
+                                <h:outputText id="balanceDataEUR" value="#{propertyBean.customerBalance*propertyBean.plnEurExchangeRate}"/>
+                                <h:outputText value="Balance (USD): "/>
+                                <h:outputText id="balanceDataUSD" value="#{propertyBean.customerBalance*propertyBean.plnUsdExchangeRate}"/>
+                            </p:panelGrid>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="footerPlaceholder">
+        </div>
+        <!-- /#page-content-wrapper -->
+    </div>
+</h:body>
+</html>

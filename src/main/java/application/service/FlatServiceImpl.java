@@ -51,6 +51,7 @@ public class FlatServiceImpl implements FlatService {
         flat.setSize(flatDTO.getSize());
         flat.setPrice(flatDTO.getPrice());
         flat.setRooms(flatDTO.getRooms());
+        flat.setSold(false);
         return flatDAO.save(flat);
     }
 }

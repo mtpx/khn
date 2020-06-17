@@ -35,6 +35,9 @@ public class House {
     @Column(name="rooms",nullable = false)
     private int rooms;
 
+    @Column(name="sold",nullable = false)
+    private boolean sold;
+
     @ManyToOne
     @JoinColumn(name="userId", nullable=false)
     private User user;

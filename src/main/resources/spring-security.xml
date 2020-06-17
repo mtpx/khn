@@ -12,6 +12,7 @@
 
         <intercept-url pattern="/customer/auctions" access="hasAuthority('customer')" />
         <intercept-url pattern="/customer/credits" access="hasAuthority('customer')" />
+        <intercept-url pattern="/customer/credits2" access="hasAuthority('customer')" />
         <intercept-url pattern="/customer/buyings" access="hasAuthority('customer')" />
 
         <intercept-url pattern="/seller/sales" access="hasAuthority('seller')" />

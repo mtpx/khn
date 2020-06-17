@@ -1,6 +1,6 @@
 package application.controller.api;
-import application.model.views.AuctionView;
-import application.service.AuctionViewService;
+import application.model.views.PropertyView;
+import application.service.PropertyViewService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
@@ -12,34 +12,34 @@ import java.util.List;
 @RequestMapping("/property/view")
 public class ViewPropertyController {
 
-    private AuctionViewService auctionViewService;
+    private PropertyViewService propertyViewService;
 
-    public ViewPropertyController(AuctionViewService auctionViewService) {
-        this.auctionViewService = auctionViewService;
+    public ViewPropertyController(PropertyViewService propertyViewService) {
+        this.propertyViewService = propertyViewService;
     }
 
-    @ApiOperation(value = "Get all properties", response = AuctionView.class)
+    @ApiOperation(value = "Get all properties", response = PropertyView.class)
     @GetMapping(value = "/all")
-    public List<AuctionView> findAllProperties(){
-        return auctionViewService.findAllProperties();
+    public List<PropertyView> findAllProperties(){
+        return propertyViewService.findAllForSale();
     }
 
-    @ApiOperation(value = "Get flat properties", response = AuctionView.class)
+    @ApiOperation(value = "Get flat properties", response = PropertyView.class)
     @GetMapping(value = "/flat")
     public ResponseEntity<Object> findFlats(){
-        return auctionViewService.findPropertiesByType("flat");
+        return propertyViewService.findByTypeForSale("flat");
     }
 
-    @ApiOperation(value = "Get plot properties", response = AuctionView.class)
+    @ApiOperation(value = "Get plot properties", response = PropertyView.class)
     @GetMapping(value = "/plot")
     public ResponseEntity<Object> findPlots(){
-        return auctionViewService.findPropertiesByType("plot");
+        return propertyViewService.findByTypeForSale("plot");
     }
 
-    @ApiOperation(value = "Get house properties", response = AuctionView.class)
+    @ApiOperation(value = "Get house properties", response = PropertyView.class)
     @GetMapping(value = "/house")
     public ResponseEntity<Object> findHouses(){
-        return auctionViewService.findPropertiesByType("house");
+        return propertyViewService.findByTypeForSale("house");
     }
 
 }
