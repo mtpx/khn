@@ -12,7 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
-@Service
+@Service("userService")
 
 public class UserServiceImpl implements UserService {
     final static Logger LOGGER = Logger.getLogger(UserServiceImpl.class.getName());
@@ -21,8 +21,6 @@ public class UserServiceImpl implements UserService {
     private final FinanceService financeService;
     private final UserRolesService userRolesService;
     private final UserEditService userEditService;
-
-
 
     public UserServiceImpl(UserDAO userDAO, FinanceService financeService, UserRolesService userRolesService, UserEditService userEditService) {
         this.userDAO = userDAO;
@@ -81,5 +79,10 @@ public class UserServiceImpl implements UserService {
             return null;
 
         return context.getAuthentication().getName();
+    }
+
+    @Override
+    public int getLoggedUserId() {
+        return userDAO.findByEmail(getLoggedUser()).getId();
     }
 }

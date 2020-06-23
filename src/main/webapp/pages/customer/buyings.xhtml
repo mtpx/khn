@@ -4,14 +4,14 @@
 <html xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui">
 <h:head>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/main.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/sales.css"/>
-    <script src="${pageContext.request.contextPath}/js/jquery-3.4.1.min.js" type=""></script>
-    <script src="${pageContext.request.contextPath}/js/bootstrap.min.js" type=""></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/common/main.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/common/exchangeRates.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/js/seller/sales.js"></script>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../css/main.css"/>
+    <link rel="stylesheet" href="../../css/sales.css"/>
+    <script src="../../js/jquery-3.4.1.min.js" type=""></script>
+    <script src="../../js/bootstrap.min.js" type=""></script>
+    <script type="text/javascript" src="../../js/common/main.js"></script>
+    <script type="text/javascript" src="../../js/common/exchangeRates.js"></script>
+    <script type="text/javascript" src="../../js/seller/sales.js"></script>
 
     <title>Buyings</title>
 </h:head>
@@ -70,11 +70,11 @@
                         <h:form>
                             <p:panelGrid columns="2">
                                 <h:outputText value="Balance (PLN): "/>
-                                <h:outputText id="balancePLN" class="balanceData" value="#{propertyBean.customerBalance}"/>
+                                <h:outputText id="balancePLN" class="balanceData" value="#{propertyBean.balance}"/>
                                 <h:outputText value="Balance (EUR): "/>
-                                <h:outputText id="balanceDataEUR" value="#{propertyBean.customerBalance*propertyBean.plnEurExchangeRate}"/>
+                                <h:outputText id="balanceDataEUR" value="#{propertyBean.balanceEUR}"/>
                                 <h:outputText value="Balance (USD): "/>
-                                <h:outputText id="balanceDataUSD" value="#{propertyBean.customerBalance*propertyBean.plnUsdExchangeRate}"/>
+                                <h:outputText id="balanceDataUSD" value="#{propertyBean.balanceUSD}"/>
                             </p:panelGrid>
                         </h:form>
                     </div>

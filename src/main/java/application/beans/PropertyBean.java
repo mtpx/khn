@@ -1,50 +1,50 @@
 package application.beans;
 
 import application.model.views.PropertyView;
+import application.service.FinanceService;
 import application.service.PropertyViewService;
 import application.service.UserService;
 import lombok.Getter;
 import lombok.Setter;
-import javax.annotation.ManagedBean;
+import javax.faces.bean.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
-import javax.inject.Named;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Setter
 @Getter
 @ManagedBean
-//@Named
 @ViewScoped
 public class PropertyBean implements Serializable {
 
-    private double plnEurExchangeRate = 0.26;
-    private double plnUsdExchangeRate = 0.23;
+    BigDecimal plnEurExchangeRate = new BigDecimal("0.26");
+    BigDecimal plnUsdExchangeRate = new BigDecimal("0.23");
 
-    private List<PropertyView> propertiesForSale=null;
-    private List<PropertyView> propertiesSold=null;
+    private List<PropertyView> propertiesForSale;
+    private List<PropertyView> propertiesSold;
 
-    private PropertyViewService propertyViewService;
+    @ManagedProperty("#{userService}")
     private UserService userService;
 
-    public PropertyBean(PropertyViewService propertyViewService,UserService userService) {
-        this.propertyViewService=propertyViewService;
-        this.userService=userService;
-    }
+    @ManagedProperty("#{financeService}")
+    private FinanceService financeService;
+
+    @ManagedProperty("#{propertyViewService}")
+    private PropertyViewService propertyViewService;
 
 
     @PostConstruct
     public void init() {
-//        userProperty = auctionViewService.findByEmail(userService.getLoggedUser());
+        //propertiesForSale = getPropertiesForSale();
     }
 
     public List<PropertyView> getPropertiesForSale() {
-        //wiersze trzymamy w zmiennej w beanie, jeśli zwracamy dane bezpośrednio z serwisu - sortowanie tabeli na froncie nie działa
-        //https://stackoverflow.com/questions/5020725
-        if (propertiesForSale==null)
-            propertiesForSale=propertyViewService.findByEmailForSale(userService.getLoggedUser());
+        //nie zwracamy bezpośrednio z serwisu, dzięki zmiennej mamy sortowanie na froncie
+        if(propertiesForSale==null)
+            propertiesForSale = propertyViewService.findByEmailForSale(userService.getLoggedUser());
         return propertiesForSale;
     }
 
@@ -54,19 +54,16 @@ public class PropertyBean implements Serializable {
         return propertiesSold;
     }
 
-    public int getSellerBalance() {
-        return calculateBalance(getPropertiesForSale());
+    public double getBalance(){
+        return financeService.getFinance(userService.getLoggedUserId()).getAmount();
     }
 
-    public int getCustomerBalance() {
-        return -calculateBalance(getPropertiesSold());
+    public BigDecimal getBalanceEUR(){
+        return new BigDecimal(financeService.getFinance(userService.getLoggedUserId()).getAmount()).multiply(plnEurExchangeRate);
     }
 
-    private int calculateBalance(List<PropertyView> userProperty){
-        int balance = 0;
-        for (PropertyView propertyView : userProperty) {
-            balance+=propertyView.getPrice();
-        }
-        return balance;
+    public BigDecimal getBalanceUSD(){
+        return new BigDecimal(financeService.getFinance(userService.getLoggedUserId()).getAmount()).multiply(plnUsdExchangeRate);
     }
+
 }

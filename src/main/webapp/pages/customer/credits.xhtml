@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../css/main.css"/>
+    <link rel="stylesheet" href="../../css/sales.css"/>
+    <link rel="stylesheet" href="../../css/credits.css"/>
+    <script src="../../js/jquery-3.4.1.min.js" type=""></script>
+    <script src="../../js/bootstrap.min.js" type=""></script>
+    <script type="text/javascript" src="../../js/common/main.js"></script>
+    <title>Credits</title>
+</h:head>
+
+<h:body>
+    <div id="wrapper">
+        <div id="navigationMenuPlaceholder"></div>
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <p:growl id="growl" life="4000" showDetail="true" style="width: 300px"/>
+                        <!-- Left Align -->
+                        <p:panelGrid columns="3" layout="grid" style="width:100%;" styleClass="ui-panelgrid-blank">
+                            <h:form id="creditCalculator">
+                                <h3>Credit calculator</h3>
+                                <p:panelGrid columns="2" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-8, ui-grid-col-4">
+                                    <h:outputLabel for="creditInterestRate" value="Credit interest rate:"/>
+                                    <p:inputText id="creditInterestRate" value="#{creditBean.creditInterestRate}" readonly="true"/>
+
+                                    <h:outputLabel for="numberOfInstallments" value="Number of installments:"/>
+                                    <p:inputText id="numberOfInstallments" value="#{creditBean.numberOfInstallments}"/>
+
+                                    <h:outputLabel for="creditAmount" value="Credit amount:"/>
+                                    <p:inputText id="creditAmount" value="#{creditBean.creditAmount}"/>
+
+                                    <h:outputLabel for="monthlyIncome" value="Monthly income:"/>
+                                    <p:inputText id="monthlyIncome" value="#{creditBean.monthlyIncome}"/>
+
+                                    <h:outputLabel for="monthlyExpenses" value="Monthly expenses:"/>
+                                    <p:inputText id="monthlyExpenses" value="#{creditBean.monthlyExpenses}"/>
+                                </p:panelGrid>
+                                <p:commandButton value="Calculate credit" icon="pi pi-check" action="#{creditBean.calculateCredit}" update="creditCalculationResults,growl,creditApplication"/>
+                            </h:form>
+
+                            <h:form id="creditCalculationResults">
+                                <h:panelGroup layout="block" rendered="#{creditBean.creditCalculationResultVisibility}">
+                                    <h3>Credit calculation results</h3>
+                                    <p:panelGrid columns="2" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-8, ui-grid-col-4" >
+                                        <h:outputLabel for="amountToRepay" value="Amount to repay:"/>
+                                        <p:inputText id="amountToRepay" value="#{creditBean.amountToRepay}" readonly="true"/>
+
+                                        <h:outputLabel for="monthlyInstallment" value="Monthly installment:"/>
+                                        <p:inputText id="monthlyInstallment" value="#{creditBean.monthlyInstallment}" readonly="true"/>
+
+                                        <h:outputLabel for="repaymentDate" value="Repayment date:"/>
+                                        <p:inputText id="repaymentDate" value="#{creditBean.repaymentDate}" readonly="true"/>
+                                    </p:panelGrid>
+                                    <p:commandButton value="Apply for credit" icon="pi pi-check" update="growl, creditApplication" action="#{creditBean.applyForCredit}"/>
+                                </h:panelGroup>
+                            </h:form>
+
+                            <h:form id="creditApplication">
+                                <h:panelGroup layout="block" rendered="#{creditBean.creditApplicationVisibility}">
+                                    <h3>Credit application</h3>
+                                    <p:panelGrid columns="2" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-8, ui-grid-col-4">
+                                        <h:outputLabel for="creditApplication_firstName" value="First name:"/>
+                                        <p:inputText id="creditApplication_firstName" value="#{creditBean.firstName}"/>
+
+                                        <h:outputLabel for="creditApplication_lastName" value="Last name:"/>
+                                        <p:inputText id="creditApplication_lastName" value="#{creditBean.lastName}"/>
+
+                                        <h:outputLabel for="creditApplication_creditInterestRate" value="Credit interest rate:"/>
+                                        <p:inputText id="creditApplication_creditInterestRate" value="#{creditBean.creditInterestRate}" readonly="true"/>
+
+                                        <h:outputLabel for="creditApplication_numberOfInstallments" value="Number of installments:"/>
+                                        <p:inputText id="creditApplication_numberOfInstallments" value="#{creditBean.numberOfInstallments}" readonly="true"/>
+
+                                        <h:outputLabel for="creditApplication_monthlyInstallments" value="Monthly installment:"/>
+                                        <p:inputText id="creditApplication_monthlyInstallments" value="#{creditBean.monthlyInstallment}" readonly="true"/>
+
+                                        <h:outputLabel for="creditApplication_creditAmount" value="Credit amount:"/>
+                                        <p:inputText id="creditApplication_creditAmount" value="#{creditBean.creditAmount}" readonly="true"/>
+
+                                        <h:outputLabel for="creditApplication_amountToRepay" value="Amount to repay:"/>
+                                        <p:inputText id="creditApplication_amountToRepay" value="#{creditBean.amountToRepay}" readonly="true"/>
+
+                                        <h:outputLabel for="creditApplication_monthlyIncome" value="Monthly income:"/>
+                                        <p:inputText id="creditApplication_monthlyIncome" value="#{creditBean.monthlyIncome}" readonly="true"/>
+
+                                        <h:outputLabel for="creditApplication_monthlyExpenses" value="Monthly expenses:"/>
+                                        <p:inputText id="creditApplication_monthlyExpenses" value="#{creditBean.monthlyExpenses}" readonly="true"/>
+                                    </p:panelGrid>
+                                    <p:commandButton value="Submit credit application" icon="pi pi-check" action="#{creditBean.applyForCredit}" update="growl"/>
+                                </h:panelGroup>
+                            </h:form>
+                        </p:panelGrid>
+                        <br/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="footerPlaceholder">
+        </div>
+        <!-- /#page-content-wrapper -->
+    </div>
+</h:body>
+</html>

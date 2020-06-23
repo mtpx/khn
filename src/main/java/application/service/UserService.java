@@ -13,4 +13,6 @@ public interface UserService {
     List<User> findAll();
     ResponseEntity<Object> getUserByEmail(String email);
     String getLoggedUser();
+    int getLoggedUserId();
+
 }

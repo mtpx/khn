@@ -5,7 +5,7 @@ import application.model.*;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service("financeService")
 public class FinanceServiceImpl implements FinanceService {
     final static Logger LOGGER = Logger.getLogger(FinanceServiceImpl.class.getName());
     private final FinanceDAO financeDAO;

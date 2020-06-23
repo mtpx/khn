@@ -90,6 +90,16 @@ public class ViewsController {
         return "customer/register.html";
     }
 
+    @GetMapping(value ="/customer/credits")
+    public String credits() {
+        return "customer/credits.xhtml";
+    }
+
+    @GetMapping(value ="/customer/credits2")
+    public String creditsjs() {
+        return "customer/creditsjs.html";
+    }
+
     @GetMapping(value ="/customer/login")
     public String customerLogin() {
         return "customer/login.html";
