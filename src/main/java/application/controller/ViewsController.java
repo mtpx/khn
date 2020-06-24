@@ -72,10 +72,10 @@ public class ViewsController {
         return "seller/login.html";
     }
 
-    @GetMapping(value ="/seller/sales")
-    public String sellerSales() {
-        return "seller/sales.xhtml";
-    }
+//    @GetMapping(value ="/seller/sales")
+//    public String sellerSales() {
+//        return "seller/sales.xhtml";
+//    }
 
     @GetMapping(value ="/seller/addProperty")
     public String addProperty() {
@@ -90,10 +90,10 @@ public class ViewsController {
         return "customer/register.html";
     }
 
-    @GetMapping(value ="/customer/credits")
-    public String credits() {
-        return "customer/credits.xhtml";
-    }
+//    @GetMapping(value ="/customer/credits")
+//    public String credits() {
+//        return "customer/credits.xhtml";
+//    }
 
     @GetMapping(value ="/customer/credits2")
     public String creditsjs() {
@@ -105,8 +105,8 @@ public class ViewsController {
         return "customer/login.html";
     }
 
-    @GetMapping(value ="/customer/buyings")
-    public String buyings() {
-        return "customer/buyings.xhtml";
-    }
+//    @GetMapping(value ="/customer/buyings")
+//    public String buyings() {
+//        return "customer/buyings.xhtml";
+//    }
 }

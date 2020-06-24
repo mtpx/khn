@@ -66,7 +66,7 @@ public class CreditBean implements Serializable {
     private void negativeCreditDecision() {
         creditCalculationResultVisibility = false;
         creditApplicationVisibility = false;
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error", "Your expenses are greater than your income. You cannot apply for a credit"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Error", "Your expenses are equal/greater than your income. You cannot apply for a credit"));
     }
 
     private void calculateRepaymentDate(int numberOfInstallments) {

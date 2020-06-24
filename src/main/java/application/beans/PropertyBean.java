@@ -35,23 +35,10 @@ public class PropertyBean implements Serializable {
     @ManagedProperty("#{propertyViewService}")
     private PropertyViewService propertyViewService;
 
-
     @PostConstruct
     public void init() {
-        //propertiesForSale = getPropertiesForSale();
-    }
-
-    public List<PropertyView> getPropertiesForSale() {
-        //nie zwracamy bezpośrednio z serwisu, dzięki zmiennej mamy sortowanie na froncie
-        if(propertiesForSale==null)
-            propertiesForSale = propertyViewService.findByEmailForSale(userService.getLoggedUser());
-        return propertiesForSale;
-    }
-
-    public List<PropertyView> getPropertiesSold() {
-        if(propertiesSold==null)
-            propertiesSold = propertyViewService.findByEmailSold(userService.getLoggedUser());
-        return propertiesSold;
+        propertiesForSale = propertyViewService.findByEmailForSale(userService.getLoggedUser());
+        propertiesSold = propertyViewService.findByEmailSold(userService.getLoggedUser());
     }
 
     public double getBalance(){
@@ -65,5 +52,4 @@ public class PropertyBean implements Serializable {
     public BigDecimal getBalanceUSD(){
         return new BigDecimal(financeService.getFinance(userService.getLoggedUserId()).getAmount()).multiply(plnUsdExchangeRate);
     }
-
 }
