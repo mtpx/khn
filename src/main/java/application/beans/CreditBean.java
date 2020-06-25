@@ -1,13 +1,17 @@
 package application.beans;
 
+import application.dto.CreditDTO;
+import application.service.CreditService;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.annotation.ManagedBean;
+import javax.faces.bean.ManagedBean;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -21,21 +25,28 @@ public class CreditBean implements Serializable {
 
     //credit calc input data
     private double creditInterestRate = 9;
-    private int numberOfInstallments,creditAmount, monthlyIncome, monthlyExpenses;
+    @Min(2) private int numberOfInstallments;
+    @Min(100) private int creditAmount;
+    private int monthlyIncome;
+    private int monthlyExpenses;
 
     //credit calc results
     private long amountToRepay, monthlyInstallment;
     private String repaymentDate;
 
     //credit application
-    private String lastName,firstName;
+    @Size(min = 2) private String lastName;
+    @Size(min = 2) private String firstName;
+
+    //form visibility variables
 
     private boolean creditCalculationResultVisibility=false;
     private boolean creditApplicationVisibility=false;
 
-    public CreditBean() {
-    }
+    private CreditDTO creditDTO;
 
+    @ManagedProperty("#{creditService}")
+    private CreditService creditService;
 
     @PostConstruct
     public void init() {
@@ -50,9 +61,8 @@ public class CreditBean implements Serializable {
 
     public void applyForCredit() {
         creditApplicationVisibility = true;
+        creditService.add(creditDTO);
     }
-
-
 
     private void positiveCreditDecision() {
         creditApplicationVisibility=false;

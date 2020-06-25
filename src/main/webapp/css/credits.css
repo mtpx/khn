@@ -1,3 +1,8 @@
 input[type=text]{
     width: 100% !important;
 }
+
+.ui-growl{
+    width: 400px;
+    left: 50%;
+}

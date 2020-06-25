@@ -22,41 +22,41 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <p:growl id="growl" life="4000" showDetail="true" style="width: 300px"/>
+                        <p:growl id="growl" class="ui-growl" life="4000" showDetail="true"/>
                         <!-- Left Align -->
                         <p:panelGrid columns="3" layout="grid" style="width:100%;" styleClass="ui-panelgrid-blank">
                             <h:form id="creditCalculator">
                                 <h3>Credit calculator</h3>
-                                <p:panelGrid columns="2" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-8, ui-grid-col-4">
-                                    <h:outputLabel for="creditInterestRate" value="Credit interest rate:"/>
+                                <p:panelGrid columns="2" styleClass="ui-panelgrid-blank">
+                                    <p:outputLabel for="@next" value="Credit interest rate:"/>
                                     <p:inputText id="creditInterestRate" value="#{creditBean.creditInterestRate}" readonly="true"/>
 
-                                    <h:outputLabel for="numberOfInstallments" value="Number of installments:"/>
-                                    <p:inputText id="numberOfInstallments" value="#{creditBean.numberOfInstallments}"/>
+                                    <p:outputLabel for="@next" value="Number of installments:"/>
+                                    <p:inputText id="numberOfInstallments" value="#{creditBean.numberOfInstallments}" validatorMessage="Number of installments should be greater than 1"/>
 
-                                    <h:outputLabel for="creditAmount" value="Credit amount:"/>
-                                    <p:inputText id="creditAmount" value="#{creditBean.creditAmount}"/>
+                                    <p:outputLabel for="@next" value="Credit amount:"/>
+                                    <p:inputText id="creditAmount" value="#{creditBean.creditAmount}" validatorMessage="Credit amount should be greater than 100"/>
 
-                                    <h:outputLabel for="monthlyIncome" value="Monthly income:"/>
+                                    <p:outputLabel for="@next" value="Monthly income:"/>
                                     <p:inputText id="monthlyIncome" value="#{creditBean.monthlyIncome}"/>
 
-                                    <h:outputLabel for="monthlyExpenses" value="Monthly expenses:"/>
+                                    <p:outputLabel for="@next" value="Monthly expenses:"/>
                                     <p:inputText id="monthlyExpenses" value="#{creditBean.monthlyExpenses}"/>
                                 </p:panelGrid>
-                                <p:commandButton value="Calculate credit" icon="pi pi-check" action="#{creditBean.calculateCredit}" update="creditCalculationResults,growl,creditApplication"/>
+                                <p:commandButton value="Calculate credit" icon="pi pi-check" action="#{creditBean.calculateCredit}" update="creditCalculationResults,growl,creditApplication,creditCalculator" validateClient="true"/>
                             </h:form>
 
                             <h:form id="creditCalculationResults">
                                 <h:panelGroup layout="block" rendered="#{creditBean.creditCalculationResultVisibility}">
                                     <h3>Credit calculation results</h3>
                                     <p:panelGrid columns="2" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-8, ui-grid-col-4" >
-                                        <h:outputLabel for="amountToRepay" value="Amount to repay:"/>
+                                        <p:outputLabel for="@next" value="Amount to repay:"/>
                                         <p:inputText id="amountToRepay" value="#{creditBean.amountToRepay}" readonly="true"/>
 
-                                        <h:outputLabel for="monthlyInstallment" value="Monthly installment:"/>
+                                        <p:outputLabel for="@next" value="Monthly installment:"/>
                                         <p:inputText id="monthlyInstallment" value="#{creditBean.monthlyInstallment}" readonly="true"/>
 
-                                        <h:outputLabel for="repaymentDate" value="Repayment date:"/>
+                                        <p:outputLabel for="@next" value="Repayment date:"/>
                                         <p:inputText id="repaymentDate" value="#{creditBean.repaymentDate}" readonly="true"/>
                                     </p:panelGrid>
                                     <p:commandButton value="Apply for credit" icon="pi pi-check" update="growl, creditApplication" action="#{creditBean.applyForCredit}"/>
@@ -67,31 +67,31 @@
                                 <h:panelGroup layout="block" rendered="#{creditBean.creditApplicationVisibility}">
                                     <h3>Credit application</h3>
                                     <p:panelGrid columns="2" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-8, ui-grid-col-4">
-                                        <h:outputLabel for="creditApplication_firstName" value="First name:"/>
-                                        <p:inputText id="creditApplication_firstName" value="#{creditBean.firstName}"/>
+                                        <p:outputLabel for="@next" value="First name:"/>
+                                        <p:inputText id="creditApplication_firstName" value="#{creditBean.firstName}" validatorMessage="First name should not be empty"/>
 
-                                        <h:outputLabel for="creditApplication_lastName" value="Last name:"/>
-                                        <p:inputText id="creditApplication_lastName" value="#{creditBean.lastName}"/>
+                                        <p:outputLabel for="@next" value="Last name:"/>
+                                        <p:inputText id="creditApplication_lastName" value="#{creditBean.lastName}" validatorMessage="Last name should not be empty"/>
 
-                                        <h:outputLabel for="creditApplication_creditInterestRate" value="Credit interest rate:"/>
+                                        <p:outputLabel for="@next" value="Credit interest rate:"/>
                                         <p:inputText id="creditApplication_creditInterestRate" value="#{creditBean.creditInterestRate}" readonly="true"/>
 
-                                        <h:outputLabel for="creditApplication_numberOfInstallments" value="Number of installments:"/>
+                                        <p:outputLabel for="@next" value="Number of installments:"/>
                                         <p:inputText id="creditApplication_numberOfInstallments" value="#{creditBean.numberOfInstallments}" readonly="true"/>
 
-                                        <h:outputLabel for="creditApplication_monthlyInstallments" value="Monthly installment:"/>
+                                        <p:outputLabel for="@next" value="Monthly installment:"/>
                                         <p:inputText id="creditApplication_monthlyInstallments" value="#{creditBean.monthlyInstallment}" readonly="true"/>
 
-                                        <h:outputLabel for="creditApplication_creditAmount" value="Credit amount:"/>
+                                        <p:outputLabel for="@next" value="Credit amount:"/>
                                         <p:inputText id="creditApplication_creditAmount" value="#{creditBean.creditAmount}" readonly="true"/>
 
-                                        <h:outputLabel for="creditApplication_amountToRepay" value="Amount to repay:"/>
+                                        <p:outputLabel for="@next" value="Amount to repay:"/>
                                         <p:inputText id="creditApplication_amountToRepay" value="#{creditBean.amountToRepay}" readonly="true"/>
 
-                                        <h:outputLabel for="creditApplication_monthlyIncome" value="Monthly income:"/>
+                                        <p:outputLabel for="@next" value="Monthly income:"/>
                                         <p:inputText id="creditApplication_monthlyIncome" value="#{creditBean.monthlyIncome}" readonly="true"/>
 
-                                        <h:outputLabel for="creditApplication_monthlyExpenses" value="Monthly expenses:"/>
+                                        <p:outputLabel for="@next" value="Monthly expenses:"/>
                                         <p:inputText id="creditApplication_monthlyExpenses" value="#{creditBean.monthlyExpenses}" readonly="true"/>
                                     </p:panelGrid>
                                     <p:commandButton value="Submit credit application" icon="pi pi-check" action="#{creditBean.applyForCredit}" update="growl"/>
