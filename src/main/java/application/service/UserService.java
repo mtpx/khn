@@ -12,7 +12,10 @@ public interface UserService {
     User findById(int id);
     List<User> findAll();
     ResponseEntity<Object> getUserByEmail(String email);
-    String getLoggedUser();
+    String getLoggedUserMail();
     int getLoggedUserId();
 
+    String getLoggedUserFirstName();
+
+    String getLoggedUserLastName();
 }

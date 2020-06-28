@@ -37,8 +37,8 @@ public class PropertyBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        propertiesForSale = propertyViewService.findByEmailForSale(userService.getLoggedUser());
-        propertiesSold = propertyViewService.findByEmailSold(userService.getLoggedUser());
+        propertiesForSale = propertyViewService.findByEmailForSale(userService.getLoggedUserMail());
+        propertiesSold = propertyViewService.findByEmailSold(userService.getLoggedUserMail());
     }
 
     public double getBalance(){

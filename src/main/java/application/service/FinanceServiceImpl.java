@@ -21,23 +21,23 @@ public class FinanceServiceImpl implements FinanceService {
 
     @Override
     public void changeFinanceAfterTransaction(int customerId, int sellerId, int propertyPrice) {
-        changeCustomerFinance(customerId,propertyPrice);
-        changeSellerFinance(sellerId,propertyPrice);
+        subtractAmountFromFinance(customerId,propertyPrice);
+        addAmountToFinance(sellerId,propertyPrice);
     }
 
-    @Override  //odejmowanie kwoty za nieruchomość od stanu konta kupującego
-    public void changeCustomerFinance(int customerId, int propertyPrice) {
-        Finance finance = financeDAO.findByUserId(customerId);
+    @Override  //odejmowanie kwoty od stanu konta użytkownika
+    public void subtractAmountFromFinance(int userId, int amount) {
+        Finance finance = financeDAO.findByUserId(userId);
 
-        finance.setAmount(finance.getAmount()-propertyPrice);
+        finance.setAmount(finance.getAmount()-amount);
         financeDAO.save(finance);
     }
 
-    @Override  //dodawanie kwoty za nieruchomość do stanu konta sprzedającego
-    public void changeSellerFinance(int sellerId, int propertyPrice) {
-        Finance finance = financeDAO.findByUserId(sellerId);
+    @Override  //odejmowanie kwoty od stanu konta użytkownika
+    public void addAmountToFinance(int userId, int amount) {
+        Finance finance = financeDAO.findByUserId(userId);
 
-        finance.setAmount(finance.getAmount()+propertyPrice);
+        finance.setAmount(finance.getAmount()+amount);
         financeDAO.save(finance);
     }
 

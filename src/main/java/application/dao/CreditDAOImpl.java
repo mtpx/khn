@@ -1,15 +1,12 @@
 package application.dao;
 
-import application.model.Address;
 import application.model.Credit;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
-import java.util.List;
 
 @Repository
 public class CreditDAOImpl implements CreditDAO {

@@ -2,6 +2,7 @@ package application.beans;
 
 import application.dto.CreditDTO;
 import application.service.CreditService;
+import application.service.UserService;
 import lombok.Getter;
 import lombok.Setter;
 import javax.faces.bean.ManagedBean;
@@ -31,25 +32,29 @@ public class CreditBean implements Serializable {
     private int monthlyExpenses;
 
     //credit calc results
-    private long amountToRepay, monthlyInstallment;
+    private Long amountToRepay, monthlyInstallment;
     private String repaymentDate;
 
     //credit application
-    @Size(min = 2) private String lastName;
-    @Size(min = 2) private String firstName;
+    @Size(min = 1) private String lastName;
+    @Size(min = 1) private String firstName;
+    private String creditGrantedMessage;
 
     //form visibility variables
-
     private boolean creditCalculationResultVisibility=false;
     private boolean creditApplicationVisibility=false;
 
-    private CreditDTO creditDTO;
 
     @ManagedProperty("#{creditService}")
     private CreditService creditService;
 
+    @ManagedProperty("#{userService}")
+    private UserService userService;
+
     @PostConstruct
     public void init() {
+        firstName = userService.getLoggedUserFirstName();
+        lastName = userService.getLoggedUserLastName();
     }
 
     public void calculateCredit(){
@@ -61,7 +66,17 @@ public class CreditBean implements Serializable {
 
     public void applyForCredit() {
         creditApplicationVisibility = true;
-        creditService.add(creditDTO);
+    }
+
+    public void submitCreditApplication() {
+        creditService.add(createCreditDtoObject());
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Success", creditGrantedMessage ));
+    }
+
+    public void createCreditGrantedMessage(CreditDTO creditDTO, String repaymentDate){
+        creditGrantedMessage= "Credit of total amount "+creditDTO.getCreditAmount()+" PLN granted! Monhtly installment: "
+                +creditDTO.getInstallment()+ " number of installments: "+creditDTO.getNumberOfInstallments()+
+                ", amount to repay: "+creditDTO.getInstallment()*creditDTO.getNumberOfInstallments()+", repayment date: "+repaymentDate;
     }
 
     private void positiveCreditDecision() {
@@ -84,5 +99,15 @@ public class CreditBean implements Serializable {
         repaymentDateCalendar.setTime(new Date());
         repaymentDateCalendar.add(Calendar.MONTH, +numberOfInstallments);
         repaymentDate =  new SimpleDateFormat("yyyy-MM-dd").format(repaymentDateCalendar.getTime());
+    }
+
+    private CreditDTO createCreditDtoObject() {
+        CreditDTO creditDTO = new CreditDTO();
+        creditDTO.setName(firstName+" "+lastName);
+        creditDTO.setNumberOfInstallments(numberOfInstallments);
+        creditDTO.setInstallment(monthlyInstallment);
+        creditDTO.setCreditAmount(creditAmount);
+        createCreditGrantedMessage(creditDTO,repaymentDate);
+        return creditDTO;
     }
 }

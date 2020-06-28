@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String getLoggedUser() {
+    public String getLoggedUserMail() {
         SecurityContext context = SecurityContextHolder.getContext();
         if (context == null)
             return null;
@@ -83,6 +83,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int getLoggedUserId() {
-        return userDAO.findByEmail(getLoggedUser()).getId();
+        return userDAO.findByEmail(getLoggedUserMail()).getId();
+    }
+
+    @Override
+    public String getLoggedUserFirstName() {
+        return userDAO.findByEmail(getLoggedUserMail()).getFirstname();
+    }
+
+    @Override
+    public String getLoggedUserLastName() {
+        return userDAO.findByEmail(getLoggedUserMail()).getLastname();
     }
 }

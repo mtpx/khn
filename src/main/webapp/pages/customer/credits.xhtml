@@ -94,7 +94,7 @@
                                         <p:outputLabel for="@next" value="Monthly expenses:"/>
                                         <p:inputText id="creditApplication_monthlyExpenses" value="#{creditBean.monthlyExpenses}" readonly="true"/>
                                     </p:panelGrid>
-                                    <p:commandButton value="Submit credit application" icon="pi pi-check" action="#{creditBean.applyForCredit}" update="growl"/>
+                                    <p:commandButton value="Submit credit application" icon="pi pi-check" action="#{creditBean.submitCreditApplication}" update="growl"/>
                                 </h:panelGroup>
                             </h:form>
                         </p:panelGrid>

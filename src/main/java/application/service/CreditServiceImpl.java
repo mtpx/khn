@@ -13,31 +13,38 @@ public class CreditServiceImpl implements CreditService {
 
     final static Logger LOGGER = Logger.getLogger(CreditServiceImpl.class.getName());
     private final CreditDAO creditDAO;
+    private final UserService userService;
+    private final FinanceService financeService;
     private final UserCreditsDAO userCreditsDAO;
 
-    public CreditServiceImpl(CreditDAO creditDAO, UserCreditsDAO userCreditsDAO) {
+    public CreditServiceImpl(CreditDAO creditDAO, UserService userService, FinanceService financeService, UserCreditsDAO userCreditsDAO) {
         this.creditDAO=creditDAO;
-        this.userCreditsDAO=userCreditsDAO;
+        this.userService = userService;
+        this.financeService = financeService;
+        this.userCreditsDAO = userCreditsDAO;
     }
 
-    public void add (CreditDTO creditDTO){
-        creditDAO.save(createCreditObject(creditDTO));
-        userCreditsDAO.save(createUserCreditObject(creditDTO));
+    public void add(CreditDTO creditDTO){
+        Credit credit = saveCreditObject(creditDTO);
+        saveUserCreditsObject(credit);
+        updateUserFinance(userService.getLoggedUserId(),creditDTO.getCreditAmount());
     }
 
-    private UserCredits createUserCreditObject(CreditDTO creditDTO) {
-        UserCredits userCredits = new UserCredits();
-        userCredits.setAmountOfInstallment(creditDTO.getAmountOfInstallments());
-        userCredits.setQuantity(creditDTO.getQuantity());
-
-
-        return userCredits;
+    private void updateUserFinance(int loggedUserId, Integer creditAmount) {
+        financeService.addAmountToFinance(loggedUserId,creditAmount);
     }
 
-    private Credit createCreditObject(CreditDTO creditDTO){
+    private Credit saveCreditObject(CreditDTO creditDTO){
         Credit credit = new Credit();
         credit.setInstallment(creditDTO.getInstallment());
-        credit.setName(creditDTO.getFirstName()+" "+creditDTO.getLastName());
-        return credit;
+        credit.setName(creditDTO.getName());
+        return creditDAO.save(credit);
+    }
+
+    private UserCredits saveUserCreditsObject(Credit credit){
+        UserCredits userCredits = new UserCredits();
+        userCredits.setCredits(credit);
+        userCredits.setUser(userService.findById(userService.getLoggedUserId()));
+        return userCreditsDAO.save(userCredits);
     }
 }

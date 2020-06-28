@@ -4,12 +4,8 @@ import lombok.Data;
 
 @Data
 public class CreditDTO {
-    private String firstName;
-    private String lastName;
-    private Integer installment;
-    private String houseNumber;
-    private Integer quantity;
-    private String localNumber;
-    private String postCode;
-    private Integer amountOfInstallments;
+    private String name;
+    private Long installment;
+    private Integer numberOfInstallments;
+    private Integer creditAmount;
 }

@@ -56,7 +56,6 @@ public class User {
     @JoinTable(name="user_roles")
     private List<Role> roles;
 
-
 }
 
 // dodawanie ról i admina
